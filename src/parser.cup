@@ -1087,7 +1087,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
 
 :};
 
-condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
+condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1103,7 +1103,8 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
-:}
+:};
+/*
          | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3 proposicion:hijo3 {:
          
                 //NODO PADRE
@@ -1152,7 +1153,7 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
          
 :}
 
-         | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3  cuerpoProposiciones:hijo3 {:
+         | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3 cuerpoProposiciones:hijo3 {:
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1180,7 +1181,7 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo; 
          
-         :}; 
+         :}; */
 
 //define el tipo de main 
 tipomain ::= INT:t1 {:
@@ -2350,7 +2351,7 @@ inicioProgram ::= tipomain:hijo1 MAIN:t1 PARIZQ:t2 PARDER:t3 CURLYIZQ:t4 {:
 
 
 //esta gramatica aguanta varias proposiciones adentro de un begin/end
-cuerpoProposiciones ::=  BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {:
+cuerpoProposiciones ::= BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {:
               
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2583,7 +2584,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 :}
 
         | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4 
-          CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 CURLYDER:t6 {:
+          CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2922,89 +2923,6 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
                 
 :}; //fin lista_parametros
 
-// lista_parametros_id::= IDENTIFICADOR:t1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("ID");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-//               //TERMINALES
-
-//               RESULT = nodo;
-// :}
-//                 | IDENTIFICADOR:t1 COMA:t2 lista_parametros_num:hijo1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("ID");
-//               nodo.setValor(t1.toString() + ", " + ((Nodo)hijo1).getValor());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;
-
-// :};
-//                 | IDENTIFICADOR:t1 COMA:t2 lista_parametros_id:hijo1 {:
-                
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("ID");
-//               nodo.setValor(t1.toString() + ", " + ((Nodo)hijo1).getValor());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;
-                
-// :}; //fin lista_parametros_id
-
-// lista_parametros_num ::= NUM:t1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-
-//               RESULT = nodo;
-
-// :} 
-//                 | NUM:t1 COMA:t2 lista_parametros_id:hijo1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++; 
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;                
-                
-// :}
-//                 | NUM:t1 COMA:t2 lista_parametros_num:hijo1 {:
-                
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;   
-                
-// :};
-
-
 cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerpoProposiciones:hijo2 {:
 
               //NODO PADRE
@@ -3022,21 +2940,9 @@ cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerp
 
               nodo.addHijos((Nodo)hijo2);
               RESULT = nodo;
-:}
-        | {:
-                //NODO PADRE  
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("vacio");
-                nodo.setValor("vacio");
-                nodo.setId(parser.cont);
-                parser.cont++;
+:}; 
 
-                RESULT = nodo;
-
-:};
-
-declaracionesVARAdentroFunctionProcedure ::= VAR:t1 listaIdentificadores:hijo1 OPDECLARACION:t2 
-tipovar:hijo2 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3{:
+declaracionesVARAdentroFunctionProcedure ::= tipovar:hijo2 listaIdentificadores:hijo1 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3 {:
 
         Nodo nodo = new Nodo();
               nodo.setEtiqueta("declaracionesVARAdentroFunctionProcedure");
@@ -3050,7 +2956,8 @@ tipovar:hijo2 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3{:
               RESULT = nodo;
 
  :}
- | {:
+
+        | {:
 
                 //NODO PADRE  
                 Nodo nodo = new Nodo();
