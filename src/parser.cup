@@ -627,10 +627,6 @@ non terminal lista_parametros_id;
 //PRECEDENCIAS 
 
 precedence left ELSE;
-precedence left AND;
-precedence left OR;
-precedence left XOR;
-precedence left NOT;
 precedence left EQUAL;
 precedence left OPREL;
 precedence left OPCONDICIONALES;
@@ -1104,9 +1100,10 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
-:};
-/*
-         | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3 proposicion:hijo3 {:
+:}
+
+         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 
+           ELSE:t7 CURLYIZQ:t8 proposicion:hijo3 CURLYDER:t9 {:
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1122,7 +1119,8 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
            
 :}
 
-         | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones:hijo2 {:
+
+         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoProposiciones:hijo2 CURLYDER:t5 {:
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1136,25 +1134,8 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
                 RESULT = nodo; 
          
 :}
-         | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones_sinpuntocoma:hijo2 ELSE:t3 cuerpoProposiciones:hijo3 {:
-         
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
 
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo; 
-         
-         
-:}
-
-         | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3 cuerpoProposiciones:hijo3 {:
+         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 ELSE:t6 CURLYIZQ:t7 cuerpoProposiciones:hijo3 CURLYDER:t8 {:
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1168,7 +1149,8 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo; 
 :}
-         | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones_sinpuntocoma:hijo2 ELSE:t3  proposicion:hijo3 PUNTOCOMA:t4 {:
+
+         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoProposiciones:hijo2 CURLYDER:t5 ELSE:t6 CURLYIZQ:t7 cuerpoProposiciones:hijo3 CURLYDER:t8 {:
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1182,7 +1164,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo; 
          
-         :}; */
+:}; 
 
 //define el tipo de main 
 tipomain ::= INT:t1 {:

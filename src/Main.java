@@ -1045,14 +1045,12 @@ public class Main {
 					Nodo expr2 = children.get(2); //expresion a la der
 
 					String valorexpr1 = expr1.getValor(); 
-					System.out.println("valorexpr1: " + valorexpr1);
 					String valoroprel = oprel.getValor(); 
 					String valorexpr2 = expr2.getValor(); 
 
 					//extraer valores de la expresion izquierda al cuadruplo
 					String valoresDeCondicion[] = valorexpr1.split(" "); 
 					for(int i = 0; i < valoresDeCondicion.length; i++){
-						System.out.println("Los valores del split son: " + valoresDeCondicion[0]); 
 					}
 
 					String id1Expr1 = valoresDeCondicion[0]; 
