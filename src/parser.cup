@@ -1675,7 +1675,7 @@ proposicion ::= condicionIF:hijo1 {:
                 RESULT = nodo;
 :};
 
-cicloWHILE ::= WHILE:t1 condicion:hijo1 DO:t2 cuerpoProposiciones:hijo2 {:
+cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoProposiciones:hijo2  CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1688,6 +1688,19 @@ cicloWHILE ::= WHILE:t1 condicion:hijo1 DO:t2 cuerpoProposiciones:hijo2 {:
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
 
+:}
+        | WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 {:
+
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("cicloWhile");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                RESULT = nodo;
 :};
 
 cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:hijo2 {:
