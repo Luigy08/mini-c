@@ -57,7 +57,8 @@ BRACKETDER = "]"
 CURLYIZQ = "{"
 CURLYDER = "}"
 
-OPREL = (">"|"<"|"<>"|"<="|">=")
+OPREL = (">"|"<"|"!="|"<="|">="|"==")
+OPCONDICIONALES = ("&&"|"||")
 OPBOOL = ("true"|"false")
 CHARESPECIALES = (".."|"^")
 
@@ -129,6 +130,7 @@ CHARESPECIALES = (".."|"^")
     {NUMREAL}           {return new Symbol(sym.NUMREAL, yycolumn, yyline, yytext());}   
 
     {OPREL}             {return new Symbol(sym.OPREL, yycolumn, yyline, yytext());} 
+    {OPCONDICIONALES}   {return new Symbol(sym.OPCONDICIONALES, yycolumn, yyline, yytext());} 
     {CHARESPECIALES}    {return new Symbol(sym.CHARESPECIAL, yycolumn, yyline, yytext());}
 
     {ASIGNACION}        {return new Symbol(sym.ASIGNACION, yycolumn, yyline, yytext());}

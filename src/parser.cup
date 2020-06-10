@@ -551,7 +551,7 @@ terminal BOOLEAN, OPBOOL;
 terminal ASIGNACION, OPDECLARACION;
 
 //OPERADORES
-terminal AND, XOR, OR, NOT, EQUAL, OPREL, OPSUM, OPMULT;
+terminal AND, XOR, OR, NOT, EQUAL, OPREL, OPSUM, OPMULT, OPCONDICIONALES;
 
 //CICLOS
 terminal WHILE, FOR, REPEAT, DO, TO, UNTIL, DOWNTO;
@@ -633,6 +633,7 @@ precedence left XOR;
 precedence left NOT;
 precedence left EQUAL;
 precedence left OPREL;
+precedence left OPCONDICIONALES;
 precedence left OPSUM;
 precedence left OPMULT;
 precedence left PARIZQ;
@@ -1277,7 +1278,7 @@ op_rel_completos ::= EQUAL:t1 {:
 
 :};
 
-op_condicional ::= AND:t1 {:
+op_condicional ::= OPCONDICIONALES:t1 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1289,7 +1290,7 @@ op_condicional ::= AND:t1 {:
                 //TERMINALES
 
                 Nodo nAND = new Nodo();
-                nAND.setEtiqueta("AND");
+                nAND.setEtiqueta("OPCONDICIONAL");
                 nAND.setValor(t1.toString());
                 nAND.setId(parser.cont);
                 parser.cont++;
@@ -1299,77 +1300,8 @@ op_condicional ::= AND:t1 {:
                 }
 
                 RESULT = nodo; 
-:} 
-         | NOT:t1 {:
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                Nodo nNOT = new Nodo();
-                nNOT.setEtiqueta("NOT");
-                nNOT.setValor(t1.toString());
-                nNOT.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
-                }
-
-                RESULT = nodo; 
-:} 
-         | XOR:t1 {:
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                Nodo nXOR = new Nodo();
-                nXOR.setEtiqueta("XOR");
-                nXOR.setValor(t1.toString());
-                nXOR.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
-                }
-
-                RESULT = nodo; 
-:}
-
-         | OR:t1 {:
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                Nodo nOR = new Nodo();
-                nOR.setEtiqueta("OR");
-                nOR.setValor(t1.toString());
-                nOR.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
-                }
-
-                RESULT = nodo;
 :};
+
 
 //expresiones para condiciones de if
 expresion ::= expresion:hijo1 op_condicional:hijo2 expresion:hijo3 {:
