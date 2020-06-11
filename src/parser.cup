@@ -601,6 +601,8 @@ non terminal asignacionVAR;
 non terminal termino;
 non terminal factor;
 non terminal expresion_matematica;
+non terminal incrementando; 
+non terminal decrementando; 
 
 non terminal declaracionesVAR;
 non terminal declaracionesVAR_procedure_funcion;
@@ -1703,7 +1705,8 @@ cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoPr
                 RESULT = nodo;
 :};
 
-cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:hijo2 {:
+cicloFOR ::= FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 PUNTOCOMA:t4 incrementando:hijo3 PARDER:t5 
+             CURLYIZQ:t6 proposicion:hijo4 CURLYDER:t7 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1714,6 +1717,8 @@ cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:h
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3);
+                nodo.addHijos((Nodo)hijo4);
                 RESULT = nodo;
 :}
 
@@ -1732,18 +1737,29 @@ cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:h
                 
 :};
 
+incrementando ::= IDENTIFICADOR:t1 INCREMENTADOR:t2 {: 
 
-cicloREPEAT ::= REPEAT:t1 listaProposiciones:hijo1 UNTIL:t2 condicion:hijo2 PUNTOCOMA:t3 {:
-                
-                //NODO PADRE
+                 //NODO PADRE
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("cicloREPEAT");
+                nodo.setEtiqueta("ID");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
+
+                RESULT = nodo;
+:};
+
+decrementando ::= IDENTIFICADOR:t1 DECREMENTADOR:t2 {: 
+
+                 //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("ID");
+                nodo.setValor(t1.toString());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+
                 RESULT = nodo;
 :};
 

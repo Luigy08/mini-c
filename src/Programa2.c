@@ -1,8 +1,19 @@
-void Sum( int b );
+int variable, variable2;
+char char1, char2; 
+int mifuncion(int a, char b);  
+int x; 
 
-int main() {
-int edad;
-edad=54;
+void main() {
+int edad,resultado; 
+char genero; 
+edad = 54 + 9; 
+resultado = (edad + 10) * 60;  
+
+    if(x == 1 || x != 2){
+        while(x >= 3){
+            x = 4; 
+        }
+    }
+
 return;
 }
-
