@@ -1722,6 +1722,24 @@ cicloFOR ::= FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 P
                 RESULT = nodo;
 :}
 
+        | FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 PUNTOCOMA:t4 decrementando:hijo3 PARDER:t5 
+          CURLYIZQ:t6 proposicion:hijo4 CURLYDER:t7{:
+
+                 //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("cicloFOR");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3);
+                nodo.addHijos((Nodo)hijo4);
+                RESULT = nodo;
+
+:}
+
          | FOR:t1 asignacionVAR:hijo1 DOWNTO:t2 NUM:t3 DO:t4 cuerpoProposiciones:hijo2 {:
 
                 //NODO PADRE
@@ -1742,7 +1760,7 @@ incrementando ::= IDENTIFICADOR:t1 INCREMENTADOR:t2 {:
                  //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("ID");
-                nodo.setValor(t1.toString());
+                nodo.setValor(t1.toString() + "++");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1755,7 +1773,7 @@ decrementando ::= IDENTIFICADOR:t1 DECREMENTADOR:t2 {:
                  //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("ID");
-                nodo.setValor(t1.toString());
+                nodo.setValor(t1.toString() + "--");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
