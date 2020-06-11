@@ -660,7 +660,7 @@ root ::= encabezado:hijo1 {:
         RESULT = nodo;
         :};
 
-encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_principales:hijo3 RETURN:t2 PUNTOCOMA:t4 CURLYDER:t5 declaraciones_principales:hijo4 {: //bloque principal, bloque = 0
+encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_principales:hijo3 RETURN:t2 NUM:t3 PUNTOCOMA:t4 CURLYDER:t5 declaraciones_principales:hijo4 {: //bloque principal, bloque = 0
 
                     //NODO PADRE
                     Nodo nodo = new Nodo();
@@ -1740,7 +1740,8 @@ cicloFOR ::= FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 P
 
 :}
 
-         | FOR:t1 asignacionVAR:hijo1 DOWNTO:t2 NUM:t3 DO:t4 cuerpoProposiciones:hijo2 {:
+         | FOR:t1 condicion:hijo1 QUESTIONMARK:t4 NUM:t5 DECISION:t6 NUM:t7 PUNTOCOMA:t8 
+           proposicion:hijo2 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();

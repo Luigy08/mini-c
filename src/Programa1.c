@@ -13,7 +13,9 @@ resultado = (edad + 10) * 60;
         for(i = 0; i <= 10; i--){
             char1 = 'a'; 
         }
+    }else{
+        x = 5;
     }
 
-return;
+return 0;
 }
