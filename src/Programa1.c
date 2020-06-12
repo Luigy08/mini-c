@@ -21,8 +21,10 @@ return 0;
 }
 
 int mifuncion(int a, char b){
-    begin 
-    x = 3; 
-    end; 
-    return x; 
+    char a,b; 
+    int i,m,n; 
+    if(m < n && n != 4) {
+        n = 45 / 9; 
+    }
+    return n; 
 }

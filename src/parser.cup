@@ -2513,7 +2513,8 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 :}
 
         | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4 
-          CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 RETURN:t6 IDENTIFICADOR:t7 PUNTOCOMA:t8 CURLYDER:t9 {:
+          CURLYIZQ:t5 declaracionesVARAdentroFunctionProcedure:hijo3 listaProposiciones:hijo4 
+          RETURN:t6 IDENTIFICADOR:t7 PUNTOCOMA:t8 CURLYDER:t9 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2637,6 +2638,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nodo.addHijos((Nodo)hijo1);
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
+              nodo.addHijos((Nodo)hijo4);
               RESULT = nodo; 
 :};
 
