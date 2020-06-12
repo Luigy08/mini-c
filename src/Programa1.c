@@ -1,7 +1,7 @@
 int variable, variable2;
 char char1, char2; 
 int mifuncion(int a, char b);  
-int x,i; 
+int x,i;  
 
 void main() {
 int edad,resultado; 
@@ -18,4 +18,11 @@ resultado = (edad + 10) * 60;
     }
 
 return 0;
+}
+
+int mifuncion(int a, char b){
+    begin 
+    x = 3; 
+    end; 
+    return x; 
 }

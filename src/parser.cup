@@ -1569,26 +1569,6 @@ proposicion ::= condicionIF:hijo1 {:
                 RESULT = nodo; 
 :}
 
-         | cicloREPEAT:hijo1 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("proposicion");
-                nodo.setValor("REPEAT");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                //AGREGAR NO TERMINALES   
-
-                Nodo hijo = ((Nodo)hijo1);
-
-                for(int i = 0; i < hijo.getHijos().size() ; i++){
-                        nodo.addHijos(hijo.getHijos().get(i));
-                }
-                RESULT = nodo; 
-:}
          | llamada_procedure_funcion:hijo1 {:
 
                 //NODO PADRE
@@ -2342,19 +2322,6 @@ cuerpoProposiciones ::= BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {:
 
 :};
 
-//para los ifs
-cuerpoProposiciones_sinpuntocoma ::= BEGIN:t1 listaProposiciones:hijo1 END:t2 {:
-
-              //NODO PADRE
-              Nodo nodo = new Nodo();
-              nodo.setEtiqueta("cuerpoProposiciones_sinpuntocoma");
-              nodo.setId(parser.cont);
-              parser.cont++;
-
-              nodo.addHijos((Nodo)hijo1);
-              RESULT = nodo;
-:};
-
 inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 PUNTOCOMA:t4 cuerpoprocedure_funcion:hijo2 {:
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2546,7 +2513,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 :}
 
         | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4 
-          CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 {:
+          CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 RETURN:t6 IDENTIFICADOR:t7 PUNTOCOMA:t8 CURLYDER:t9 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2673,6 +2640,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               RESULT = nodo; 
 :};
 
+//estos son los parametros de la funcion como tal 
 declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 {:
 
               //NODO PADRE
@@ -2904,19 +2872,19 @@ cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerp
               RESULT = nodo;
 :}; 
 
+//declaracion de las variables adentro de una funcion
 declaracionesVARAdentroFunctionProcedure ::= tipovar:hijo2 listaIdentificadores:hijo1 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3 {:
 
         Nodo nodo = new Nodo();
-              nodo.setEtiqueta("declaracionesVARAdentroFunctionProcedure");
-              nodo.setId(parser.cont);
-              parser.cont++;
+        nodo.setEtiqueta("declaracionesVARAdentroFunctionProcedure");
+        nodo.setId(parser.cont);
+        parser.cont++;
 
-               nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
+        nodo.addHijos((Nodo)hijo1);
+        nodo.addHijos((Nodo)hijo2);
+        nodo.addHijos((Nodo)hijo3);
 
               RESULT = nodo;
-
  :}
 
         | {:

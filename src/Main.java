@@ -1037,9 +1037,12 @@ public class Main {
 
 					ArrayList<Nodo> hijoCondicion = hijo.getHijos();
 					Nodo valorCondicion = hijoCondicion.get(0); 
+					System.out.println("Valor condicion: " + valorCondicion.getValor());
 					//System.out.println("Nodo padre tiene etiquetas: " + hijo.getEtiquetaV() + ", " + hijo.getEtiquetaF());
 					
+					//arreglar a partir de aqui los cuadruplos
 					ArrayList<Nodo> children = valorCondicion.getHijos(); //hijos de la expresion
+
 					Nodo expr1 = children.get(0); //expresion a la izq
 					Nodo oprel = children.get(1); //oprel
 					Nodo expr2 = children.get(2); //expresion a la der
@@ -1283,11 +1286,11 @@ public class Main {
 					ArrayList<Nodo> childOfChild = hijo1.getHijos();
 					Nodo hijo2 = childOfChild.get(0); 
 
-					TablaCuadruplo.gen(":=", hijo2.getValor(), expr1.getValor(), "I");
+					TablaCuadruplo.gen("=", hijo2.getValor(), expr1.getValor(), "I");
 					//TablaCuadruplo.imprimirTablaCuadruplo();
 
 					Backpatch.completa(firstchild.listaSiguiente, siguienteSalto);
-					TablaCuadruplo.gen(":=",expr1.getValor(),"t" + Integer.toString(contadorTemp - 1),"_");
+					TablaCuadruplo.gen("=",expr1.getValor(),"t" + Integer.toString(contadorTemp - 1),"_");
 					TablaCuadruplo.imprimirTablaCuadruplo();
 
 					

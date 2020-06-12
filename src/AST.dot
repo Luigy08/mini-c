@@ -1,6 +1,6 @@
 digraph G {
-"115. root = null"->"114. encabezado = null"
-"114. encabezado = null"->"41. declaraciones_principales =  : "
+"135. root = null"->"134. encabezado = null"
+"134. encabezado = null"->"41. declaraciones_principales =  : "
 "41. declaraciones_principales =  : "->"0. tipovar = INTEGER"
 "41. declaraciones_principales =  : "->"2. listaIdentificadores = null"
 "2. listaIdentificadores = null"->"4. ID = variable"
@@ -34,7 +34,7 @@ digraph G {
 "36. declaraciones_principales =  : "->"35. declaraciones_principales =  : "
 "35. declaraciones_principales =  : "->"31. tipovar = CHAR"
 "35. declaraciones_principales =  : "->"32. ID = genero"
-"114. encabezado = null"->"111. cuerpo_main = null"
+"134. encabezado = null"->"111. cuerpo_main = null"
 "111. cuerpo_main = null"->"110. listaProposiciones = null"
 "110. listaProposiciones = null"->"70. listaProposiciones = null"
 "70. listaProposiciones = null"->"52. proposicion = ="
@@ -95,6 +95,20 @@ digraph G {
 "107. proposicion = ="->"104. expresion_matematica = INTEGER"
 "104. expresion_matematica = INTEGER"->"103. termino = INTEGER"
 "103. termino = INTEGER"->"102. INTEGER = 5"
+"134. encabezado = null"->"133. declaraciones_principales = FUNCTION"
+"133. declaraciones_principales = FUNCTION"->"131. ID = mifuncion"
+"133. declaraciones_principales = FUNCTION"->"113. tipovar = INTEGER"
+"133. declaraciones_principales = FUNCTION"->"119. declaracionesVAR_pro =  : "
+"119. declaracionesVAR_pro =  : "->"114. tipovar = INTEGER"
+"119. declaracionesVAR_pro =  : "->"117. listaIdentificadores = null"
+"117. listaIdentificadores = null"->"119. ID = a"
+"117. listaIdentificadores = null"->"118. ID = b"
+"133. declaraciones_principales = FUNCTION"->"129. cuerpoprocedure_funcion = null"
+"129. cuerpoprocedure_funcion = null"->"128. proposicion = ="
+"128. proposicion = ="->"125. ID = x"
+"128. proposicion = ="->"123. expresion_matematica = INTEGER"
+"123. expresion_matematica = INTEGER"->"122. termino = INTEGER"
+"122. termino = INTEGER"->"121. INTEGER = 3"
 
 
 }
