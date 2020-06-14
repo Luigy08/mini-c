@@ -44,7 +44,7 @@ public class parser extends java_cup.runtime.lr_parser {
     "\002\013\005\000\002\013\005\000\002\014\003\000\002" +
     "\014\003\000\002\014\003\000\002\014\003\000\002\014" +
     "\004\000\002\014\004\000\002\014\004\000\002\014\004" +
-    "\000\002\015\011\000\002\015\012\000\002\016\015\000" +
+    "\000\002\015\012\000\002\015\011\000\002\016\015\000" +
     "\002\016\015\000\002\016\012\000\002\030\004\000\002" +
     "\031\004\000\002\024\005\000\002\024\007\000\002\027" +
     "\003\000\002\027\004\000\002\027\005\000\002\025\003" +
@@ -259,15 +259,15 @@ public class parser extends java_cup.runtime.lr_parser {
     "\075\167\077\173\001\002\000\004\062\275\001\002\000" +
     "\004\066\277\001\002\000\004\066\302\001\002\000\020" +
     "\003\056\011\057\012\044\015\055\047\046\050\051\074" +
-    "\062\001\002\000\022\003\056\011\057\012\044\015\055" +
-    "\047\046\050\051\067\301\074\062\001\002\000\036\003" +
-    "\uffd4\005\uffd4\006\uffd4\011\uffd4\012\uffd4\013\uffd4\015\uffd4" +
-    "\020\uffd4\021\uffd4\025\uffd4\047\uffd4\050\uffd4\067\uffd4\074" +
-    "\uffd4\001\002\000\020\003\056\011\057\012\044\015\055" +
-    "\047\046\050\051\074\062\001\002\000\004\067\304\001" +
-    "\002\000\036\003\uffd3\005\uffd3\006\uffd3\011\uffd3\012\uffd3" +
-    "\013\uffd3\015\uffd3\020\uffd3\021\uffd3\025\uffd3\047\uffd3\050" +
-    "\uffd3\067\uffd3\074\uffd3\001\002\000\004\074\306\001\002" +
+    "\062\001\002\000\004\067\301\001\002\000\036\003\uffd3" +
+    "\005\uffd3\006\uffd3\011\uffd3\012\uffd3\013\uffd3\015\uffd3\020" +
+    "\uffd3\021\uffd3\025\uffd3\047\uffd3\050\uffd3\067\uffd3\074\uffd3" +
+    "\001\002\000\020\003\056\011\057\012\044\015\055\047" +
+    "\046\050\051\074\062\001\002\000\022\003\056\011\057" +
+    "\012\044\015\055\047\046\050\051\067\304\074\062\001" +
+    "\002\000\036\003\uffd4\005\uffd4\006\uffd4\011\uffd4\012\uffd4" +
+    "\013\uffd4\015\uffd4\020\uffd4\021\uffd4\025\uffd4\047\uffd4\050" +
+    "\uffd4\067\uffd4\074\uffd4\001\002\000\004\074\306\001\002" +
     "\000\006\056\310\062\307\001\002\000\004\060\uffac\001" +
     "\002\000\004\074\311\001\002\000\004\062\312\001\002" +
     "\000\004\060\uffab\001\002\000\004\002\001\001\002\000" +
@@ -406,12 +406,12 @@ public class parser extends java_cup.runtime.lr_parser {
     "\047\016\053\020\062\021\046\024\057\046\060\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\004\013\273\001\001\000\002\001\001\000\004\052\275" +
-    "\001\001\000\002\001\001\000\024\012\044\014\051\015" +
-    "\047\016\053\020\062\021\046\024\057\035\277\046\060" +
-    "\001\001\000\022\012\044\014\234\015\047\016\053\020" +
-    "\062\021\046\024\057\046\060\001\001\000\002\001\001" +
-    "\000\022\012\044\014\302\015\047\016\053\020\062\021" +
-    "\046\024\057\046\060\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\022\012\044\014\277\015" +
+    "\047\016\053\020\062\021\046\024\057\046\060\001\001" +
+    "\000\002\001\001\000\002\001\001\000\024\012\044\014" +
+    "\051\015\047\016\053\020\062\021\046\024\057\035\302" +
+    "\046\060\001\001\000\022\012\044\014\234\015\047\016" +
+    "\053\020\062\021\046\024\057\046\060\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
@@ -2742,50 +2742,7 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 45: // cicloWHILE ::= WHILE PARIZQ condicion PARDER CURLYIZQ listaProposiciones CURLYDER 
-            {
-              Object RESULT =null;
-		int t1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)).left;
-		int t1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)).right;
-		Object t1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-6)).value;
-		int t2left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
-		int t2right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		Object t2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
-		int hijo1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
-		int hijo1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object hijo1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
-		int t3left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
-		int t3right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object t3 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
-		int t4left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
-		int t4right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object t4 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		int hijo2left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int hijo2right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object hijo2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		int t5left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
-		int t5right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object t5 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("cicloWhile");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                RESULT = nodo;
-
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("cicloWHILE",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 46: // cicloWHILE ::= WHILE PARIZQ condicion PARDER marca CURLYIZQ proposicion CURLYDER 
+          case 45: // cicloWHILE ::= WHILE PARIZQ condicion PARDER marca CURLYIZQ listaProposiciones CURLYDER 
             {
               Object RESULT =null;
 		int t1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)).left;
@@ -2826,7 +2783,50 @@ class CUP$parser$actions {
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
 
+
               CUP$parser$result = parser.getSymbolFactory().newSymbol("cicloWHILE",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 46: // cicloWHILE ::= WHILE PARIZQ condicion PARDER CURLYIZQ proposicion CURLYDER 
+            {
+              Object RESULT =null;
+		int t1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)).left;
+		int t1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)).right;
+		Object t1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-6)).value;
+		int t2left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
+		int t2right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
+		Object t2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		int hijo1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
+		int hijo1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
+		Object hijo1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		int t3left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
+		int t3right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
+		Object t3 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		int t4left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int t4right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object t4 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int hijo2left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int hijo2right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object hijo2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		int t5left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int t5right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object t5 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("cicloWhile");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                RESULT = nodo;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("cicloWHILE",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
