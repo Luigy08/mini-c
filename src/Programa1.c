@@ -27,6 +27,7 @@ int mifuncion(int a, char b){
         while(m != n){
             m = 23 - i; 
         }
+        x = 4; 
     }
     return n; 
 }

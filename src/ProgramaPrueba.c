@@ -11,6 +11,7 @@ resultado = (edad + 10) * 60;
 
    while(x >= 3){
       x = 4; 
+      i = 6 * 4; 
    }
 
 return 0;

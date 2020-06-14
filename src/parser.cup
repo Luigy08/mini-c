@@ -1087,7 +1087,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
 
 :};
 
-condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 {:
+condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1105,8 +1105,8 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
                 RESULT = nodo;
 :}
 
-         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 
-           ELSE:t7 CURLYIZQ:t8 proposicion:hijo3 CURLYDER:t9 {:
+         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 
+           ELSE:t7 CURLYIZQ:t8 listaProposiciones:hijo3 CURLYDER:t9 {:
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1120,53 +1120,6 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicio
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo;         
            
-:}
-
-
-         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoProposiciones:hijo2 CURLYDER:t5 {:
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                RESULT = nodo; 
-         
-:}
-
-         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 ELSE:t6 CURLYIZQ:t7 cuerpoProposiciones:hijo3 CURLYDER:t8 {:
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo; 
-:}
-
-         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoProposiciones:hijo2 CURLYDER:t5 ELSE:t6 CURLYIZQ:t7 cuerpoProposiciones:hijo3 CURLYDER:t8 {:
-         
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo; 
-         
 :}; 
 
 //define el tipo de main 
@@ -1658,22 +1611,7 @@ proposicion ::= condicionIF:hijo1 {:
                 RESULT = nodo;
 :};
 
-cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 marca:m1 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("cicloWhile");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)m1); 
-                nodo.addHijos((Nodo)hijo2);
-                RESULT = nodo;
-
-:}
-        | WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 {:
+cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1685,10 +1623,11 @@ cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 marca:m1 CURLYIZQ:t4
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
-:};
+
+:}; 
 
 cicloFOR ::= FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 PUNTOCOMA:t4 incrementando:hijo3 PARDER:t5 
-             CURLYIZQ:t6 proposicion:hijo4 CURLYDER:t7 {:
+             CURLYIZQ:t6 listaProposiciones:hijo4 CURLYDER:t7 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1705,7 +1644,7 @@ cicloFOR ::= FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 P
 :}
 
         | FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 PUNTOCOMA:t4 decrementando:hijo3 PARDER:t5 
-          CURLYIZQ:t6 proposicion:hijo4 CURLYDER:t7{:
+          CURLYIZQ:t6 listaProposiciones:hijo4 CURLYDER:t7{:
 
                  //NODO PADRE
                 Nodo nodo = new Nodo();

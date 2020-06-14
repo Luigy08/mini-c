@@ -1207,11 +1207,11 @@ public class Main {
 					}
 
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
-					Nodo M1 = new Nodo();
-					Nodo M2 = new Nodo();
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo1 = hijos.get(0); //nodo de condicion 
 					Nodo hijo2 = hijos.get(1); 
+					Nodo M1 = new Nodo();
+					Nodo M2 = new Nodo();
 
 					if(hijo1.getValor() == null){ //operando la condicion del while 
 						ArrayList<Nodo> children = hijo1.getHijos(); //hijos de la expresion
