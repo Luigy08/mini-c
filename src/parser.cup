@@ -625,6 +625,7 @@ non terminal lista_parametros;
 non terminal lista_parametros_num;
 non terminal lista_parametros_id;
 
+non terminal marca;
 
 //PRECEDENCIAS 
 
@@ -1049,7 +1050,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                                                 elemento.setAmbito("%Global"); 
                                                 if( !(buscarExistenciaID(elemento) )){
                                                         ArregloSimbolos.add(elemento);  
-                                                        System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
+                                                        //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
 
                                                 } else{  //error, ya existe ese simbolo
                                                         System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
@@ -1064,7 +1065,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                                                         elemento.setAmbito("%Global"); 
                                                         if(  !(buscarExistenciaID(elemento)  )) {
                                                                 ArregloSimbolos.add(elemento);  
-                                                                System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                                //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                         } else{  //error, ya existe ese simbolo
                                                                 System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
@@ -1657,7 +1658,7 @@ proposicion ::= condicionIF:hijo1 {:
                 RESULT = nodo;
 :};
 
-cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoProposiciones:hijo2  CURLYDER:t5 {:
+cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1671,7 +1672,7 @@ cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoPr
                 RESULT = nodo;
 
 :}
-        | WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 {:
+        | WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 marca:m1 CURLYIZQ:t4 proposicion:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1681,6 +1682,7 @@ cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 cuerpoPr
 
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)m1); 
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
 :};
@@ -2670,7 +2672,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
                                 elemento.setAmbito(""); 
                                         if(BuscaTipoFuncion(elemento)){
                                                 ArregloFunciones.add(elemento);  
-                                                System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                         } else {  //error, ya existe ese simbolo
                                                 System.out.println("Ya existe ese elemento con ese id, tipo y ambito");
@@ -2686,7 +2688,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
                                         elemento.setAmbito(""); 
                                                 if(BuscaTipoFuncion(elemento)){
                                                         ArregloFunciones.add(elemento);  
-                                                        System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                        //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                 } else {  //error, ya existe ese simbolo
                                                         System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo() + " y con el ambito: " + elemento.getAmbito());
