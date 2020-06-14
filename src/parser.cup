@@ -1103,6 +1103,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
+                
 :}
 
          | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 
