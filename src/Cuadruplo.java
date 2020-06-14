@@ -6,6 +6,7 @@ public class Cuadruplo {
     public String argumento1; 
     public String argumento2; 
     public String respuesta;
+    public boolean ponerEtiqueta = false;
     
     public Cuadruplo(String operador, String argumento1, String argumento2, String respuesta) {
         this.operador = operador;
@@ -49,4 +50,10 @@ public class Cuadruplo {
         this.respuesta = respuesta; 
     }
 
+	public void setPonerEtiqueta(boolean b) {
+		ponerEtiqueta = b;
+    }
+    
+	public boolean getPonerEtiqueta() { 
+        return ponerEtiqueta; }
 }

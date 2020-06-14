@@ -10,7 +10,7 @@ edad = 54 + 9;
 resultado = (edad + 10) * 60;  
 
     if(x == 1 || x != 2){
-        for(i = 0; i <= 10; i--){
+        for(i = 0; i <= resultado ; i--){
             char1 = 'a'; 
         }
     }else{
@@ -24,7 +24,9 @@ int mifuncion(int a, char b){
     char a,b; 
     int i,m,n; 
     if(m < n && n != 4) {
-        n = 45 / 9; 
+        while(m != n){
+            m = 23 - i; 
+        }
     }
     return n; 
 }
