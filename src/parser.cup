@@ -543,7 +543,7 @@ terminal BEGIN, END, FUNCTION, PROCEDURE, PROGRAM, WRITE, READ, RETURN, MAIN;
 terminal IF, ELSE, THEN; 
 
 //TYPES
-terminal INT, VOID, BOOL, ASTERISCO;   
+terminal INT, VOID, BOOL;   
 
 //DEFINICIONES VARIABLES
 terminal VAR, FLOAT, CHAR, INTEGER, TYPE, RECORD, STRING1;
@@ -551,10 +551,10 @@ terminal BOOLEAN, OPBOOL;
 terminal ASIGNACION, OPDECLARACION;
 
 //OPERADORES
-terminal EQUAL, OPREL, OPSUM, OPMULT, OPCONDICIONALES;
+terminal AND, XOR, OR, NOT, EQUAL, OPREL, OPSUM, OPMULT, OPCONDICIONALES;
 
 //CICLOS
-terminal WHILE, FOR; 
+terminal WHILE, FOR, REPEAT, DO, TO, UNTIL, DOWNTO;
 
 //SIMBOLOS
 terminal DOT, COMA, PUNTOCOMA, CHARESPECIAL;
@@ -661,7 +661,7 @@ root ::= encabezado:hijo1 {:
         RESULT = nodo;
         :};
 
-encabezado ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_principales:hijo3 RETURN:t2 NUM:t3 PUNTOCOMA:t4 CURLYDER:t5 declaraciones_principales:hijo4 {: //bloque principal, bloque = 0
+encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_principales:hijo3 RETURN:t2 NUM:t3 PUNTOCOMA:t4 CURLYDER:t5 declaraciones_principales:hijo4 {: //bloque principal, bloque = 0
 
                     //NODO PADRE
                     Nodo nodo = new Nodo();
@@ -766,7 +766,7 @@ declaraciones_principales ::=  inicioProgram:hijo1 declaraciones_principales:hij
         
         
         :}
-                |  inicioFunction:hijo1 declaraciones_principales:hijo2 {:
+                        |  inicioFunction:hijo1 declaraciones_principales:hijo2 {:
                         
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1168,7 +1168,7 @@ tipovar ::= INT:t1 {:
                 parser.cont++;
 
                 RESULT = nodo; 
-:};
+:}
         | VOID:t1 {:
 
                 //NODO PADRE
@@ -1179,32 +1179,8 @@ tipovar ::= INT:t1 {:
                 parser.cont++;
 
                 RESULT = nodo; 
-/*
-:}
-        | ASTERISCO:t1 INT:t2 {:
-                
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("tipovar");
-                nodo.setValor("APUNTADOR");
-                nodo.setId(parser.cont);
-                parser.cont++;
 
-                RESULT = nodo; 
-
-:}
-        | ASTERISCO CHAR {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("tipovar");
-                nodo.setValor("APUNTADOR");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = nodo; 
-
-:};*/
+:};
 
 
 op_rel_completos ::= EQUAL:t1 {:

@@ -1,7 +1,7 @@
 int variable, variable2;
-char char1, *char2; 
+char char1, char2; 
 int mifuncion(int a, char b);  
-int *x, i;  
+int x, i; 
 
 void main() {
 int edad,resultado; 
