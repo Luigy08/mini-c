@@ -6,69 +6,61 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int CHARESPECIAL = 47;
+  public static final int CHARESPECIAL = 39;
   public static final int FUNCTION = 4;
-  public static final int OPSUM = 34;
-  public static final int CHAR = 19;
-  public static final int DECISION = 55;
-  public static final int QUESTIONMARK = 54;
-  public static final int OPDECLARACION = 27;
-  public static final int DECREMENTADOR = 57;
-  public static final int XOR = 29;
-  public static final int INTEGER = 20;
-  public static final int REPEAT = 39;
+  public static final int OPSUM = 31;
+  public static final int CHAR = 20;
+  public static final int DECISION = 47;
+  public static final int QUESTIONMARK = 46;
+  public static final int OPDECLARACION = 28;
+  public static final int DECREMENTADOR = 49;
+  public static final int INTEGER = 21;
   public static final int INT = 14;
-  public static final int PUNTOCOMA = 46;
-  public static final int CURLYDER = 53;
-  public static final int FOR = 38;
-  public static final int OPBOOL = 25;
+  public static final int PUNTOCOMA = 38;
+  public static final int ASTERISCO = 17;
+  public static final int CURLYDER = 45;
+  public static final int FOR = 35;
+  public static final int OPBOOL = 26;
   public static final int WRITE = 7;
-  public static final int IDENTIFICADOR = 58;
-  public static final int NOT = 31;
-  public static final int AND = 28;
-  public static final int RECORD = 22;
-  public static final int TYPE = 21;
-  public static final int OR = 30;
+  public static final int IDENTIFICADOR = 50;
+  public static final int RECORD = 23;
+  public static final int TYPE = 22;
   public static final int BOOL = 16;
-  public static final int STRING1 = 23;
+  public static final int STRING1 = 24;
   public static final int BEGIN = 2;
-  public static final int UNTIL = 42;
-  public static final int OPREL = 33;
-  public static final int NUM = 59;
+  public static final int OPREL = 30;
+  public static final int NUM = 51;
   public static final int MAIN = 10;
   public static final int IF = 11;
-  public static final int CONSTSTRING = 62;
-  public static final int DOT = 44;
-  public static final int PARIZQ = 49;
+  public static final int CONSTSTRING = 54;
+  public static final int DOT = 36;
+  public static final int PARIZQ = 41;
   public static final int EOF = 0;
-  public static final int BOOLEAN = 24;
+  public static final int BOOLEAN = 25;
   public static final int RETURN = 9;
-  public static final int INCREMENTADOR = 56;
-  public static final int EQUAL = 32;
-  public static final int BRACKETIZQ = 50;
+  public static final int INCREMENTADOR = 48;
+  public static final int EQUAL = 29;
+  public static final int BRACKETIZQ = 42;
   public static final int error = 1;
   public static final int PROGRAM = 6;
-  public static final int COMA = 45;
+  public static final int COMA = 37;
   public static final int VOID = 15;
-  public static final int NUMREAL = 60;
-  public static final int ASIGNACION = 26;
+  public static final int NUMREAL = 52;
+  public static final int ASIGNACION = 27;
   public static final int ELSE = 12;
   public static final int READ = 8;
-  public static final int TO = 41;
-  public static final int WHILE = 37;
-  public static final int FLOAT = 18;
-  public static final int OPCONDICIONALES = 36;
+  public static final int WHILE = 34;
+  public static final int FLOAT = 19;
+  public static final int OPCONDICIONALES = 33;
   public static final int THEN = 13;
-  public static final int CURLYIZQ = 52;
+  public static final int CURLYIZQ = 44;
   public static final int END = 3;
-  public static final int CONSTCHAR = 61;
-  public static final int DOWNTO = 43;
-  public static final int PARDER = 48;
-  public static final int BRACKETDER = 51;
-  public static final int OPMULT = 35;
-  public static final int VAR = 17;
+  public static final int CONSTCHAR = 53;
+  public static final int PARDER = 40;
+  public static final int BRACKETDER = 43;
+  public static final int VAR = 18;
+  public static final int OPMULT = 32;
   public static final int PROCEDURE = 5;
-  public static final int DO = 40;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -87,6 +79,7 @@ public class sym {
   "INT",
   "VOID",
   "BOOL",
+  "ASTERISCO",
   "VAR",
   "FLOAT",
   "CHAR",
@@ -98,10 +91,6 @@ public class sym {
   "OPBOOL",
   "ASIGNACION",
   "OPDECLARACION",
-  "AND",
-  "XOR",
-  "OR",
-  "NOT",
   "EQUAL",
   "OPREL",
   "OPSUM",
@@ -109,11 +98,6 @@ public class sym {
   "OPCONDICIONALES",
   "WHILE",
   "FOR",
-  "REPEAT",
-  "DO",
-  "TO",
-  "UNTIL",
-  "DOWNTO",
   "DOT",
   "COMA",
   "PUNTOCOMA",

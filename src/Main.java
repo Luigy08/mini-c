@@ -18,7 +18,8 @@ public class Main {
 	public static ArrayList<ElementoTS> ArregloFunciones = parser.ArregloFunciones;
 	public static ArrayList<ElementoTS> ArregloSimbolos = parser.ArregloSimbolos;
 	public static ArrayList<Cuadruplo> tablaCuadruplos = new ArrayList<>();
-	public static ArrayList<String> MIPS = new ArrayList<String>();
+	public static ArrayList<String> MIPS = new ArrayList<String>(); //preparacion para el final 
+	public static ArrayList<String> mensajes = new ArrayList<String>();
 
 	public static int contadorTemp = 1;
 	public static int contadorEtiq = 1; 
