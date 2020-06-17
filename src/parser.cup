@@ -1,13 +1,12 @@
 import java_cup.runtime.*;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
-
-parser code 
+parser code
 {:
 
         public static Nodo padre;
         public int cont  = 0;
-        public String ambitoActual = "%Global"; 
+        public String ambitoActual = "%Global";
 
         //manejo de ambitos
         ArrayList<ElementoTS> elementosNoEncontrado = new ArrayList<ElementoTS>();
@@ -20,30 +19,30 @@ parser code
                                 for(ElementoTS elemFuncion : funcion.getParametros()){
                                         if( elemStandby.getID().equals(elemFuncion.getID()) ){
                                                 found = true;
-                                        } 
+                                        }
                                 }
                                 if(found){
-                                       
+
                                                 elemStandby.setAmbito(funcion.getAmbito());
                                                 elementosEncontrado.add(elemStandby);
-                                        
-                                        
+
+
                                 } else{
-                                        
-                                       
-                                               elementosNoEncontrado.add(elemStandby); 
-                                        
+
+
+                                               elementosNoEncontrado.add(elemStandby);
+
                                 }
 
                         }
         }
 
-                
+
 
         //deteccion y recuperacion de errores
-        public static ArrayList<String> ErroresSintacticos = new ArrayList<String>(); 
+        public static ArrayList<String> ErroresSintacticos = new ArrayList<String>();
 
-        public static ArrayList<ElementoTS> ArregloSimbolos = new ArrayList<ElementoTS>(); 
+        public static ArrayList<ElementoTS> ArregloSimbolos = new ArrayList<ElementoTS>();
         public static ArrayList<ElementoTS> ArregloFunciones = new ArrayList<ElementoTS>(); //arreglo para funciones
 
         public static ArrayList<ElementoTS> elementosStandby = new ArrayList<ElementoTS>();
@@ -51,9 +50,9 @@ parser code
         public void syntax_error (Symbol s) {
         System.out.println("Error de sintaxis: No se esperaba el siguiente token: \""+ s.value + "\" Linea: " + (s.right+1) + " Columna: " + (s.left+1));
         ErroresSintacticos.add("Error de sintaxis: \""+ s.value + "\" Linea: " + (s.right+1) + " Columna: " + (s.left+1));
-        report_expected_token_ids(); 
-        //System.out.println(ErroresSintacticos); 
-        expected_token_ids(); 
+        report_expected_token_ids();
+        //System.out.println(ErroresSintacticos);
+        expected_token_ids();
         }
 
         /*public void unrecovered_syntax_error (Symbol s) {
@@ -61,11 +60,11 @@ parser code
         ErroresSintacticos.add("Error No Recuperable de sintaxis: \""+ s.value + "\" Linea: " + (s.right+1) + " Columna: " + (s.left+1));
         }*/
 
-        //gen deberia retornar un string o una lista? Depende del contexto en el que se use 
+        //gen deberia retornar un string o una lista? Depende del contexto en el que se use
 
         public static boolean BuscaTipo(ElementoTS elemento){
                 for(ElementoTS element : ArregloSimbolos) {
-                        if(element.getID().equals(elemento.getID()) && 
+                        if(element.getID().equals(elemento.getID()) &&
                                 element.getTipo().equals(elemento.getTipo())) {
                                 return false;
                         }
@@ -81,18 +80,18 @@ parser code
                 }
                 return false;
         }
-        
+
 
            public static boolean BuscaTipoFuncion(ElementoTS elemento){
                 for(ElementoTS element : ArregloFunciones) {
-                        if(element.getID().equals(elemento.getID()) && 
+                        if(element.getID().equals(elemento.getID()) &&
                                 element.getTipo().equals(elemento.getTipo())) {
                                 return false;
                         }
                 }
                 return true;
         }
-     
+
         public static boolean BuscaAmbito(ElementoTS elemento){
                 for(ElementoTS element : ArregloSimbolos) {
                         if(element.getAmbito().equals(elemento.getAmbito())){
@@ -140,7 +139,7 @@ parser code
 
         public static ElementoTS returnElementoTS(String ID, String tipo){
                 for(ElementoTS element : ArregloSimbolos) {
-                        if(element.getID().equals(ID) && 
+                        if(element.getID().equals(ID) &&
                                 element.getTipo().equals(tipo)) {
                                 return element;
                         }
@@ -155,7 +154,7 @@ parser code
 
 
                                 switch(element.getTipo()){
-                                        case "STRING": 
+                                        case "STRING":
                                         case "INTEGER":
                                         case "REAL":
                                         case "BOOLEAN":
@@ -183,7 +182,7 @@ parser code
 
         public static boolean checkRecordVar(ElementoTS record, ElementoTS elemento){
                 for(ElementoTS element : record.getRecordVars()) {
-                        if(element.getID().equals(elemento.getID()) && 
+                        if(element.getID().equals(elemento.getID()) &&
                                 element.getTipo().equals(elemento.getTipo())) {
                                 return false;
                         }
@@ -232,7 +231,7 @@ parser code
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en Record: " + tipoRecord.getID());
                                                 //error
                                 }
-                                
+
                         } else{
                                 //si el nodo a la mas izquierda es una listaIdentificadores
 
@@ -249,11 +248,11 @@ parser code
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en Record: " + tipoRecord.getID());
                                                 //error
                                         }
-                                        
+
                                 }
 
-                                
-                                
+
+
                         }
 
                         return tipoRecord;
@@ -278,7 +277,7 @@ parser code
                                 }
 
                                 return recursivaRecord(tipoRecord, nodo.getHijos().get(2));
-                                
+
                         } else{
                                 //si el nodo a la mas izquierda es una listaIdentificadores
 
@@ -295,12 +294,12 @@ parser code
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en Record: " + tipoRecord.getID());
                                                 //error
                                         }
-                                        
+
                                 }
 
                                 return recursivaRecord(tipoRecord, nodo.getHijos().get(2));
-                                
-                                
+
+
                         }
                 }
 
@@ -324,16 +323,16 @@ parser code
 
         public static ArrayList<ElementoTS> recorrerDeclaracionesFuncion(ArrayList<ElementoTS> arreglo, Nodo nodo, String ambito){
 
-                int tam = 0; 
+                int tam = 0;
 
                 try{
-                        tam = nodo.getHijos().get(2).getHijos().size(); 
+                        tam = nodo.getHijos().get(2).getHijos().size();
                         //esto es el size del arreglo de hijos del TERCER nodo
                 } catch(Exception e){
-                        
+
                 }
 
-                if(tam == 0){ 
+                if(tam == 0){
                         /*llego al fondo de la  recursion, osea no existe un tercer nodo en el padre, entonces
                         significa que es el final de la recursion. */
                         ArrayList<Nodo> hijosDeclarVar = new  ArrayList<Nodo>();
@@ -341,7 +340,7 @@ parser code
 
                         int size = hijosDeclarVar.size();
 
-                        if(nodo.getHijos().get(0).getValor()  != null){ 
+                        if(nodo.getHijos().get(0).getValor()  != null){
                                 //en caso que solo sea un ID que se esta declarando
                                 //si es una declaracion simple, ex: "test : string"
                                 ElementoTS id = new ElementoTS();
@@ -361,7 +360,7 @@ parser code
                                                 //error
                                 }
                                 return arreglo;
-                                
+
                         } else{
                                 //si el nodo a la mas izquierda es una listaIdentificadores
                                 //recorrer los hijos de ListaIdentificadores
@@ -384,14 +383,14 @@ parser code
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + ambito);
                                                 //error
                                         }
-                                        
+
                                 }
 
-                                
+
                         }
 
                         return arreglo;
-                
+
                 } else{ //si no ha terminado la recursion
 
                         ArrayList<Nodo> hijosDeclarVar = new  ArrayList<Nodo>();
@@ -418,9 +417,9 @@ parser code
                                         System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + ambito);
                                                 //error
                                 }
-                                        
+
                                 return recorrerDeclaracionesFuncion(arreglo, nodo.getHijos().get(2), ambito);
-                                
+
                         } else{
                                 //si el nodo a la mas izquierda es una listaIdentificadores
                                 //recorrer los hijos de ListaIdentificadores
@@ -443,11 +442,11 @@ parser code
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + ambito);
                                                 //error
                                         }
-                                        
+
                                 }
 
                                 return recorrerDeclaracionesFuncion(arreglo, nodo.getHijos().get(2), ambito);
-                                
+
                         }
                 }
         }
@@ -461,16 +460,16 @@ parser code
                        return true;
                } else{
                     for(ElementoTS elem : arreglo){
-                        if(element.getID().equals(elem.getID())){ 
+                        if(element.getID().equals(elem.getID())){
                                 return false;
-                                                        
+
                         }
-                    }  
-                    return true; 
+                    }
+                    return true;
                }
        }
-       
-       
+
+
 
        public void revisarArregloStanby_Global(){ //al final revisa que variables extras quedan que no se encontraron
                 elementosNoEncontrado.clear();
@@ -482,7 +481,7 @@ parser code
                         for(ElementoTS elementoTablaSimbolo : ArregloSimbolos){
                                 if( elementoStanby.getID().equals(elementoTablaSimbolo.getID()) ){
                                         found = true;
-                                } 
+                                }
                         }
 
                         if(found){
@@ -491,13 +490,13 @@ parser code
                                         elementosNoEncontrado.add(elementoStanby);
                         }
                 }
-               
+
        }
 
 //        public void addErrores(Nodo node){
 //                for(Nodo nodoFOR: node.getHijos()){
 //                        addErrores(nodoFOR);
-//                        if(nodoFOR.getEtiqueta().equals("expresion_matematica") && 
+//                        if(nodoFOR.getEtiqueta().equals("expresion_matematica") &&
 //                        (nodoFOR.getValor().equals("Error") || nodoFOR.getValor().equals("Error de Tipos.")) ){
 //                                int size = nodoFOR.getHijos().size();
 
@@ -514,11 +513,11 @@ parser code
 //                                                        //hay que revisar que ese elmento existe en algun lado.
 
 //                                                }
-                                               
+
 
 
 //                                                break;
-//                                        } 
+//                                        }
 //                                        case 3:{
 //                                                break;
 //                                        }
@@ -533,17 +532,17 @@ parser code
 
 //                }
 //        }
-          
+
 :}
 
 //CUERPO
-terminal BEGIN, END, FUNCTION, PROCEDURE, PROGRAM, WRITE, READ, RETURN, MAIN;
+terminal BEGIN, END, FUNCTION, PROCEDURE, PROGRAM, WRITE, READ, RETURN, MAIN, PRINTF;
 
 //DECISIONES
-terminal IF, ELSE, THEN; 
+terminal IF, ELSE, THEN;
 
 //TYPES
-terminal INT, VOID, BOOL;   
+terminal INT, VOID, BOOL;
 
 //DEFINICIONES VARIABLES
 terminal VAR, FLOAT, CHAR, INTEGER, TYPE, RECORD, STRING1;
@@ -559,7 +558,7 @@ terminal WHILE, FOR, REPEAT, DO, TO, UNTIL, DOWNTO;
 //SIMBOLOS
 terminal DOT, COMA, PUNTOCOMA, CHARESPECIAL;
 terminal PARDER, PARIZQ, BRACKETIZQ, BRACKETDER, CURLYIZQ, CURLYDER;
-terminal QUESTIONMARK, DECISION, INCREMENTADOR, DECREMENTADOR; 
+terminal QUESTIONMARK, DECISION, INCREMENTADOR, DECREMENTADOR;
 
 //MANEJO STRINGS, CHARS, IDS
 terminal String IDENTIFICADOR;
@@ -571,7 +570,7 @@ terminal String CONSTCHAR, CONSTSTRING;
 
 non terminal root;
 non terminal encabezado;
-non terminal inicioProgram; 
+non terminal inicioProgram;
 
 non terminal declaracionesVARAdentroFunctionProcedure;
 
@@ -579,22 +578,23 @@ non terminal cuerpo_main;
 
 non terminal inicioProcedure;
 non terminal inicioFunction;
-non terminal cuerpoprocedure_funcion; 
+non terminal cuerpoprocedure_funcion;
 
-non terminal condicionIF; 
+non terminal condicionIF;
 
 non terminal condicion;
-non terminal proposicion; 
+non terminal proposicion;
 
 non terminal cicloWHILE;
 non terminal cicloFOR;
 non terminal cicloREPEAT;
 
-non terminal write; 
+non terminal write;
+non terminal printf;
 non terminal read;
 
 non terminal tipovar;
-non terminal tipomain; 
+non terminal tipomain;
 non terminal asignacionVAR;
 
 //manejo de operaciones matematicas
@@ -606,7 +606,7 @@ non terminal declaracionesVAR;
 non terminal declaracionesVAR_procedure_funcion;
 non terminal declaraciones_principales;
 
-non terminal listaProposiciones; 
+non terminal listaProposiciones;
 non terminal declaraciones;
 non terminal cuerpoProposiciones;
 non terminal cuerpoProposiciones_sinpuntocoma;
@@ -624,7 +624,7 @@ non terminal lista_parametros_num;
 non terminal lista_parametros_id;
 
 
-//PRECEDENCIAS 
+//PRECEDENCIAS
 
 precedence left ELSE;
 precedence left AND;
@@ -636,10 +636,10 @@ precedence left OPREL;
 precedence left OPSUM;
 precedence left OPMULT;
 precedence left PARIZQ;
-precedence left QUESTIONMARK; 
-precedence left DECISION; 
-precedence left INCREMENTADOR; 
-precedence left DECREMENTADOR; 
+precedence left QUESTIONMARK;
+precedence left DECISION;
+precedence left INCREMENTADOR;
+precedence left DECREMENTADOR;
 
 
 //Gramaticas
@@ -681,17 +681,17 @@ encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_
 
 
                 //     System.out.println("Size del arreglo global: " + elementosStandby.size());
-                //     //RECORRER ESE ARREGLO EN BUSQUEDA DE VARIABLES QUE NO SE ENCONTRARON. 
+                //     //RECORRER ESE ARREGLO EN BUSQUEDA DE VARIABLES QUE NO SE ENCONTRARON.
 
                 //         revisarArregloStanby_Global();
-                    
+
                 //         if(elementosEncontrado.size() > 0){ //imprimir los que encontro
                 //                 for(ElementoTS elem : elementosEncontrado){
                 //                         System.out.println("ID: "  + elem.getID() + ", Ambito: " + elem.getAmbito());
                 //                 }
                 //                         elementosEncontrado.clear();
                 //         }
-                
+
                 //         if(elementosNoEncontrado.size() > 0){ //imrpimir los que no encontro
                 //         //error
                 //                 for(ElementoTS elem : elementosNoEncontrado){
@@ -700,9 +700,9 @@ encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_
 
                 //                 elementosNoEncontrado.clear();
                 //         }
-                    
 
-                    
+
+
 
                     RESULT = nodo;
 
@@ -734,14 +734,14 @@ declaraciones_principales ::=  inicioProgram:hijo1 declaraciones_principales:hij
 
                 //AGREGAR NO TERMINALES
 
-                nodo.addHijos((Nodo)hijo1); 
+                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
 
         :}
                 |  declaracionesVAR:hijo1 declaraciones_principales:hijo2 {:
-        
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("declaraciones_principales");
@@ -763,11 +763,11 @@ declaraciones_principales ::=  inicioProgram:hijo1 declaraciones_principales:hij
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
-        
-        
+
+
         :}
                         |  inicioFunction:hijo1 declaraciones_principales:hijo2 {:
-                        
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("declaraciones_principales");
@@ -786,12 +786,12 @@ declaraciones_principales ::=  inicioProgram:hijo1 declaraciones_principales:hij
 
                 nodo.addHijos((Nodo)hijo2);
 
-                RESULT = nodo;  
+                RESULT = nodo;
         :}
 
                         | {:
 
-                //NODO PADRE  
+                //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("vacio");
                 nodo.setValor("vacio");
@@ -819,7 +819,7 @@ listaProposiciones ::= proposicion:hijo1 {:
                 //TERMINALES
 
                 //AGREGAR NO TERMINALES
-                
+
                 RESULT = nodo;
 :}
 
@@ -833,12 +833,12 @@ listaProposiciones ::= proposicion:hijo1 {:
 
                 //TERMINALES
 
-                
+
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
-:}; //fin de listaProposiciones 
+:}; //fin de listaProposiciones
 
 listaIdentificadores ::= IDENTIFICADOR:t1 {:
 
@@ -852,7 +852,7 @@ listaIdentificadores ::= IDENTIFICADOR:t1 {:
 
                 RESULT = nodo;
 
-:} 
+:}
 | listaIdentificadores:hijo1 COMA:t1 IDENTIFICADOR:t2 {:
 
                 //NODO PADRE
@@ -864,10 +864,10 @@ listaIdentificadores ::= IDENTIFICADOR:t1 {:
                 parser.cont++;
 
                 //TERMINALES
-                
-                Nodo nid = new Nodo();	
-                nid.setEtiqueta("ID");	
-                nid.setValor(t2.toString());	
+
+                Nodo nid = new Nodo();
+                nid.setEtiqueta("ID");
+                nid.setValor(t2.toString());
                 nid.setId(parser.cont);
                 parser.cont++;//id
 
@@ -880,15 +880,15 @@ listaIdentificadores ::= IDENTIFICADOR:t1 {:
                 }
 
                 if(hijo.getValor() != null){
-                        Nodo nid2 = new Nodo();	
-                        nid2.setEtiqueta("ID");	
-                        nid2.setValor(hijo.getValor());	
+                        Nodo nid2 = new Nodo();
+                        nid2.setEtiqueta("ID");
+                        nid2.setValor(hijo.getValor());
                         nid2.setId(parser.cont);
 
                         nodo.addHijos(nid2);
                 }
 
-                
+
                 nodo.addHijos(nid);
 
                 RESULT = nodo;
@@ -906,10 +906,10 @@ listaIdentificadores ::= IDENTIFICADOR:t1 {:
                 parser.cont++;
 
                 //TERMINALES
-                
-                Nodo nid = new Nodo();	
-                nid.setEtiqueta("ID");	
-                nid.setValor(t2.toString());	
+
+                Nodo nid = new Nodo();
+                nid.setEtiqueta("ID");
+                nid.setValor(t2.toString());
                 nid.setId(parser.cont);
                 parser.cont++;//id
 
@@ -922,15 +922,15 @@ listaIdentificadores ::= IDENTIFICADOR:t1 {:
                 }
 
                 if(hijo.getValor() != null){
-                        Nodo nid2 = new Nodo();	
-                        nid2.setEtiqueta("ID");	
-                        nid2.setValor(hijo.getValor());	
+                        Nodo nid2 = new Nodo();
+                        nid2.setEtiqueta("ID");
+                        nid2.setValor(hijo.getValor());
                         nid2.setId(parser.cont);
 
                         nodo.addHijos(nid2);
                 }
 
-                
+
                 nodo.addHijos(nid);
 
                 RESULT = nodo;
@@ -958,7 +958,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                 //revisar si ese tipo de record existe en TS
 
                 switch(tipo){
-                        case "STRING": 
+                        case "STRING":
                         case "INTEGER":
                         case "CHAR":
                         case "REAL":
@@ -966,43 +966,43 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                         case "RECORD": //si son tipos normales
                                 int size = hijo.getHijos().size();
 
-                                //System.out.println("Esto es: " + hijo.getValor()); 
+                                //System.out.println("Esto es: " + hijo.getValor());
 
                                 if(hijo.getValor() != null){
                                         if(size == 0){ //si es solo unico, solo un ID
                                                 ElementoTS elemento = new ElementoTS();
                                                 elemento.setID(hijo.getValor());
                                                 elemento.setTipo(tipo);
-                                                elemento.setAmbito("%Global"); 
+                                                elemento.setAmbito("%Global");
                                                 if( !(buscarExistenciaID(elemento) )){
-                                                        ArregloSimbolos.add(elemento);  
+                                                        ArregloSimbolos.add(elemento);
                                                         //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
 
                                                 } else{  //error, ya existe ese simbolo
                                                         System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
                                                 }
-                                        }   
+                                        }
                                 } else{ //es null cuando son varios
                                         for(int i = 0; i < size ; i++){ //agregar todos los hijos al arreglo
-                                                
+
                                                         ElementoTS elemento = new ElementoTS();
                                                         elemento.setID(hijo.getHijos().get(i).getValor());
                                                         elemento.setTipo(tipo);
-                                                        elemento.setAmbito("%Global"); 
+                                                        elemento.setAmbito("%Global");
                                                         if(  !(buscarExistenciaID(elemento)  )) {
-                                                                ArregloSimbolos.add(elemento);  
+                                                                ArregloSimbolos.add(elemento);
                                                                 //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                         } else{  //error, ya existe ese simbolo
                                                                 System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
                                                         }
-                                                
-                                                        
-                                                
+
+
+
                                                 }
                                 }
                                 break;
-                  
+
                 }
 
                 //AGREGAR NO TERMINALES
@@ -1034,7 +1034,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                 //revisar si ese tipo de record existe en TS
 
                 switch(tipo){
-                        case "STRING": 
+                        case "STRING":
                         case "INTEGER":
                         case "CHAR":
                         case "REAL":
@@ -1047,36 +1047,36 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                                                 ElementoTS elemento = new ElementoTS();
                                                 elemento.setID(hijo.getValor());
                                                 elemento.setTipo(tipo);
-                                                elemento.setAmbito("%Global"); 
+                                                elemento.setAmbito("%Global");
                                                 if( !(buscarExistenciaID(elemento) )){
-                                                        ArregloSimbolos.add(elemento);  
+                                                        ArregloSimbolos.add(elemento);
                                                         System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
 
                                                 } else{  //error, ya existe ese simbolo
                                                         System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
                                                 }
-                                        }   
+                                        }
                                 } else{ //es null cuando son varios
                                         for(int i = 0; i < size ; i++){ //agregar todos los hijos al arreglo
-                                                
+
                                                         ElementoTS elemento = new ElementoTS();
                                                         elemento.setID(hijo.getHijos().get(i).getValor());
                                                         elemento.setTipo(tipo);
-                                                        elemento.setAmbito("%Global"); 
+                                                        elemento.setAmbito("%Global");
                                                         if(  !(buscarExistenciaID(elemento)  )) {
-                                                                ArregloSimbolos.add(elemento);  
+                                                                ArregloSimbolos.add(elemento);
                                                                 System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                         } else{  //error, ya existe ese simbolo
                                                                 System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
                                                         }
-                                                
-                                                        
-                                                
+
+
+
                                                 }
                                 }
                                 break;
-                  
+
                 }
 
                 //AGREGAR NO TERMINALES
@@ -1105,7 +1105,7 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 RESULT = nodo;
 :}
          | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3 proposicion:hijo3 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
@@ -1116,12 +1116,12 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo;         
-           
+                RESULT = nodo;
+
 :}
 
          | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones:hijo2 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
@@ -1131,12 +1131,12 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
-                RESULT = nodo; 
-         
+                RESULT = nodo;
+
 :}
          | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones_sinpuntocoma:hijo2 ELSE:t3 cuerpoProposiciones:hijo3 {:
-         
-         
+
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
@@ -1147,13 +1147,13 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo; 
-         
-         
+                RESULT = nodo;
+
+
 :}
 
          | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3  cuerpoProposiciones:hijo3 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
@@ -1164,10 +1164,10 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
          | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones_sinpuntocoma:hijo2 ELSE:t3  proposicion:hijo3 PUNTOCOMA:t4 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
@@ -1178,11 +1178,11 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo; 
-         
-         :}; 
+                RESULT = nodo;
 
-//define el tipo de main 
+         :};
+
+//define el tipo de main
 tipomain ::= INT:t1 {:
 
                 Nodo nodo = new Nodo();
@@ -1190,7 +1190,7 @@ tipomain ::= INT:t1 {:
                 nodo.setValor("INT");
                 nodo.setId(parser.cont);
                 parser.cont++;
-        
+
                 RESULT = nodo;
 :}
         |  VOID:t1 {:
@@ -1200,7 +1200,7 @@ tipomain ::= INT:t1 {:
                 nodo.setValor("VOID");
                 nodo.setId(parser.cont);
                 parser.cont++;
-        
+
                 RESULT = nodo;
 :};
 
@@ -1213,10 +1213,10 @@ tipovar ::= INT:t1 {:
                 nodo.setValor("INTEGER");
                 nodo.setId(parser.cont);
                 parser.cont++;
-        
+
                 RESULT = nodo;
 
-:} 
+:}
 
          | CHAR:t1 {:
 
@@ -1227,7 +1227,7 @@ tipovar ::= INT:t1 {:
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
         | VOID:t1 {:
 
@@ -1238,7 +1238,7 @@ tipovar ::= INT:t1 {:
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                RESULT = nodo; 
+                RESULT = nodo;
 
 :};
 
@@ -1248,31 +1248,31 @@ op_rel_completos ::= EQUAL:t1 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_rel_completos");
-                nodo.setValor("vacio"); 
+                nodo.setValor("vacio");
                 nodo.setId(parser.cont);
                 parser.cont++;
-    
+
                 if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
+                        nodo.setValor(t1.toString());
                 }
 
-                RESULT = nodo; 
-:}      
+                RESULT = nodo;
+:}
 
          | OPREL:t1 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_rel_completos");
-                nodo.setValor("vacio"); 
+                nodo.setValor("vacio");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
                 if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
+                        nodo.setValor(t1.toString());
                 }
 
-                RESULT = nodo; 
+                RESULT = nodo;
 
 :};
 
@@ -1281,7 +1281,7 @@ op_condicional ::= AND:t1 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
+                nodo.setValor("vacio");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1294,17 +1294,17 @@ op_condicional ::= AND:t1 {:
                 parser.cont++;
 
                 if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
+                        nodo.setValor(t1.toString());
                 }
 
-                RESULT = nodo; 
-:} 
+                RESULT = nodo;
+:}
          | NOT:t1 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
+                nodo.setValor("vacio");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1317,17 +1317,17 @@ op_condicional ::= AND:t1 {:
                 parser.cont++;
 
                 if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
+                        nodo.setValor(t1.toString());
                 }
 
-                RESULT = nodo; 
-:} 
+                RESULT = nodo;
+:}
          | XOR:t1 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
+                nodo.setValor("vacio");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1340,18 +1340,18 @@ op_condicional ::= AND:t1 {:
                 parser.cont++;
 
                 if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
+                        nodo.setValor(t1.toString());
                 }
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | OR:t1 {:
-         
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio"); 
+                nodo.setValor("vacio");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1364,7 +1364,7 @@ op_condicional ::= AND:t1 {:
                 parser.cont++;
 
                 if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString()); 
+                        nodo.setValor(t1.toString());
                 }
 
                 RESULT = nodo;
@@ -1372,7 +1372,7 @@ op_condicional ::= AND:t1 {:
 
 //expresiones para condiciones de if
 expresion ::= expresion:hijo1 op_condicional:hijo2 expresion:hijo3 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("expresion");
@@ -1386,11 +1386,11 @@ expresion ::= expresion:hijo1 op_condicional:hijo2 expresion:hijo3 {:
                 nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | expresion_parentesis:hijo1 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("expresion");
@@ -1403,17 +1403,17 @@ expresion ::= expresion:hijo1 op_condicional:hijo2 expresion:hijo3 {:
                 //TERMINALES
 
                 //AGREGAR NO TERMINALES
-               
+
         //        for(int i = 0; i < hijo.getHijos().size() ; i++){
         //                 nodo.addHijos(hijo.getHijos().get(i));
         //         }
                 nodo.addHijos(hijo);
 
-                RESULT = nodo; 
-        
+                RESULT = nodo;
+
 :}
          | condicion:hijo1 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("expresion");
@@ -1430,7 +1430,7 @@ expresion ::= expresion:hijo1 op_condicional:hijo2 expresion:hijo3 {:
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :};
 
 expresion_parentesis ::= PARIZQ:t1 expresion:hijo1 PARDER:t2 {:
@@ -1438,7 +1438,7 @@ expresion_parentesis ::= PARIZQ:t1 expresion:hijo1 PARDER:t2 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("expresion_parentesis");
-                
+
                 Nodo hijo = ((Nodo)hijo1);
                 nodo.setValor(hijo.getValor());
 
@@ -1446,18 +1446,18 @@ expresion_parentesis ::= PARIZQ:t1 expresion:hijo1 PARDER:t2 {:
                 parser.cont++;
 
                 //AGREGAR NO TERMINALES
-                
+
                 nodo.addHijos(hijo);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :};
 
 condicion ::= IDENTIFICADOR:t1 op_rel_completos:hijo1 NUM:t2 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicion");
-                
+
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1477,7 +1477,7 @@ condicion ::= IDENTIFICADOR:t1 op_rel_completos:hijo1 NUM:t2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nNUM);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | IDENTIFICADOR:t1 op_rel_completos:hijo1 CONSTCHAR:t2 {:
@@ -1504,7 +1504,7 @@ condicion ::= IDENTIFICADOR:t1 op_rel_completos:hijo1 NUM:t2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :} | NUM:t1 op_rel_completos:hijo1 NUM:t2 {:
 
                 //NODO PADRE
@@ -1529,7 +1529,7 @@ condicion ::= IDENTIFICADOR:t1 op_rel_completos:hijo1 NUM:t2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 | CONSTCHAR:t1 op_rel_completos:hijo1 IDENTIFICADOR:t2 {:
 
@@ -1555,11 +1555,11 @@ condicion ::= IDENTIFICADOR:t1 op_rel_completos:hijo1 NUM:t2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | IDENTIFICADOR:t1 op_rel_completos:hijo1 IDENTIFICADOR:t2 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicion");
@@ -1583,13 +1583,13 @@ condicion ::= IDENTIFICADOR:t1 op_rel_completos:hijo1 NUM:t2 {:
                 nodo.addHijos(nid);
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
-                
 
-                RESULT = nodo; 
+
+                RESULT = nodo;
 :};
 
 proposicion ::= condicionIF:hijo1 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("proposicion");
@@ -1607,7 +1607,7 @@ proposicion ::= condicionIF:hijo1 {:
                 nodo.addHijos(hijo);
 
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | cicloWHILE:hijo1 {:
@@ -1627,9 +1627,9 @@ proposicion ::= condicionIF:hijo1 {:
 
                 //TERMINALES
 
-                //AGREGAR NO TERMINALES                         
+                //AGREGAR NO TERMINALES
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | cicloFOR:hijo1 {:
@@ -1649,7 +1649,7 @@ proposicion ::= condicionIF:hijo1 {:
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
 
          | cicloREPEAT:hijo1 {:
@@ -1663,14 +1663,14 @@ proposicion ::= condicionIF:hijo1 {:
 
                 //TERMINALES
 
-                //AGREGAR NO TERMINALES   
+                //AGREGAR NO TERMINALES
 
                 Nodo hijo = ((Nodo)hijo1);
 
                 for(int i = 0; i < hijo.getHijos().size() ; i++){
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
          | llamada_procedure_funcion:hijo1 {:
 
@@ -1685,14 +1685,14 @@ proposicion ::= condicionIF:hijo1 {:
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
          | write:hijo1 PUNTOCOMA:t1 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("proposicion");
-                
+
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1704,9 +1704,29 @@ proposicion ::= condicionIF:hijo1 {:
                 for(int i = 0 ; i < hijo.getHijos().size(); i++){
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
-                             
-                RESULT = nodo; 
-:}         
+
+                RESULT = nodo;
+:}
+| printf:hijo1 PUNTOCOMA:t1 {:
+
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //TERMINALES
+
+                Nodo hijo = ((Nodo)hijo1);
+                nodo.setValor(hijo.getValor());
+
+                for(int i = 0 ; i < hijo.getHijos().size(); i++){
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo;
+:}
          | read:hijo1 PUNTOCOMA:t1 {:
 
                 //NODO PADRE
@@ -1723,8 +1743,8 @@ proposicion ::= condicionIF:hijo1 {:
                 for(int i = 0 ; i < hijo.getHijos().size(); i++){
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
-                             
-                RESULT = nodo; 
+
+                RESULT = nodo;
 :}
 
          | asignacionVAR:hijo1 PUNTOCOMA:t1 {:
@@ -1744,7 +1764,7 @@ proposicion ::= condicionIF:hijo1 {:
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
 
-                RESULT = nodo; 
+                RESULT = nodo;
 :}
             | error:hijo1 PUNTOCOMA:t1 {:
 
@@ -1801,12 +1821,12 @@ cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:h
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
-                
+
 :};
 
 
 cicloREPEAT ::= REPEAT:t1 listaProposiciones:hijo1 UNTIL:t2 condicion:hijo2 PUNTOCOMA:t3 {:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("cicloREPEAT");
@@ -1820,7 +1840,7 @@ cicloREPEAT ::= REPEAT:t1 listaProposiciones:hijo1 UNTIL:t2 condicion:hijo2 PUNT
 :};
 
 asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
-                
+
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("asignacionVAR");
@@ -1844,15 +1864,15 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
                 // String tipo1 = returnAmbitoFuncion(t1.toString());
                 // if(tipo.equals("Error")){
 
-                //         //retorna error si no la encontro, entonces subir el valor para comprobar si existe en 
+                //         //retorna error si no la encontro, entonces subir el valor para comprobar si existe en
                 //         //la gramatica de FUNCTION.
                 //         ElementoTS element = new ElementoTS();
                 //         element.setID(t1.toString());
                 //         element.setAmbito("Global");
                 //         elementosStandby.add(element);
 
-                        
-                        
+
+
                 // }else{
                 //         if(hijo.getError()){ //si expr_mat es un error
                 //                 System.out.println("Error: "  + hijo.getMensaje());
@@ -1862,7 +1882,7 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
                 //                 (tipo.equals("INTEGER") && hijo.getValor().equals("NUM"))){
                 //                         //cheque
                 //                 }else{
-                //                         System.out.println("Error: " + "El tipo de " + 
+                //                         System.out.println("Error: " + "El tipo de " +
                 //                         t1.toString()  + " es diferente que el valor asignado. Se esperaba " + tipo);
                 //                 }
                 //         }
@@ -1870,8 +1890,8 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
                 //si expr_mat es tipo error, tirar error en esta produccion.
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1); 
-                
+                nodo.addHijos((Nodo)hijo1);
+
                 RESULT = nodo;
 
 :} | IDENTIFICADOR:t1 DOT:t4 IDENTIFICADOR:t2 ASIGNACION:t3 expresion_matematica:hijo1 {:
@@ -1911,7 +1931,7 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
 
                 // } else{
                 //        elemento = returnElementoTS(t1.toString(), tipo);
-                        
+
                 // }
 
                 // if(BuscaTipo(elemento)){ //regresa falso si lo encuentra
@@ -1925,7 +1945,7 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
                 //         if( !(checkRecordVarConID(elemento, t2.toString())) ){ //retorna falso si lo encontro
                 //                 tipoAtributo = returnTipoVariableRecord(elemento, t2.toString());
                 //         } else{
-                //                 //no existe ese atributo en el record 
+                //                 //no existe ese atributo en el record
                 //                 //error
                 //                 System.out.println("No existe un atributo: " + t2.toString() + " en un record con ese ID: " + t1.toString());
                 //                 nodo.setEtiqueta("Error");
@@ -1936,7 +1956,7 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
 
                 //comprobacion de otros tipos
 
-                
+
                 // if(hijo.getError()){ //si expr_mat es un error
                 //         System.out.println("Error: "  + hijo.getMensaje());
                 //         hijo.setValor("Error de Tipos.");
@@ -1945,19 +1965,19 @@ asignacionVAR ::= IDENTIFICADOR:t1 EQUAL:t2 expresion_matematica:hijo1{:
                 //         (tipoAtributo.equals("INTEGER") && hijo.getValor().equals("NUM"))){
                 //                         //cheque
                 //         } else{
-                //                         System.out.println("Error: " + "El tipo de " + 
+                //                         System.out.println("Error: " + "El tipo de " +
                 //                         t2.toString()  + " es diferente que el valor asignado. Se esperaba " + tipoAtributo + " y se encontro un " + hijo.getValor());
                 //         }
                 // }
-                
+
                 //si expr_mat es tipo error, tirar error en esta produccion.
 
                 nodo.addHijos(nid);
                 nodo.addHijos(nid2);
-                nodo.addHijos((Nodo)hijo1); 
-                
+                nodo.addHijos((Nodo)hijo1);
+
                 RESULT = nodo;
-:}; 
+:};
 
 expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y a Y los factores serian "2 y x"
 
@@ -1972,13 +1992,13 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 nodo.addHijos((Nodo)hijo1);
                 nodo.setValor(hijo.getValor());
 
-                if(hijo.getError()){ //subir error y mensaje 
+                if(hijo.getError()){ //subir error y mensaje
                         nodo.setError(true);
                         hijo.setValor("Error de tipos.");
                         nodo.setMensaje(hijo.getMensaje());
-                        CheckNodes.add(nodo);     
+                        CheckNodes.add(nodo);
                 }
-                
+
                 RESULT = nodo;
 
 :} | OPSUM:t1 termino:hijo1 {: //en que caso se usa esto?
@@ -1996,12 +2016,12 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
 
                 nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo1);
-                
+
                 RESULT = nodo;
 
 :} | expresion_matematica:hijo1 OPSUM:t1 termino:hijo2 {:
 
-                Nodo nodo = new Nodo(); 
+                Nodo nodo = new Nodo();
                 nodo.setEtiqueta("expresion_matematica");
                 nodo.setId(parser.cont);
                 parser.cont++;
@@ -2027,7 +2047,7 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 //                 // // //subir valor a checknodes para revisarlo mas arriba en funcion
 
                 //                 CheckNodes.add(nodo);
-                //         } 
+                //         }
                 //         else{ //si todo esta bien, asignar error de inconsistencia a nodo padre
                 //                 nodo.setMensaje("Tipos diferentes en expresion matematica. " +
                 //         "Se esta operando un tipo " + hijoMAT.getValor() + " y un tipo " + hijoTER.getValor());
@@ -2038,7 +2058,7 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
 
                 //                 CheckNodes.add(nodo);
                 //         }
-                        
+
                 // } else{ //setear el valor si todo esta bien
                 //         nodo.setValor(hijoMAT.getValor());
                 // }
@@ -2046,15 +2066,15 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo2);
-                
+
                 RESULT = nodo;
 :};
 
 termino ::= factor:hijo1 {: //este
 
-                Nodo nodo = new Nodo();         
+                Nodo nodo = new Nodo();
                 nodo.setEtiqueta("termino");
-                
+
                 Nodo hijo = ((Nodo)hijo1);
 
                 // if(hijo.getEtiqueta().equals("expresion_matematica")){
@@ -2072,12 +2092,12 @@ termino ::= factor:hijo1 {: //este
                 parser.cont++;
 
                 nodo.addHijos(hijo);
-                
+
                 RESULT = nodo;
 
-:} | termino:hijo1 OPMULT:t1 factor:hijo2 {: 
+:} | termino:hijo1 OPMULT:t1 factor:hijo2 {:
 
-                Nodo nodo = new Nodo(); 
+                Nodo nodo = new Nodo();
                 nodo.setEtiqueta("termino");
                 nodo.setId(parser.cont);
                 parser.cont++;
@@ -2097,7 +2117,7 @@ termino ::= factor:hijo1 {: //este
                 //                 if(hijoTER.getError() || hijoFAC.getError()){
                 //                         nodo.setMensaje(hijoTER.getMensaje());
                 //                         nodo.setValor("Error de Tipos");
-                //                 } 
+                //                 }
                 //                  else{
                 //                         nodo.setMensaje("Tipos diferentes en expresion matematica. " +
                 //                 "Se esta operando un tipo " + hijoTER.getValor() + " y un tipo " + hijoFAC.getEtiqueta());
@@ -2109,12 +2129,12 @@ termino ::= factor:hijo1 {: //este
 
                 // } else{
                 //         if(!(hijoTER.getValor().equals(hijoFAC.getEtiqueta())) ){
-                               
+
                 //                 nodo.setError(true);
                 //                 if(hijoTER.getError() || hijoFAC.getError()){
                 //                         nodo.setMensaje(hijoTER.getMensaje());
                 //                         nodo.setValor("Error de Tipos");
-                //                 } 
+                //                 }
                 //                  else{
                 //                         nodo.setMensaje("Tipos diferentes en expresion matematica. " +
                 //                 "Se esta operando un tipo " + hijoTER.getValor() + " y un tipo " + hijoFAC.getEtiqueta());
@@ -2129,13 +2149,13 @@ termino ::= factor:hijo1 {: //este
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)opmult);
                 nodo.addHijos((Nodo)hijo2);
-                
+
                 RESULT = nodo;
 :};
 
 factor ::= IDENTIFICADOR:t1 {:
 
-                Nodo nodo = new Nodo(); 
+                Nodo nodo = new Nodo();
                 nodo.setEtiqueta("factor");
                 nodo.setId(parser.cont);
                 parser.cont++;
@@ -2148,11 +2168,11 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 //buscar en TS ese Identificador y retornar tipo
                 // String tipo = returnTipo(t1.toString());
- 
-                // if(tipo.equals("Error")){  
+
+                // if(tipo.equals("Error")){
 
                 //         //no lo encontro globalmente, ahora revisar en la funcion
-                        
+
                 //         ElementoTS element = new ElementoTS();
                 //         element.setID(t1.toString());
                 //         elementosStandby.add(element);
@@ -2167,12 +2187,12 @@ factor ::= IDENTIFICADOR:t1 {:
                 // }
 
                 nodo.addHijos(nid);
-                
+
                 RESULT = nodo;
-                
+
 :} | IDENTIFICADOR:t1 DOT:t3 IDENTIFICADOR:t2 {:
 
-                Nodo nodo = new Nodo(); 
+                Nodo nodo = new Nodo();
                 nodo.setEtiqueta("factor");
                 nodo.setId(parser.cont);
                 parser.cont++;
@@ -2201,7 +2221,7 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 // } else{
                 //        elemento = returnElementoTS(t1.toString(), tipo);
-                        
+
                 // }
 
                 // if(BuscaTipo(elemento)){ //regresa falso si lo encuentra
@@ -2217,7 +2237,7 @@ factor ::= IDENTIFICADOR:t1 {:
                 //                 nodo.setEtiqueta(tipo2);
                 //                 nodo.setValor(t1.toString() + "." + t2.toString());
                 //         } else{
-                //                 //no existe ese atributo en el record 
+                //                 //no existe ese atributo en el record
                 //                 //error
                 //                 System.out.println("No existe un atributo: " + t2.toString() + " en un record con ese ID: " + t1.toString());
                 //                 nodo.setEtiqueta("Error");
@@ -2228,11 +2248,11 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 nodo.addHijos(nid);
                 nodo.addHijos(nid2);
-                
+
                 RESULT = nodo;
 :} | llamada_procedure_funcion:hijo1 {:
 
-                Nodo nodo = new Nodo(); 
+                Nodo nodo = new Nodo();
                 nodo.setEtiqueta("llamada_procedure_funcion");
                 nodo.setId(parser.cont);
                 parser.cont++;
@@ -2244,7 +2264,7 @@ factor ::= IDENTIFICADOR:t1 {:
                 }
 
                 // nodo.addHijos((Nodo)hijo1);
-                
+
                 RESULT = nodo;
 :} | NUM:t1 {:
 
@@ -2291,17 +2311,17 @@ factor ::= IDENTIFICADOR:t1 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("expresion_matematica");
-                
+
 
                 Nodo hijito1 = ((Nodo)hijo1);
 
                 nodo.setValor(hijito1.getValor());
-                
+
                 // if(hijito1.getError()){
                 //         nodo.setError(true);
                 //         hijito1.setValor("Error de tipos.");
                 // }
-                
+
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -2314,7 +2334,7 @@ factor ::= IDENTIFICADOR:t1 {:
                 RESULT = nodo;
 :};
 
-//inicio de programa con o sin parametros 
+//inicio de programa con o sin parametros
 inicioProgram ::= tipomain:hijo1 MAIN:t1 PARIZQ:t2 PARDER:t3 CURLYIZQ:t4 {:
 
               //NODO PADRE
@@ -2324,17 +2344,17 @@ inicioProgram ::= tipomain:hijo1 MAIN:t1 PARIZQ:t2 PARDER:t3 CURLYIZQ:t4 {:
               //nodo.setValor(t1.toString());
               parser.cont++;
 
-              Nodo tipo = ((Nodo)hijo1); 
+              Nodo tipo = ((Nodo)hijo1);
 
               //TERMINALES
-              nodo.addHijos(tipo); 
-              //nodo.setValor(tipo.getValor()); 
+              nodo.addHijos(tipo);
+              //nodo.setValor(tipo.getValor());
 
               RESULT = nodo;
 
 :}
                 | tipomain:hijo1 MAIN:t1 PARIZQ:t2 listaIdentificadores:hijo2 PARDER:t3 CURLYIZQ:t4 {:
-                
+
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("NombreProgram");
@@ -2343,15 +2363,15 @@ inicioProgram ::= tipomain:hijo1 MAIN:t1 PARIZQ:t2 PARDER:t3 CURLYIZQ:t4 {:
               parser.cont++;
 
               //TERMINALES
-              nodo.addHijos((Nodo)hijo1); 
+              nodo.addHijos((Nodo)hijo1);
               RESULT = nodo;
-                     
-:};  
+
+:};
 
 
 //esta gramatica aguanta varias proposiciones adentro de un begin/end
 cuerpoProposiciones ::=  BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {:
-              
+
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("cuerpoProposiciones");
@@ -2374,7 +2394,7 @@ cuerpoProposiciones ::=  BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {
                                 nodo.addHijos(hijo.getHijos().get(i));
                       }
               }
-              
+
               RESULT = nodo;
 
 :};
@@ -2411,33 +2431,33 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               //No pueden haber funciones con cero parametros:
 
               //se agrega al arreglo para que el comprobador de tipos/ambito trate esta funcion como un procedure.
-              
+
               ElementoTS funcion = new ElementoTS();
               funcion.setID(t2.toString());
 
               Nodo tipoVar = ((Nodo)hijo1);
               funcion.setTipo(tipoVar.getValor());
 
-              funcion.setAmbito(t2.toString()); 
+              funcion.setAmbito(t2.toString());
 
               ambitoActual = t2.toString();
 
                 boolean lomismo = false;
 
                 for(ElementoTS elem : ArregloFunciones){
-                        
+
                         if(funcion.getID().equals(elem.getID())){
                                lomismo = true;
                                 break;
                         }
                 }
-                
+
 
                 if(lomismo){
                         //error
                         System.out.println("Ya existe una funcion con el nombre " + funcion.getID());
                 } else{
-                        
+
                 //cuando este todo bien
                         ArregloFunciones.add(funcion);
                 }
@@ -2450,12 +2470,12 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 
               RESULT = nodo;
 
-:} 
-        | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4 
+:}
+        | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4
           PUNTOCOMA:t6 {:
 
-              //este segundo permite la declaracion de funciones 
-                 
+              //este segundo permite la declaracion de funciones
+
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("inicioFunction");
@@ -2481,7 +2501,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               Nodo tipoVar = ((Nodo)hijo1);
               funcion.setTipo(tipoVar.getValor());
 
-              funcion.setAmbito(t2.toString()); 
+              funcion.setAmbito(t2.toString());
 
               ambitoActual = t2.toString();
 
@@ -2489,14 +2509,14 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 
                 //boolean sonVarios = false;
 
-                int tam = 0; 
+                int tam = 0;
 
 
                 try{
-                        tam = hijo.getHijos().get(2).getHijos().size(); 
+                        tam = hijo.getHijos().get(2).getHijos().size();
                         //esto es el size del arreglo de hijos del TERCER nodo
                 } catch(Exception e){
-                        
+
                 }
 
                 if(tam  == 0){
@@ -2507,8 +2527,8 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                 ElementoTS id = new ElementoTS();
                                 id.setID(hijosDeclarVar.get(0).getValor());
                                 id.setTipo(hijosDeclarVar.get(1).getValor());
-                                id.setAmbito(t2.toString()); 
-                                
+                                id.setAmbito(t2.toString());
+
                                 boolean busqueda = revisarArreglo(id, variablesDeclaracionFuncion);
 
                                 if(busqueda){
@@ -2517,7 +2537,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                 } else{
                                         System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + t2.toString());
                                                 //error
-                                }                               
+                                }
                         } else if(hijosDeclarVar.get(0).getValor() == null){
                                 //si el nodo a la mas izquierda es una listaIdentificadores
 
@@ -2528,7 +2548,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                         ElementoTS id = new ElementoTS();
                                         id.setID(nodo1.getValor());
                                         id.setTipo(tipo);
-                                        id.setAmbito(t2.toString()); 
+                                        id.setAmbito(t2.toString());
                                         boolean busqueda = revisarArreglo(id, variablesDeclaracionFuncion);
 
                                         if(busqueda){
@@ -2537,39 +2557,39 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                         } else{
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + t2.toString());
                                                         //error
-                                        }     
+                                        }
                                 }
                         }
-                        
+
                 } else{
                                 if(hijosDeclarVar.get(2).getValor() != "vacio"){  //usar recursiva
                                         //si son varias lineas de declaracion
                                         variablesDeclaracionFuncion = recorrerDeclaracionesFuncion(variablesDeclaracionFuncion, ((Nodo)hijo1), t2.toString());
                                         //sonVarios = true;
                                         funcion.setParametros(variablesDeclaracionFuncion);//agregar todas las variables de la recursiva
-                                                
-                                } 
+
+                                }
                 }
-    
+
 
                 //verificar que no se puedan agregar funciones del mismo tipo
 
                 boolean lomismo = false;
 
                 for(ElementoTS elem : ArregloFunciones){
-                        
+
                         if(funcion.getID().equals(elem.getID())){
                                lomismo = true;
-                               break;          
+                               break;
                         }
                 }
-                
+
 
                 if(lomismo){
                         //error
                         System.out.println("Ya existe una funcion con el nombre " + funcion.getID());
                 } else{
-                        
+
                 //cuando este todo bien
                         ArregloFunciones.add(funcion);
                 }
@@ -2578,11 +2598,11 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nodo.addHijos((Nodo)hijo1);
               nodo.addHijos((Nodo)hijo2);
               //nodo.addHijos((Nodo)hijo3);
-              RESULT = nodo; 
+              RESULT = nodo;
 
 :}
 
-        | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4 
+        | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4
           CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 CURLYDER:t6 {:
 
               //NODO PADRE
@@ -2610,7 +2630,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               Nodo tipoVar = ((Nodo)hijo1);
               funcion.setTipo(tipoVar.getValor());
 
-              funcion.setAmbito(t2.toString()); 
+              funcion.setAmbito(t2.toString());
 
               ambitoActual = t2.toString();
 
@@ -2618,14 +2638,14 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 
                 //boolean sonVarios = false;
 
-                int tam = 0; 
+                int tam = 0;
 
 
                 try{
-                        tam = hijo.getHijos().get(2).getHijos().size(); 
+                        tam = hijo.getHijos().get(2).getHijos().size();
                         //esto es el size del arreglo de hijos del TERCER nodo
                 } catch(Exception e){
-                        
+
                 }
 
                 if(tam  == 0){
@@ -2636,8 +2656,8 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                 ElementoTS id = new ElementoTS();
                                 id.setID(hijosDeclarVar.get(0).getValor());
                                 id.setTipo(hijosDeclarVar.get(1).getValor());
-                                id.setAmbito(t2.toString()); 
-                                
+                                id.setAmbito(t2.toString());
+
                                 boolean busqueda = revisarArreglo(id, variablesDeclaracionFuncion);
 
                                 if(busqueda){
@@ -2646,7 +2666,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                 } else{
                                         System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + t2.toString());
                                                 //error
-                                }                               
+                                }
                         } else if(hijosDeclarVar.get(0).getValor() == null){
                                 //si el nodo a la mas izquierda es una listaIdentificadores
 
@@ -2657,7 +2677,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                         ElementoTS id = new ElementoTS();
                                         id.setID(nodo1.getValor());
                                         id.setTipo(tipo);
-                                        id.setAmbito(t2.toString()); 
+                                        id.setAmbito(t2.toString());
                                         boolean busqueda = revisarArreglo(id, variablesDeclaracionFuncion);
 
                                         if(busqueda){
@@ -2666,39 +2686,39 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
                                         } else{
                                                 System.out.println("Ya existe un ID: " + id.getID() + " en la Funcion: " + t2.toString());
                                                         //error
-                                        }     
+                                        }
                                 }
                         }
-                        
+
                 } else{
                                 if(hijosDeclarVar.get(2).getValor() != "vacio"){  //usar recursiva
                                         //si son varias lineas de declaracion
                                         variablesDeclaracionFuncion = recorrerDeclaracionesFuncion(variablesDeclaracionFuncion, ((Nodo)hijo1), t2.toString());
                                         //sonVarios = true;
                                         funcion.setParametros(variablesDeclaracionFuncion);//agregar todas las variables de la recursiva
-                                                
-                                } 
+
+                                }
                 }
-    
+
 
                 //verificar que no se puedan agregar funciones del mismo tipo
 
                 boolean lomismo = false;
 
                 for(ElementoTS elem : ArregloFunciones){
-                        
+
                         if(funcion.getID().equals(elem.getID())){
                                lomismo = true;
-                               break;          
+                               break;
                         }
                 }
-                
+
 
                 if(lomismo){
                         //error
                         System.out.println("Ya existe una funcion con el nombre " + funcion.getID());
                 } else{
-                        
+
                 //cuando este todo bien
                         ArregloFunciones.add(funcion);
                 }
@@ -2707,7 +2727,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nodo.addHijos((Nodo)hijo1);
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
-              RESULT = nodo; 
+              RESULT = nodo;
 :};
 
 declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 {:
@@ -2725,34 +2745,34 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
 
                 Nodo tipovariable = ((Nodo)hijo1);
                 String tipo = tipovariable.getValor();
-                
+
                 int size = hijo.getHijos().size();
 
                 if(hijo.getValor() != null){
                         if(size == 0){ //si es solo unico, solo un ID
                                 ElementoTS elemento = new ElementoTS();
                                 elemento.setID(hijo.getValor());
-                                System.out.println("ID del elemento: " + elemento.getID()); 
+                                System.out.println("ID del elemento: " + elemento.getID());
                                 elemento.setTipo(tipo);
-                                elemento.setAmbito(""); 
+                                elemento.setAmbito("");
                                         if(BuscaTipoFuncion(elemento)){
-                                                ArregloFunciones.add(elemento);  
+                                                ArregloFunciones.add(elemento);
                                                 System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                         } else {  //error, ya existe ese simbolo
                                                 System.out.println("Ya existe ese elemento con ese id, tipo y ambito");
-                                        }                                
-                        } 
+                                        }
+                        }
 
                 } else{ //es null cuando son varios
                         for(int i = 0; i < size ; i++){ //agregar todos los hijos al arreglo
-                                
+
                                         ElementoTS elemento = new ElementoTS();
                                         elemento.setID(hijo.getHijos().get(i).getValor());
                                         elemento.setTipo(tipo);
-                                        elemento.setAmbito(""); 
+                                        elemento.setAmbito("");
                                                 if(BuscaTipoFuncion(elemento)){
-                                                        ArregloFunciones.add(elemento);  
+                                                        ArregloFunciones.add(elemento);
                                                         System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                 } else {  //error, ya existe ese simbolo
@@ -2768,8 +2788,8 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
 
 :}
         | listaIdentificadores:hijo1 OPDECLARACION:t1 tipovar:hijo2 PUNTOCOMA:t2 declaracionesVAR_procedure_funcion:hijo3 {:
-        
-        
+
+
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("declaracionesVAR");
@@ -2784,7 +2804,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
               RESULT = nodo;
 :}
         | VAR:t1 listaIdentificadores:hijo1 OPDECLARACION:t2 tipovar:hijo2 PUNTOCOMA:t3 declaracionesVAR_procedure_funcion:hijo3 {:
-        
+
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("declaracionesVAR");
@@ -2796,10 +2816,10 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
               RESULT = nodo;
-        
+
 :}
         | VAR:t1 listaIdentificadores:hijo1 OPDECLARACION:t2 tipovar:hijo2 {:
-        
+
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("declaracionesVAR");
@@ -2812,8 +2832,8 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
               RESULT = nodo;
 :}
         | {:
-        
-                //NODO PADRE  
+
+                //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("vacio");
                 nodo.setValor("vacio");
@@ -2821,7 +2841,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
                 parser.cont++;
 
                 RESULT = nodo;
-        
+
         :};
 
 
@@ -2841,13 +2861,13 @@ llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 
               nid.setId(parser.cont);
               parser.cont+=1;//id, parizq, parder
 
-              nodo.addHijos(nid); 
+              nodo.addHijos(nid);
 
               Nodo hijito1 = ((Nodo)hijo1);
 
               for(int i = 0; i < hijito1.getHijos().size() ; i++){
                         nodo.addHijos(hijito1.getHijos().get(i));
-                        
+
                       }
               //nodo.setValor("(" + hijito1.getValor() + ")");
 
@@ -2879,12 +2899,12 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
 
                 for(int i = 0; i < node.getHijos().size() ; i++){
                         nodo.addHijos(node.getHijos().get(i));
-                        
+
                 }
 
               RESULT = nodo;
 :}
-        
+
         | COMA factor:hijo1 lista_parametros:hijo2 {:
 
                 //NODO PADRE
@@ -2897,13 +2917,13 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
                 Nodo node1 = ((Nodo)hijo1);
                 Nodo node = ((Nodo)hijo2);
 
-                
+
 
                 nodo.addHijos(node1);
 
                 for(int i = 0; i < node.getHijos().size() ; i++){
                         nodo.addHijos(node.getHijos().get(i));
-                        
+
                 }
 
                 RESULT = nodo;
@@ -2911,7 +2931,7 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
         :}
 
                 | {:
-                //NODO PADRE  
+                //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("vacio");
                 nodo.setValor("vacio");
@@ -2919,7 +2939,7 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
                 parser.cont++;
 
                 RESULT = nodo;
-                
+
 :}; //fin lista_parametros
 
 // lista_parametros_id::= IDENTIFICADOR:t1 {:
@@ -2950,7 +2970,7 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
 
 // :};
 //                 | IDENTIFICADOR:t1 COMA:t2 lista_parametros_id:hijo1 {:
-                
+
 //               //NODO PADRE
 //               Nodo nodo = new Nodo();
 //               nodo.setEtiqueta("ID");
@@ -2961,7 +2981,7 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
 
 //               nodo.addHijos((Nodo)hijo1);
 //               RESULT = nodo;
-                
+
 // :}; //fin lista_parametros_id
 
 // lista_parametros_num ::= NUM:t1 {:
@@ -2976,22 +2996,9 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
 
 //               RESULT = nodo;
 
-// :} 
+// :}
 //                 | NUM:t1 COMA:t2 lista_parametros_id:hijo1 {:
 
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++; 
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;                
-                
-// :}
-//                 | NUM:t1 COMA:t2 lista_parametros_num:hijo1 {:
-                
 //               //NODO PADRE
 //               Nodo nodo = new Nodo();
 //               nodo.setEtiqueta("NUM");
@@ -3000,8 +3007,21 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
 //               parser.cont++;
 
 //               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;   
-                
+//               RESULT = nodo;
+
+// :}
+//                 | NUM:t1 COMA:t2 lista_parametros_num:hijo1 {:
+
+//               //NODO PADRE
+//               Nodo nodo = new Nodo();
+//               nodo.setEtiqueta("NUM");
+//               nodo.setValor(t1.toString());
+//               nodo.setId(parser.cont);
+//               parser.cont++;
+
+//               nodo.addHijos((Nodo)hijo1);
+//               RESULT = nodo;
+
 // :};
 
 
@@ -3024,7 +3044,7 @@ cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerp
               RESULT = nodo;
 :}
         | {:
-                //NODO PADRE  
+                //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("vacio");
                 nodo.setValor("vacio");
@@ -3035,7 +3055,7 @@ cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerp
 
 :};
 
-declaracionesVARAdentroFunctionProcedure ::= VAR:t1 listaIdentificadores:hijo1 OPDECLARACION:t2 
+declaracionesVARAdentroFunctionProcedure ::= VAR:t1 listaIdentificadores:hijo1 OPDECLARACION:t2
 tipovar:hijo2 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3{:
 
         Nodo nodo = new Nodo();
@@ -3052,7 +3072,7 @@ tipovar:hijo2 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3{:
  :}
  | {:
 
-                //NODO PADRE  
+                //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("vacio");
                 nodo.setValor("vacio");
@@ -3082,7 +3102,7 @@ read ::= READ:t1 PARIZQ:t2 IDENTIFICADOR:t3 PARDER:t6 {:
 
               nodo.addHijos(nid);
 
-              RESULT = nodo; 
+              RESULT = nodo;
 
 :} |
 READ:t1 PARIZQ:t2 IDENTIFICADOR:t3 DOT IDENTIFICADOR:t4 PARDER:t5 {:
@@ -3112,16 +3132,16 @@ READ:t1 PARIZQ:t2 IDENTIFICADOR:t3 DOT IDENTIFICADOR:t4 PARDER:t5 {:
               nodo.addHijos(nid);
               nodo.addHijos(nid2);
 
-              RESULT = nodo; 
+              RESULT = nodo;
 
-:}; 
+:};
 
 //write seria printf
-write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {:
+printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3144,14 +3164,21 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nid);
 
-              RESULT = nodo; 
+              String tipoId = returnTipo(t5.toString());
+              int index = t3.toString().indexOf("%d");
+              if (index != -1 && tipoId != "INTEGER") {
+                System.out.println("se esperaba un INTEGER [linea: " + t5right + ", columna: " + t5left + "]");
+              }
 
-:} 
-        | WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 CONSTCHAR:t5 PARDER:t6 {:
-              
+
+              RESULT = nodo;
+
+:}
+        | PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 CONSTCHAR:t5 PARDER:t6 {:
+
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3173,14 +3200,14 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nCONSTCHAR);
 
-              RESULT = nodo;         
-        
-:} 
-        | WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 CONSTSTRING:t5 PARDER:t6 {:
+              RESULT = nodo;
+
+:}
+        | PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 CONSTSTRING:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3201,14 +3228,14 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nCONSTSTRING2);
 
-              RESULT = nodo;            
-        
+              RESULT = nodo;
+
 :}
-        | WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 NUM:t5 PARDER:t6 {:
+        | PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 NUM:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3229,14 +3256,14 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nNUM);
 
-              RESULT = nodo;             
-        
+              RESULT = nodo;
+
 :}
-        | WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 PARDER:t4 {:
-        
+        | PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 PARDER:t4 {:
+
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3251,13 +3278,13 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
 
               nodo.addHijos(nCONSTSTRING);
 
-              RESULT = nodo;                     
-        
-:}  | WRITE:t1 PARIZQ:t2 IDENTIFICADOR:t3 PARDER:t4 {:
-        
+              RESULT = nodo;
+
+:}  | PRINTF:t1 PARIZQ:t2 IDENTIFICADOR:t3 PARDER:t4 {:
+
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3272,13 +3299,13 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
 
               nodo.addHijos(nCONSTSTRING);
 
-              RESULT = nodo;                     
-        
-:} | WRITE:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {:
+              RESULT = nodo;
+
+:} | PRINTF:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3299,13 +3326,13 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nNUM);
 
-              RESULT = nodo;             
-        
-:}| WRITE:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 NUM:t5 PARDER:t6 {:
+              RESULT = nodo;
+
+:}| PRINTF:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 NUM:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3326,13 +3353,13 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nNUM);
 
-              RESULT = nodo;             
-        
-:}| WRITE:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 CONSTCHAR:t5 PARDER:t6 {:
+              RESULT = nodo;
+
+:}| PRINTF:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 CONSTCHAR:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3353,14 +3380,14 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nNUM);
 
-              RESULT = nodo;             
-        
+              RESULT = nodo;
+
 :}
-| WRITE:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 CONSTSTRING:t5 PARDER:t6 {:
+| PRINTF:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 CONSTSTRING:t5 PARDER:t6 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3381,14 +3408,14 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nCONSTSTRING);
               nodo.addHijos(nNUM);
 
-              RESULT = nodo;             
-        
+              RESULT = nodo;
+
 :}
-| WRITE:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 IDENTIFICADOR:t5 DOT IDENTIFICADOR:t6 PARDER:t7 {:
+| PRINTF:t1 PARIZQ:t2 IDENTIFICADOR:t3 COMA:t4 IDENTIFICADOR:t5 DOT IDENTIFICADOR:t6 PARDER:t7 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3416,14 +3443,14 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nNUM);
               nodo.addHijos(nNUMs);
 
-              RESULT = nodo;             
-        
+              RESULT = nodo;
+
 :}
-| WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 DOT IDENTIFICADOR:t6 PARDER:t7 {:
+| PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 DOT IDENTIFICADOR:t6 PARDER:t7 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
+              nodo.setEtiqueta("printf");
               nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
@@ -3451,19 +3478,19 @@ write ::= WRITE:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6 {
               nodo.addHijos(nNUM);
               nodo.addHijos(nNUMs);
 
-              RESULT = nodo;             
-        
+              RESULT = nodo;
+
 :}
-        | WRITE:t1 PARIZQ:t2 PARDER:t3 {:
-        
+        | PRINTF:t1 PARIZQ:t2 PARDER:t3 {:
+
               //NODO PADRE
               Nodo nodo = new Nodo();
-              nodo.setEtiqueta("write");
-              nodo.setValor("write");
+              nodo.setEtiqueta("printf");
+              nodo.setValor("printf");
               nodo.setId(parser.cont);
               parser.cont++;
 
               //TERMINALES
-              
-              RESULT = nodo;      
+
+              RESULT = nodo;
 :};
