@@ -1764,7 +1764,7 @@ class CUP$parser$actions {
          
                 //NODO PADRE
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
+                nodo.setEtiqueta("condicionIF-ELSE");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -4119,7 +4119,7 @@ class CUP$parser$actions {
                                 elemento.setAmbito(""); 
                                         if(BuscaTipoFuncion(elemento)){
                                                 ArregloFunciones.add(elemento);  
-                                                //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                         } else {  //error, ya existe ese simbolo
                                                 System.out.println("Ya existe ese elemento con ese id, tipo y ambito");

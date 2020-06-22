@@ -1111,6 +1111,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF-ELSE"); 
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1120,7 +1121,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo;         
            
-:}; 
+:};
 
 //define el tipo de main 
 tipomain ::= INT:t1 {:

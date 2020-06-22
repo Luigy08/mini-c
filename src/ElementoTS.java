@@ -16,7 +16,6 @@ public class ElementoTS{
     public void addParametro(ElementoTS par) {
         parametros.add(par);
     }
-    
 
     public String getID() {
         return this.ID;
@@ -47,7 +46,7 @@ public class ElementoTS{
     }
 
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
 
     public void setTipo(String tipo) {

@@ -1210,7 +1210,7 @@ public class Main {
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo1 = hijos.get(0); //nodo de condicion 
-					Nodo hijo2 = hijos.get(1); 
+					Nodo hijo2 = hijos.get(1); //nodo de prop
 					Nodo M1 = new Nodo();
 					Nodo M2 = new Nodo();
 
@@ -1227,12 +1227,17 @@ public class Main {
 						hijo1.listaVerdadera = Backpatch.crearLista(siguienteSalto); 
 						hijo1.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 
-						TablaCuadruplo.gen(valoroprel, valorexpr1 , valorexpr2, "t" + Integer.toString(contadorTemp));
-						contadorTemp++; 
-						TablaCuadruplo.imprimirTablaCuadruplo(); 
+						TablaCuadruplo.gen(valoroprel, valorexpr1, valorexpr2, "etiq: " + Integer.toString(contadorEtiq)); 
+						contadorEtiq++; 
+						TablaCuadruplo.imprimirTablaCuadruplo();
 
+						Backpatch.completa(hijo1.getListaVerdadera(), M2.getCuad());
+						node.setListaSig(hijo1.getListaFalsa()); 
+						Backpatch.completa(hijo2.getListaSig(), M1.getCuad()); 
+
+						tablaCuadruplos.add(new Cuadruplo("GOTO", " ", " ", String.valueOf(M1.getCuad()))); 
 						/*M1.setEtiqueta("etiq:" + Integer.toString(contadorEtiq));
-						contadorEtiq++;*/
+						contadorEtiq++;
 	
 						M2.setEtiquetaV("etiq:" + Integer.toString(contadorEtiq));
 						contadorEtiq++; 
@@ -1241,7 +1246,7 @@ public class Main {
 						node.listaSiguiente = hijo1.listaFalsa; 
 						Backpatch.completa(hijo2.listaSiguiente, M1.lineaCuadruplo);
 						TablaCuadruplo.gen("GOTO", "_","_", M2.getEtiquetaV());
-						TablaCuadruplo.imprimirTablaCuadruplo();
+						TablaCuadruplo.imprimirTablaCuadruplo();*/
 							
 					}
 
