@@ -17,6 +17,8 @@ resultado = (edad + 10) * 60;
         x = 5;
     }
 
+mifuncion(1,'a'); 
+
 return 0;
 }
 

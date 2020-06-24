@@ -1031,6 +1031,7 @@ public class Main {
 
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo = hijos.get(0); //nodo expresion que contiene todo el if (asignar etiquetas a partir de aqui) 
+					//System.out.println("etiqueta de nodo: " + hijo.getValor());
 
 					hijo.setEtiquetaV("etiq:" + Integer.toString(contadorEtiq)); //se crean etiquetas a las cuales se saltaran dependiendo de true o false
 					//aqui el contador de etiquetas se encuentra en 1
@@ -1070,6 +1071,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF<", id1Expr1, id2Expr1, "etiq " + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					 
 					}else if(opExpr1.equals(">")){
@@ -1077,6 +1079,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF>", id1Expr1, id2Expr1, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 				
 					}else if(opExpr1.equals("!=")){
@@ -1084,6 +1087,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF!=", id1Expr1, id2Expr1, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 				
 					}else if(opExpr1.equals("<=")){
@@ -1091,6 +1095,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF<=", id1Expr1, id2Expr1, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 				
 					}else if(opExpr1.equals(">=")){
@@ -1098,12 +1103,14 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF>=", id1Expr1, id2Expr1, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					}else if(opExpr1.equals("==")){
 						hijo.listaVerdadera = Backpatch.crearLista(siguienteSalto); 
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF==", id1Expr1, id2Expr1, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 					}
 
 					//extraer valores de la expresion derecha al cuadruplo
@@ -1121,6 +1128,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF>", id1Expr2, id2Expr2, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					
 					}else if(opExpr2.equals("<")){
@@ -1128,6 +1136,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF<", id1Expr2, id2Expr2, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					
 					}else if(opExpr2.equals("!=")){
@@ -1135,6 +1144,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF!=", id1Expr2, id2Expr2, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					
 					}else if(opExpr2.equals("<=")){
@@ -1142,6 +1152,7 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF<=", id1Expr2, id2Expr2, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					
 					}else if(opExpr2.equals(">=")){
@@ -1149,12 +1160,14 @@ public class Main {
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF>=", id1Expr2, id2Expr2, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++; 
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 						//TablaCuadruplo.imprimirTablaCuadruplo();
 					}else if(opExpr2.equals("==")){
 						hijo.listaVerdadera = Backpatch.crearLista(siguienteSalto); 
 						hijo.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 						TablaCuadruplo.gen("IF==", id1Expr2, id2Expr2, "etiq" + Integer.toString(contadorEtiq)); //se guarda expr izq en temporal
 						contadorTemp++;
+						TablaCuadruplo.gen("GOTO", "_", "_", "_");
 					}
 
 					//coloca las etiquetas verdadera y falsa de la expresion izquierda
@@ -1177,10 +1190,15 @@ public class Main {
 					//System.out.println("Expresion der tiene etiquetas: " + hijo.getEtiquetaV() + ", " + hijo.getEtiquetaF());
 
 					if(valoroprel.equalsIgnoreCase("&&")){
+
+						Backpatch.completa(hijo.getListaVerdadera(), marcador.getCuad());
+						hijo.listaVerdadera = expr2.getListaVerdadera(); 
+						hijo.listaFalsa = Backpatch.fusion(expr1.getListaVerdadera(), expr2.getListaVerdadera()); 
+
 						TablaCuadruplo.gen("&&", "t" + Integer.toString(contadorTemp - 2), "t" + Integer.toString(contadorTemp - 1), "t" + Integer.toString(contadorTemp));
 						contadorTemp++;
 
-						//hace su respectivo salto a la etiqueta verdadera 
+						/*//hace su respectivo salto a la etiqueta verdadera 
 						TablaCuadruplo.gen("GOTO", "_", "_", marcador.getEtiquetaV());
 
 						//hace su respectivo salto a la etiqueta falsa
@@ -1189,12 +1207,17 @@ public class Main {
 
 						Backpatch.completa(hijo.listaVerdadera, marcador.lineaCuadruplo);//set listaV a expr de izq
 						hijo.listaVerdadera = expr2.listaVerdadera; 
-						hijo.listaFalsa = Backpatch.fusion(expr1.listaVerdadera, expr2.listaVerdadera); 
+						hijo.listaFalsa = Backpatch.fusion(expr1.listaVerdadera, expr2.listaVerdadera);*/ 
 
 					}else if(valoroprel.equalsIgnoreCase("||")){
 						TablaCuadruplo.gen("||", "t" + Integer.toString(contadorTemp - 2), "t" + Integer.toString(contadorTemp - 1), "t" + Integer.toString(contadorTemp));
 						contadorTemp++;
 
+						Backpatch.completa(hijo.getListaFalsa(), marcador.getCuad());
+						hijo.listaVerdadera = Backpatch.fusion(expr1.getListaVerdadera(), expr2.getListaVerdadera()); 
+						hijo.listaFalsa = expr2.getListaFalsa(); 
+
+						/*
 						//hace su respectivo salto a la etiqueta verdadera 
 						TablaCuadruplo.gen("GOTO", "_", "_", marcador.getEtiquetaV()); //etiq3
 
@@ -1205,6 +1228,7 @@ public class Main {
 						Backpatch.completa(hijo.listaFalsa, marcador.lineaCuadruplo);
 						hijo.listaVerdadera = Backpatch.fusion(expr1.listaVerdadera, expr2.listaVerdadera);
 						hijo.listaFalsa = expr2.listaFalsa; 
+						*/
 					}
 
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
@@ -1229,6 +1253,8 @@ public class Main {
 
 						TablaCuadruplo.gen(valoroprel, valorexpr1, valorexpr2, "etiq: " + Integer.toString(contadorEtiq)); 
 						contadorEtiq++; 
+
+						TablaCuadruplo.gen("GOTO", "_", "_", "_"); 
 						TablaCuadruplo.imprimirTablaCuadruplo();
 
 						Backpatch.completa(hijo1.getListaVerdadera(), M2.getCuad());

@@ -1,7 +1,4 @@
 int main() {
-    int a,b,c; 
-    if(a < b || b != c) {
-        b = c+a; 
-    }
+    int *a;
     return 0; 
 }

@@ -1183,7 +1183,6 @@ tipovar ::= INT:t1 {:
 
 :};
 
-
 op_rel_completos ::= EQUAL:t1 {:
 
                 //NODO PADRE
@@ -1529,6 +1528,7 @@ proposicion ::= condicionIF:hijo1 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("proposicion");
+                nodo.setValor("LLAMADA"); 
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -2701,7 +2701,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
 
 
 
-llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 {:
+llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 PUNTOCOMA:t4 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
