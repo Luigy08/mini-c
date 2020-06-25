@@ -1598,6 +1598,45 @@ proposicion ::= condicionIF:hijo1 {:
 
                 RESULT = nodo; 
 :}
+            | incrementando:hijo1 PUNTOCOMA:t1 {:
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+                nodo.setValor("INCREMENTADOR");
+
+                Nodo hijo = ((Nodo)hijo1);
+
+                nodo.setValor(hijo.getValor());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                for(int i = 0 ; i < hijo.getHijos().size() ; i++){ //pasar los hijos para arriba
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo; 
+
+:}
+            | decrementando:hijo1 PUNTOCOMA:t1 {:
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+                nodo.setValor("DECREMENTADOR");
+
+                Nodo hijo = ((Nodo)hijo1);
+
+                nodo.setValor(hijo.getValor());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                for(int i = 0 ; i < hijo.getHijos().size() ; i++){ //pasar los hijos para arriba
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo; 
+:}
             | error:hijo1 PUNTOCOMA:t1 {:
 
                 //NODO PADRE

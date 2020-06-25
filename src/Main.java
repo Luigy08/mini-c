@@ -10,6 +10,8 @@ import java.lang.reflect.Array;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.text.TabableView;
+
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -19,7 +21,7 @@ public class Main {
 	public static ArrayList<ElementoTS> ArregloSimbolos = parser.ArregloSimbolos;
 	public static ArrayList<Cuadruplo> tablaCuadruplos = new ArrayList<>();
 	public static ArrayList<String> MIPS = new ArrayList<String>(); //preparacion para el final 
-	public static ArrayList<String> mensajes = new ArrayList<String>();
+	public static ArrayList<String> mensajes = new ArrayList<String>(); //AL de mensajes para codigo final
 
 	public static int contadorTemp = 1;
 	public static int contadorEtiq = 1; 
@@ -1042,7 +1044,7 @@ public class Main {
 
 					ArrayList<Nodo> hijoCondicion = hijo.getHijos();
 					Nodo valorCondicion = hijoCondicion.get(0); 
-					System.out.println("Valor condicion: " + valorCondicion.getValor());
+					//System.out.println("Valor condicion: " + valorCondicion.getValor());
 					//System.out.println("Nodo padre tiene etiquetas: " + hijo.getEtiquetaV() + ", " + hijo.getEtiquetaF());
 					
 					//arreglar a partir de aqui los cuadruplos
@@ -1255,7 +1257,7 @@ public class Main {
 						contadorEtiq++; 
 
 						TablaCuadruplo.gen("GOTO", "_", "_", "_"); 
-						TablaCuadruplo.imprimirTablaCuadruplo();
+						//TablaCuadruplo.imprimirTablaCuadruplo();
 
 						Backpatch.completa(hijo1.getListaVerdadera(), M2.getCuad());
 						node.setListaSig(hijo1.getListaFalsa()); 
@@ -1278,22 +1280,42 @@ public class Main {
 
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("FOR")){
 					ArrayList<Nodo> hijos = node.getHijos();
-					Nodo hijo = hijos.get(0); 
+					Nodo M1 = new Nodo();
+					Nodo M2 = new Nodo();
+					Nodo M3 = new Nodo();
+					Nodo N = new Nodo(); 
+					Nodo hijo = hijos.get(0); //agarrando la asignacion principal
+					Nodo incdec = hijos.get(2); 
 					Nodo proposicion = hijos.get(1); 
 
 					//proposicion es el hijo condicion y despues procedemos a conseguir los hijos de condicion
 					ArrayList<Nodo> childprop = proposicion.getHijos(); 
 					Nodo firstchild = childprop.get(0); 
+					//System.out.println("esto es fc: " + firstchild.getValor()); //i
 					Nodo secondchild = childprop.get(2); 
-
-					ArrayList<Nodo> children = hijo.getHijos();
-					Nodo expr1 = children.get(0); 
-					System.out.println("valor de expr1: " + expr1.getValor());
-					Nodo expr2 = children.get(1);
-					System.out.println("valor de expr1: " + expr1.getValor());
+					//System.out.println("esto es sc: " + secondchild.getValor()); //resultado 
+					Nodo rel = childprop.get(1); 
 					
-					String valorexpr1 = expr1.getValor();
-					String valorexpr2 = expr2.getValor(); 
+					TablaCuadruplo.gen(rel.getValor(), firstchild.getValor(), secondchild.getValor(), "t" + Integer.toString(contadorTemp));
+
+					//creando intermedio para el nodo N
+					N.listaSiguiente = Backpatch.crearLista(siguienteSalto); 
+					tablaCuadruplos.add(new Cuadruplo("GOTO","_", "_", "_"));
+
+					//genera el intermedio del decremento/incremento 					
+					if(incdec.getValor().equals("i--")){
+						TablaCuadruplo.gen("-", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp));
+						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-2), "_", "i");
+					}else if(incdec.getValor().equals("i++")){
+						System.out.println("estoy aqui"); 
+					}
+
+
+					/*ArrayList<Nodo> children = hijo.getHijos();
+					Nodo expr1 = children.get(0); 
+					//System.out.println("valor de expr1: " + expr1.getValor());
+					Nodo expr2 = children.get(1);
+					//System.out.println("valor de expr1: " + expr1.getValor());
 
 					ArrayList<Nodo> childExpr2 = expr2.getHijos(); 
 					Nodo hijo1 = childExpr2.get(0); 
@@ -1305,9 +1327,9 @@ public class Main {
 					//TablaCuadruplo.imprimirTablaCuadruplo();
 
 					Backpatch.completa(firstchild.listaSiguiente, siguienteSalto);
-					System.out.println("siguientesalto: " + Integer.toString(siguienteSalto));
+					//System.out.println("siguientesalto: " + Integer.toString(siguienteSalto));
 					TablaCuadruplo.gen("=",expr1.getValor(),"t" + Integer.toString(contadorTemp - 1),"_");
-					TablaCuadruplo.imprimirTablaCuadruplo();
+					TablaCuadruplo.imprimirTablaCuadruplo();*/
 
 					
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("write")){
