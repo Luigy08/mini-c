@@ -1284,18 +1284,18 @@ public class Main {
 					Nodo M2 = new Nodo();
 					Nodo M3 = new Nodo();
 					Nodo N = new Nodo(); 
-					Nodo hijo = hijos.get(0); //agarrando la asignacion principal
-					Nodo incdec = hijos.get(2); 
+					//Nodo hijo = hijos.get(0); //agarrando la asignacion principal
 					Nodo proposicion = hijos.get(1); 
+					Nodo incdec = hijos.get(2); 
+					Nodo S1 = hijos.get(3); 
 
 					//proposicion es el hijo condicion y despues procedemos a conseguir los hijos de condicion
 					ArrayList<Nodo> childprop = proposicion.getHijos(); 
-					Nodo firstchild = childprop.get(0); 
-					//System.out.println("esto es fc: " + firstchild.getValor()); //i
+					Nodo firstchild = childprop.get(0);
+					Nodo rel = childprop.get(1);  
 					Nodo secondchild = childprop.get(2); 
-					//System.out.println("esto es sc: " + secondchild.getValor()); //resultado 
-					Nodo rel = childprop.get(1); 
 					
+					//metiendo al cuadruplo la condicion
 					TablaCuadruplo.gen(rel.getValor(), firstchild.getValor(), secondchild.getValor(), "t" + Integer.toString(contadorTemp));
 
 					//creando intermedio para el nodo N
@@ -1305,11 +1305,20 @@ public class Main {
 					//genera el intermedio del decremento/incremento 					
 					if(incdec.getValor().equals("i--")){
 						TablaCuadruplo.gen("-", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp));
-						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-2), "_", "i");
+						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-1), "_", "i");
 					}else if(incdec.getValor().equals("i++")){
-						System.out.println("estoy aqui"); 
+						TablaCuadruplo.gen("+", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp));
+						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-1), "_", "i");
 					}
 
+					//generando intermedio del FOR como tal
+					Backpatch.completa(S1.getListaSig(), M2.getCuad());
+					Backpatch.completa(proposicion.getListaVerdadera(), M3.getCuad());
+					node.listaSiguiente = proposicion.getListaFalsa(); 
+					Backpatch.completa(N.getListaSig(), M1.getCuad()); 
+					TablaCuadruplo.gen("GOTO","_", "_", String.valueOf(M2.getCuad()));
+
+					tablaCuadruplos.add(new Cuadruplo("GOTO", "_", "_", String.valueOf(M2.getCuad()))); 
 
 					/*ArrayList<Nodo> children = hijo.getHijos();
 					Nodo expr1 = children.get(0); 
