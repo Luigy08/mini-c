@@ -3481,7 +3481,7 @@ class CUP$parser$actions {
 
                 Nodo nod = ((Nodo)hijo1);
 
-                for(Nodo node : nod.getHijos()){
+                for(Nodo node : nodo.getHijos()){
                         nodo.addHijos(node);
                 }
 

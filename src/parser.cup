@@ -2163,7 +2163,7 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 Nodo nod = ((Nodo)hijo1);
 
-                for(Nodo node : nod.getHijos()){
+                for(Nodo node : nodo.getHijos()){
                         nodo.addHijos(node);
                 }
 

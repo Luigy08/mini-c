@@ -22,6 +22,8 @@ public class Main {
 	public static ArrayList<Cuadruplo> tablaCuadruplos = new ArrayList<>();
 	public static ArrayList<String> MIPS = new ArrayList<String>(); //preparacion para el final 
 	public static ArrayList<String> mensajes = new ArrayList<String>(); //AL de mensajes para codigo final
+	public static boolean[] temporales = {false, false, false, false, false, false, false, false, false, false};
+	public static ArrayList<String> etiquetas = new ArrayList<String>();
 
 	public static int contadorTemp = 1;
 	public static int contadorEtiq = 1; 
@@ -351,7 +353,7 @@ public class Main {
 						if (search) { // si esta todo bien
 							node.setValor(tipoFuncion);
 							TablaCuadruplo.gen("GOTO", "_", "etiq:" + Integer.toString(contadorEtiq), "_nombreFuncion");
-							TablaCuadruplo.imprimirTablaCuadruplo(); 
+							//TablaCuadruplo.imprimirTablaCuadruplo(); 
 						} else {
 							// si encontro un error en el metodo. (revisar metodo)
 
@@ -1199,6 +1201,7 @@ public class Main {
 
 						TablaCuadruplo.gen("&&", "t" + Integer.toString(contadorTemp - 2), "t" + Integer.toString(contadorTemp - 1), "t" + Integer.toString(contadorTemp));
 						contadorTemp++;
+						TablaCuadruplo.imprimirTablaCuadruplo();
 
 						/*//hace su respectivo salto a la etiqueta verdadera 
 						TablaCuadruplo.gen("GOTO", "_", "_", marcador.getEtiquetaV());
@@ -1218,6 +1221,7 @@ public class Main {
 						Backpatch.completa(hijo.getListaFalsa(), marcador.getCuad());
 						hijo.listaVerdadera = Backpatch.fusion(expr1.getListaVerdadera(), expr2.getListaVerdadera()); 
 						hijo.listaFalsa = expr2.getListaFalsa(); 
+						TablaCuadruplo.imprimirTablaCuadruplo();
 
 						/*
 						//hace su respectivo salto a la etiqueta verdadera 
@@ -1257,7 +1261,7 @@ public class Main {
 						contadorEtiq++; 
 
 						TablaCuadruplo.gen("GOTO", "_", "_", "_"); 
-						//TablaCuadruplo.imprimirTablaCuadruplo();
+						TablaCuadruplo.imprimirTablaCuadruplo();
 
 						Backpatch.completa(hijo1.getListaVerdadera(), M2.getCuad());
 						node.setListaSig(hijo1.getListaFalsa()); 
