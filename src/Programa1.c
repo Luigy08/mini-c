@@ -9,13 +9,16 @@ char genero;
 edad = 54 + 9; 
 resultado = (edad + 10) * 60;  
 
-    if(x == 1 || x != 2){
+    if(x == 1 || x != 2 && x <= 3){
         for(i = 0; i <= resultado ; i--){
             char1 = 'a'; 
+            edad++; 
         }
     }else{
         x = 5;
     }
+
+mifuncion(1,'a'); 
 
 return 0;
 }

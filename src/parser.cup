@@ -1112,6 +1112,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF-ELSE"); 
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1121,7 +1122,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo;         
            
-:}; 
+:};
 
 //define el tipo de main 
 tipomain ::= INT:t1 {:
@@ -1182,7 +1183,6 @@ tipovar ::= INT:t1 {:
                 RESULT = nodo; 
 
 :};
-
 
 op_rel_completos ::= EQUAL:t1 {:
 
@@ -1529,6 +1529,7 @@ proposicion ::= condicionIF:hijo1 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("proposicion");
+                nodo.setValor("LLAMADA"); 
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1584,6 +1585,45 @@ proposicion ::= condicionIF:hijo1 {:
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("proposicion");
+
+                Nodo hijo = ((Nodo)hijo1);
+
+                nodo.setValor(hijo.getValor());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                for(int i = 0 ; i < hijo.getHijos().size() ; i++){ //pasar los hijos para arriba
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo; 
+:}
+            | incrementando:hijo1 PUNTOCOMA:t1 {:
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+                nodo.setValor("INCREMENTADOR");
+
+                Nodo hijo = ((Nodo)hijo1);
+
+                nodo.setValor(hijo.getValor());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                for(int i = 0 ; i < hijo.getHijos().size() ; i++){ //pasar los hijos para arriba
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo; 
+
+:}
+            | decrementando:hijo1 PUNTOCOMA:t1 {:
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+                nodo.setValor("DECREMENTADOR");
 
                 Nodo hijo = ((Nodo)hijo1);
 
@@ -2124,7 +2164,7 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 Nodo nod = ((Nodo)hijo1);
 
-                for(Nodo node : nod.getHijos()){
+                for(Nodo node : nodo.getHijos()){
                         nodo.addHijos(node);
                 }
 
@@ -2701,7 +2741,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
 
 
 
-llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 {:
+llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 PUNTOCOMA:t4 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
