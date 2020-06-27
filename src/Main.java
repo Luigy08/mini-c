@@ -350,7 +350,7 @@ public class Main {
 						// param.getTipo());
 						// }
 
-						if (search) { // si esta todo bien
+						if (search) { //si esta todo bien
 							node.setValor(tipoFuncion);
 							TablaCuadruplo.gen("GOTO", "_", "etiq:" + Integer.toString(contadorEtiq), "_nombreFuncion");
 							//TablaCuadruplo.imprimirTablaCuadruplo(); 
@@ -1345,7 +1345,7 @@ public class Main {
 					TablaCuadruplo.imprimirTablaCuadruplo();*/
 
 					
-				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("write")){
+				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("printf")){
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo = hijos.get(0); 
 					Nodo hijo2 = hijos.get(1);
@@ -1353,10 +1353,10 @@ public class Main {
 					String valorexpr1 = hijo.getValor();
 					String valorexpr2 = hijo2.getValor(); 
 
-					TablaCuadruplo.gen("write",valorexpr1,valorexpr2,"_msg");
+					TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
 					//TablaCuadruplo.imprimirTablaCuadruplo();
 				
-				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("read")){
+				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("scanf")){
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo = hijos.get(0); 
 					
@@ -2967,7 +2967,9 @@ public class Main {
 			// primero revisar si son de igual tamanio
 
 			int size = param.getParametros().size();
+			System.out.println("parametros: " + Integer.toString(size));
 			int size2 = funcion.getParametros().size();
+			System.out.println("parametros: " + Integer.toString(size2));
 
 			// manejo de errores: (Cargar el string con la funcion y sus argumentos)
 
