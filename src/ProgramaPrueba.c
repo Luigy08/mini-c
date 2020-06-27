@@ -9,14 +9,10 @@ char genero;
 edad = 54 + 9; 
 resultado = (edad + 10) * 60;  
 
-    if(x == 1 || x != 2){
-        while(x >= 3){
-            for (i = 0; i <= 10; i--){
-            char1 = 'a'; 
-        }
-            x = 4; 
-        }
-    }
+   while(x >= 3){
+      x = 4; 
+      i = 6 * 4; 
+   }
 
 return 0;
 }

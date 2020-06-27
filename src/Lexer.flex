@@ -48,6 +48,7 @@ DECISION = ":"
 QUESTIONMARK = "?"
 INCREMENTADOR = "++"
 DECREMENTADOR = "--"
+ASTERISCO = "*"
 
 COMA = ","
 COMILLASIMPLE = "'"
@@ -57,7 +58,8 @@ BRACKETDER = "]"
 CURLYIZQ = "{"
 CURLYDER = "}"
 
-OPREL = (">"|"<"|"<>"|"<="|">=")
+OPREL = (">"|"<"|"!="|"<="|">="|"==")
+OPCONDICIONALES = ("&&"|"||")
 OPBOOL = ("true"|"false")
 CHARESPECIALES = (".."|"^")
 
@@ -77,7 +79,7 @@ CHARESPECIALES = (".."|"^")
     "READ"      {return new Symbol(sym.READ, yycolumn, yyline, yytext());}
     "INTEGER"   {return new Symbol(sym.INTEGER, yycolumn, yyline, yytext());}
     "VAR"       {return new Symbol(sym.VAR, yycolumn, yyline, yytext());}
-    "FLOAT"      {return new Symbol(sym.FLOAT, yycolumn, yyline, yytext());}
+    "FLOAT"     {return new Symbol(sym.FLOAT, yycolumn, yyline, yytext());}
     "CHAR"      {return new Symbol(sym.CHAR, yycolumn, yyline, yytext());}
     "STRING"    {return new Symbol(sym.STRING1, yycolumn, yyline, yytext());}
     "OR"        {return new Symbol(sym.OR, yycolumn, yyline, yytext());}
@@ -96,7 +98,7 @@ CHARESPECIALES = (".."|"^")
     "ELSE"      {return new Symbol(sym.ELSE, yycolumn, yyline, yytext());}
     "RECORD"    {return new Symbol(sym.RECORD, yycolumn, yyline, yytext());}
     "TYPE"      {return new Symbol(sym.TYPE, yycolumn, yyline, yytext());}
-    "RETURN"     {return new Symbol(sym.RETURN, yycolumn, yyline, yytext());}
+    "RETURN"    {return new Symbol(sym.RETURN, yycolumn, yyline, yytext());}
     "END"       {return new Symbol(sym.END, yycolumn, yyline, yytext());}
 
 
@@ -130,6 +132,7 @@ CHARESPECIALES = (".."|"^")
     {NUMREAL}           {return new Symbol(sym.NUMREAL, yycolumn, yyline, yytext());}
 
     {OPREL}             {return new Symbol(sym.OPREL, yycolumn, yyline, yytext());}
+    {OPCONDICIONALES}   {return new Symbol(sym.OPCONDICIONALES, yycolumn, yyline, yytext());}
     {CHARESPECIALES}    {return new Symbol(sym.CHARESPECIAL, yycolumn, yyline, yytext());}
 
     {ASIGNACION}        {return new Symbol(sym.ASIGNACION, yycolumn, yyline, yytext());}
@@ -137,6 +140,7 @@ CHARESPECIALES = (".."|"^")
     {QUESTIONMARK}      {return new Symbol(sym.QUESTIONMARK, yycolumn, yyline, yytext());}
     {INCREMENTADOR}     {return new Symbol(sym.INCREMENTADOR, yycolumn, yyline, yytext());}
     {DECREMENTADOR}     {return new Symbol(sym.DECREMENTADOR, yycolumn, yyline, yytext());}
+    {ASTERISCO}         {return new Symbol(sym.ASTERISCO, yycolumn, yyline, yytext());}
 
     {OPSUM}             {return new Symbol(sym.OPSUM, yycolumn, yyline, yytext());}
     {OPMULT}            {return new Symbol(sym.OPMULT, yycolumn, yyline, yytext());}
