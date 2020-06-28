@@ -34,7 +34,7 @@ digraph G {
 "34. expresion_matematica = INTEGER"->"33. termino = INTEGER"
 "33. termino = INTEGER"->"32. INTEGER = 28"
 "45. listaProposiciones = null"->"44. proposicion = printf"
-"44. proposicion = printf"->"42. CONSTSTRING = sdfsdf %d"
+"44. proposicion = printf"->"42. CONSTSTRING = sdfsdf %p"
 "44. proposicion = printf"->"43. ID = char1"
 "60. encabezado = null"->"59. declaraciones_principales = FUNCTION"
 "59. declaraciones_principales = FUNCTION"->"57. ID = mifuncion"

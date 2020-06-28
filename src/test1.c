@@ -6,7 +6,7 @@ void main() {
   /*hola mundo*/
 int edad,resultado;
 edad=28;
-printf('sdfsdf %d', char1);
+printf('sdfsdf %p', char1);
 
 return;
 }

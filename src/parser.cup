@@ -3169,11 +3169,11 @@ printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6
               if (index != -1 && tipoId != "INTEGER") {
                 System.out.println("se esperaba un INTEGER [linea: " + t5right + ", columna: " + t5left + "]");
               }
-              int index = t3.toString().indexOf("%c");
+              index = t3.toString().indexOf("%c");
               if (index != -1 && tipoId != "CHAR") {
                 System.out.println("se esperaba un CHAR [linea: " + t5right + ", columna: " + t5left + "]");
               }
-              int index = t3.toString().indexOf("%p");
+              index = t3.toString().indexOf("%p");
               if (index != -1 && tipoId != "POINTER") {
                 System.out.println("se esperaba un POINTER [linea: " + t5right + ", columna: " + t5left + "]");
               }

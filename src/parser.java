@@ -4930,7 +4930,14 @@ class CUP$parser$actions {
               if (index != -1 && tipoId != "INTEGER") {
                 System.out.println("se esperaba un INTEGER [linea: " + t5right + ", columna: " + t5left + "]");
               }
-
+              index = t3.toString().indexOf("%c");
+              if (index != -1 && tipoId != "CHAR") {
+                System.out.println("se esperaba un CHAR [linea: " + t5right + ", columna: " + t5left + "]");
+              }
+              index = t3.toString().indexOf("%p");
+              if (index != -1 && tipoId != "POINTER") {
+                System.out.println("se esperaba un POINTER [linea: " + t5right + ", columna: " + t5left + "]");
+              }
 
               RESULT = nodo;
 
