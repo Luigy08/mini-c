@@ -62,6 +62,28 @@ public class Main {
 		}
 
 	}
+  public static void getValueOfId(Nodo root,Nodo padreActual ,String value) {
+    for (Nodo node : root.hijos) {
+
+			String valorNodo = node.getValor();
+      String etiquetaNodo = node.getEtiqueta();
+
+      if (valorNodo == value) {
+        System.out.println("//////////////////");
+        System.out.println(valorNodo);
+        System.out.println(padreActual.hijos.size());
+        for (Nodo elemeNodo : padreActual.hijos) {
+        System.out.println(elemeNodo.getValor());
+
+        System.out.println("/--------------/");
+        getValueOfId(elemeNodo,null,value); // recursion
+
+        }
+      }
+      getValueOfId(node,root,value); // recursion
+
+    }
+  }
 
 	public static void checkTipoAmbito(Nodo root) { // sirve para recorrido de intermedio igual
 		for (Nodo node : root.hijos) {
@@ -1351,12 +1373,13 @@ public class Main {
 
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("printf")){
           ArrayList<Nodo> hijos = node.getHijos();
-          System.out.println("///////////////////");
+
           if (hijos.size() == 2) {
             Nodo hijo = hijos.get(0);
             Nodo hijo2 = hijos.get(1);
             String valorexpr1 = hijo.getValor();
-				  	String valorexpr2 = hijo2.getValor();
+            String valorexpr2 = hijo2.getValor();
+            // getValueOfId(root,null,valorexpr2);
 				  	TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
           }
           if (hijos.size() == 1) {
