@@ -49,6 +49,7 @@ public class Main {
 				ImprimirTS1(); 
 				ImprimirTSFunc();
 				Graficar(recorrido(root));
+				codigoFinal(); 
 				System.out.println("AST generado.");
 			} else {
 				System.out.println("AST no fue generado ya que se presento un error lexico o sintactico.");
@@ -3039,6 +3040,31 @@ public class Main {
 		}
 
 		return true;
+	}
+
+	//creacion del codigo final
+	public static void codigoFinal(){
+		System.out.println("Codigo Final en MIPS");
+		MIPS.add("	.data"); 
+
+		for(ElementoTS elementoTS: ArregloSimbolos){
+			String idEnTabla = elementoTS.getID(); 
+			String ambitoEnTabla = elementoTS.getAmbito(); 
+			String tipoEnTabla = elementoTS.getTipo(); 
+
+			if(ambitoEnTabla.equals("%Global")) {
+				if(tipoEnTabla.equals("char")){
+					MIPS.add("_" + idEnTabla + ": .space 2"); 
+				}else{
+					MIPS.add("_" + idEnTabla + ": .word 0"); 
+				}
+			}
+		}
+
+		//impresion del codigo final
+		for(String codigo : MIPS){
+			System.out.println(codigo); 
+		}
 	}
 
 	// -----------------------------------------------------------
