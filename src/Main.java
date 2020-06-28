@@ -33,6 +33,7 @@ public class Main {
 	public static String ambitoActual = "%Global";
 	public static int offset = 0;
 	public static int despPila;
+	public static int temporal = 0; 
 
 	// Manejo de Errores de Tipo en Llamadas de Funcion:
 	public static String tipoFuncion = "";
@@ -354,7 +355,7 @@ public class Main {
 						// param.getTipo());
 						// }
 
-						if (search) { //si esta todo bien
+						if (!search) { //si esta todo bien
 							node.setValor(tipoFuncion);
 							TablaCuadruplo.gen("GOTO", "_", "etiq:" + Integer.toString(contadorEtiq), "_nombreFuncion");
 							//TablaCuadruplo.imprimirTablaCuadruplo();
@@ -1004,7 +1005,7 @@ public class Main {
 							if (primeraVuelta) { // revisar cuando se tiene que meter el valor o temporal en el cuadruplo
 								TablaCuadruplo.gen(operando.getValor(), hijoTER.getValor(), hijoMAT.getValor(),
 										"t" + contadorTemp);
-									System.out.println("contador de temp en: " + Integer.toString(contadorTemp));
+									//System.out.println("contador de temp en: " + Integer.toString(contadorTemp));
 								TablaCuadruplo.imprimirTablaCuadruplo();
 								contadorTemp++;
 							} else {
@@ -1350,22 +1351,23 @@ public class Main {
 
 
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("printf")){
-          ArrayList<Nodo> hijos = node.getHijos();
-          System.out.println("///////////////////");
-          if (hijos.size() == 2) {
-            Nodo hijo = hijos.get(0);
-            Nodo hijo2 = hijos.get(1);
-            String valorexpr1 = hijo.getValor();
-				  	String valorexpr2 = hijo2.getValor();
-				  	TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
-          }
-          if (hijos.size() == 1) {
-            Nodo hijo = hijos.get(0);
-            String valorexpr1 = hijo.getValor();
-				  	TablaCuadruplo.gen("printf",valorexpr1,"_","_msg");
-          }
-
-
+					ArrayList<Nodo> hijos = node.getHijos();
+					System.out.println("///////////////////");
+					if (hijos.size() == 2) {
+						Nodo hijo = hijos.get(0);
+						Nodo hijo2 = hijos.get(1);
+						String valorexpr1 = hijo.getValor();
+						String valorexpr2 = hijo2.getValor();
+						TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
+						tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1, valorexpr2,"_msg")); 
+					}
+					  
+					if (hijos.size() == 1) {
+						Nodo hijo = hijos.get(0);
+						String valorexpr1 = hijo.getValor();
+						TablaCuadruplo.gen("printf",valorexpr1,"_","_msg");
+						tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1,"_","_msg")); 
+          			}
 
 					//TablaCuadruplo.imprimirTablaCuadruplo();
 
@@ -2980,9 +2982,9 @@ public class Main {
 			// primero revisar si son de igual tamanio
 
 			int size = param.getParametros().size();
-			System.out.println("parametros: " + Integer.toString(size));
+			//System.out.println("parametros: " + Integer.toString(size));
 			int size2 = funcion.getParametros().size();
-			System.out.println("parametros: " + Integer.toString(size2));
+			//System.out.println("parametros: " + Integer.toString(size2));
 
 			// manejo de errores: (Cargar el string con la funcion y sus argumentos)
 
@@ -3054,11 +3056,78 @@ public class Main {
 		return true;
 	}
 
+		
+  // Obtiene la posición del primer temporal desocupado que encuentra, sino retorna -1. [->]
+  private static int temporalDesocupado() {
+	for (int i = 0; i < temporales.length; i++) {
+		if (!temporales[i]) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+// Obtiene la posición del primer argumento desocupado que encuentra, sino retorna -1. [->]
+private static int argumentoDesocupado() {
+  for (int i = 0; i < argumentos.length; i++) {
+	  if (!argumentos[i]) {
+		  return i;
+	  }
+  }
+  return -1;
+}
+
+// Obtiene la posición del primer temporal ocupado que encuentra, sino retorna -1. [->]  
+private static int temporalOcupado() {
+  for (int i = 0; i < temporales.length; i++) {
+	  if (temporales[i]) {
+		  return i;
+	  }
+  }
+  return -1;
+}
+
+
+// Obtiene la posición del primer temporal ocupado que encuentra, sino retorna -1. [<-]  
+private static int temporalOcupadoRL() {
+    for (int i = temporales.length-1; i >= 0; i--) {
+        if (temporales[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+  // Obtiene la posición del primer argumento ocupado que encuentra, sino retorna -1. [<-]
+  private static int argumentoOcupado() {
+    for (int i = argumentos.length-1; i >= 0; i--) {
+        if (argumentos[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+ // Encuentra la posición de un mensaje repetido en el ArrayList de mensajes, sino retorna -1.
+ private static int mensajeRepetido(String msg) {
+	for (String mensaje : mensajes) {
+		if (msg.equals(mensaje)) {
+			return mensajes.indexOf(mensaje);
+		}
+	}
+	return -1;
+}
+
+// ########## FIN FUNCIONES DE APOYO PARA LA GENERACIÓN DE CÓDIGO FINAL ##########
+
+private static String temporalNuevo() { return "%t" + temporal++; }
 	//creacion del codigo final
 	public static void codigoFinal(){
 		System.out.println("Codigo Final en MIPS");
+		System.out.println("\n");
 		MIPS.add("	.data");
 
+		//final para los elementos globales en la TS
 		for(ElementoTS elementoTS: ArregloSimbolos){
 			String idEnTabla = elementoTS.getID();
 			String ambitoEnTabla = elementoTS.getAmbito();
@@ -3072,6 +3141,45 @@ public class Main {
 				}
 			}
 		}
+		
+			//final para los mensajes
+			for(Cuadruplo cuadruplo: tablaCuadruplos){
+				String operadorCuad = cuadruplo.getOperador(); 
+				String arg1Cuad = cuadruplo.getArgumento1(); 
+				String arg2Cuad = cuadruplo.getArgumento2(); 
+
+				if(operadorCuad.equals("printf")) {
+					arg1Cuad = arg1Cuad.replaceAll("\"", "\""); 
+					if(arg2Cuad == "_"){
+						//escribe el mensaje en el codigo final
+						int position = mensajeRepetido(arg1Cuad); 
+						if(position == -1){
+							//System.out.println("aqui entre");
+							mensajes.add(arg1Cuad); //guarda el mensaje en el arreglo de mensaje en cuyo caso no exista
+							MIPS.add("_msg" + (mensajes.size() - 1) + ": " + arg1Cuad + " .asciiz "); 
+						}else{/*nada pasa*/}
+
+					}else{ //existe un segundo argumento
+						//System.out.println("estoy aqui");
+						int position = mensajeRepetido(arg1Cuad); 
+						if(position == -1){
+							//System.out.println("ahora aqui");
+							mensajes.add(arg1Cuad); 
+							MIPS.add("_msg" + (mensajes.size() - 1) + ": " + arg1Cuad + " .asciiz "); 
+						}else{/*nada pasa*/}
+
+						if(arg2Cuad.charAt(0) == '\''){
+							//System.out.println("entre a este lugar");
+							arg2Cuad = arg2Cuad.replaceAll("\"", "\"");
+							int position2 = mensajeRepetido(arg2Cuad); 
+							if(position2 == -1){
+								mensajes.add(arg2Cuad); 
+								MIPS.add("_msg" + (mensajes.size() - 1) + ": " + arg2Cuad + " .asciiz"); 		
+							}else{/*nada pasa*/}					
+						}		
+					}		
+				}	
+			}
 
 		MIPS.add("\n");
 		//.text
@@ -3081,8 +3189,8 @@ public class Main {
 		MIPS.add("main: ");
 
 		for(ElementoTS elementoTSArreglo : ArregloFunciones){
-			if(elementoTSArreglo.getAmbito() != ambitoActual){
-				System.out.println("parametros de : " + elementoTSArreglo.getID());
+			if(elementoTSArreglo.getAmbito() != ambitoActual && elementoTSArreglo.getAmbito() != elementoTSArreglo.getID()){
+				//System.out.println("Los parametros son: " + elementoTSArreglo.getParametros());
 			}
 		}
 

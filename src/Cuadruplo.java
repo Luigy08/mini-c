@@ -27,7 +27,7 @@ public class Cuadruplo {
     }
 
     public String getArgumento1(){
-        return this.operador; 
+        return this.argumento1; 
     }
 
     public void setArgumento1(String argumento1){
@@ -35,7 +35,7 @@ public class Cuadruplo {
     }
 
     public String getArgumento2(){
-        return this.operador; 
+        return this.argumento2; 
     }
 
     public void setArgumento2(String argumento2){
