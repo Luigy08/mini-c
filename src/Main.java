@@ -17,12 +17,13 @@ import java.util.function.Function;
 
 public class Main {
 
-	public static ArrayList<ElementoTS> ArregloFunciones = parser.ArregloFunciones;
-	public static ArrayList<ElementoTS> ArregloSimbolos = parser.ArregloSimbolos;
+	public static ArrayList<ElementoTS> ArregloFunciones = parser.ArregloFunciones; //utilizadp para todo lo que tenga que ver con funciones y llamados
+	public static ArrayList<ElementoTS> ArregloSimbolos = parser.ArregloSimbolos; //utilizado para todo lo que tenga que ver con ElementoTS
 	public static ArrayList<Cuadruplo> tablaCuadruplos = new ArrayList<>();
 	public static ArrayList<String> MIPS = new ArrayList<String>(); //preparacion para el final 
 	public static ArrayList<String> mensajes = new ArrayList<String>(); //AL de mensajes para codigo final
 	public static boolean[] temporales = {false, false, false, false, false, false, false, false, false, false};
+	public static boolean[] argumentos = {false, false, false, false}; 
 	public static ArrayList<String> etiquetas = new ArrayList<String>();
 
 	public static int contadorTemp = 1;
@@ -31,6 +32,7 @@ public class Main {
 	public static int siguienteSalto = tablaCuadruplos.size();  
 	public static String ambitoActual = "%Global";
 	public static int offset = 0; 
+	public static int despPila; 
 
 	// Manejo de Errores de Tipo en Llamadas de Funcion:
 	public static String tipoFuncion = "";
@@ -49,6 +51,7 @@ public class Main {
 				ImprimirTS1(); 
 				ImprimirTSFunc();
 				Graficar(recorrido(root));
+				System.out.println("\n");
 				codigoFinal(); 
 				System.out.println("AST generado.");
 			} else {
@@ -3058,6 +3061,19 @@ public class Main {
 				}else{
 					MIPS.add("_" + idEnTabla + ": .word 0"); 
 				}
+			}
+		}
+	
+		MIPS.add("\n");
+		//.text 
+		MIPS.add("	.text"); 
+		MIPS.add("	.globl main"); 
+		MIPS.add("\n"); 
+		MIPS.add("main: "); 
+
+		for(ElementoTS elementoTSArreglo : ArregloFunciones){
+			if(elementoTSArreglo.getAmbito() != ambitoActual){
+				System.out.println("parametros de : " + elementoTSArreglo.getID()); 
 			}
 		}
 
