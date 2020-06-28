@@ -3121,7 +3121,7 @@ class CUP$parser$actions {
                         CheckNodes.add(nodo);
                 }
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_matematica",23, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3154,7 +3154,7 @@ class CUP$parser$actions {
                 nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_matematica",23, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3177,15 +3177,11 @@ class CUP$parser$actions {
 		
 
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion_matematica");
+                nodo.setEtiqueta("OPSUM");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                Nodo sum = new Nodo();
-                sum.setEtiqueta("OPSUM");
-                sum.setValor(t1.toString());
-                sum.setId(parser.cont);
-                parser.cont++;
 
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
@@ -3219,7 +3215,6 @@ class CUP$parser$actions {
                 // }
 
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
@@ -3258,7 +3253,7 @@ class CUP$parser$actions {
 
                 nodo.addHijos(hijo);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("termino",21, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3281,14 +3276,9 @@ class CUP$parser$actions {
 		
 
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("termino");
+                nodo.setEtiqueta("OPMULT");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
-                parser.cont++;
-
-                Nodo opmult = new Nodo();
-                opmult.setEtiqueta("OPMULT");
-                opmult.setValor(t1.toString());
-                opmult.setId(parser.cont);
                 parser.cont++;
 
                 // Nodo hijoTER = ((Nodo)hijo1);
@@ -3330,7 +3320,6 @@ class CUP$parser$actions {
                 // }
 
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)opmult);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
@@ -3620,7 +3609,7 @@ class CUP$parser$actions {
                 // for(int i = 0; i < hijito1.getHijos().size(); i++){
                 //        nodo.addHijos(hijito1.getHijos().get(i));
                 // }
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("factor",22, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

@@ -1906,7 +1906,7 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                         CheckNodes.add(nodo);
                 }
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 :} | OPSUM:t1 termino:hijo1 {: //en que caso se usa esto?
 
@@ -1924,20 +1924,16 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 :} | expresion_matematica:hijo1 OPSUM:t1 termino:hijo2 {:
 
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion_matematica");
+                nodo.setEtiqueta("OPSUM");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                Nodo sum = new Nodo();
-                sum.setEtiqueta("OPSUM");
-                sum.setValor(t1.toString());
-                sum.setId(parser.cont);
-                parser.cont++;
 
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
@@ -1971,7 +1967,6 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 // }
 
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
@@ -2000,19 +1995,14 @@ termino ::= factor:hijo1 {: //este
 
                 nodo.addHijos(hijo);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 :} | termino:hijo1 OPMULT:t1 factor:hijo2 {:
 
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("termino");
+                nodo.setEtiqueta("OPMULT");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
-                parser.cont++;
-
-                Nodo opmult = new Nodo();
-                opmult.setEtiqueta("OPMULT");
-                opmult.setValor(t1.toString());
-                opmult.setId(parser.cont);
                 parser.cont++;
 
                 // Nodo hijoTER = ((Nodo)hijo1);
@@ -2054,7 +2044,6 @@ termino ::= factor:hijo1 {: //este
                 // }
 
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)opmult);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
@@ -2238,7 +2227,7 @@ factor ::= IDENTIFICADOR:t1 {:
                 // for(int i = 0; i < hijito1.getHijos().size(); i++){
                 //        nodo.addHijos(hijito1.getHijos().get(i));
                 // }
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 :};
 
 //inicio de programa con o sin parametros
