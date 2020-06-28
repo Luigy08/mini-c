@@ -5,7 +5,8 @@ int mifuncion(int a, char b);
 void main() {
   /*hola mundo*/
 int edad,resultado;
-edad=28 + 2;
+edad=28;
+edad=edad+3;
 
 printf("sdfsdf %c", edad);
 

@@ -1899,12 +1899,14 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 nodo.addHijos((Nodo)hijo1);
                 nodo.setValor(hijo.getValor());
 
-                if(hijo.getError()){ //subir error y mensaje
+               /*
+               if(hijo.getError()){ //subir error y mensaje
                         nodo.setError(true);
                         hijo.setValor("Error de tipos.");
                         nodo.setMensaje(hijo.getMensaje());
                         CheckNodes.add(nodo);
                 }
+               */
 
                 RESULT = (Nodo)hijo1;
 
@@ -2084,7 +2086,7 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 nodo.addHijos(nid);
 
-                RESULT = nodo;
+                RESULT = nid;
 
 :} | IDENTIFICADOR:t1 DOT:t3 IDENTIFICADOR:t2 {:
 

@@ -3114,12 +3114,14 @@ class CUP$parser$actions {
                 nodo.addHijos((Nodo)hijo1);
                 nodo.setValor(hijo.getValor());
 
-                if(hijo.getError()){ //subir error y mensaje
+               /*
+               if(hijo.getError()){ //subir error y mensaje
                         nodo.setError(true);
                         hijo.setValor("Error de tipos.");
                         nodo.setMensaje(hijo.getMensaje());
                         CheckNodes.add(nodo);
                 }
+               */
 
                 RESULT = (Nodo)hijo1;
 
@@ -3370,7 +3372,7 @@ class CUP$parser$actions {
 
                 nodo.addHijos(nid);
 
-                RESULT = nodo;
+                RESULT = nid;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("factor",22, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
