@@ -12,6 +12,7 @@ public class Nodo{
     public int Id;
     public boolean error;
     public String lugar; //add lugar a los nodos 
+    public int cuad;
 
     int lineaCuadruplo; //para el marcador
 
@@ -107,6 +108,42 @@ public class Nodo{
     public void setId(int Id) {
         this.Id = Id;
     }
+
+    // lista_verdadera
+	public void setListaVerdadera(ArrayList<Integer> lv) {
+		listaVerdadera = lv;
+	}
+	public void addListaVerdadera(int n) {
+		listaVerdadera.add(n);
+	}
+	public ArrayList<Integer> getListaVerdadera() { return listaVerdadera; }
+	public int getListaV(int i) { return listaVerdadera.get(i); }
+
+	// lista_falsa
+	public void setListaFalsa(ArrayList<Integer> lf) {
+		listaFalsa = lf;
+	}
+	public void addListaFalsa(int n) {
+		listaFalsa.add(n);
+	}
+	public ArrayList<Integer> getListaFalsa() { return listaFalsa; }
+	public int getListaF(int i) { return listaFalsa.get(i); }
+
+	// cuad
+	public void setCuad(int c) {
+		cuad = c;
+	}
+	public int getCuad() { return cuad; }
+
+	// lista_siguiente
+	public void setListaSig(ArrayList<Integer> ls) {
+		listaSiguiente = ls;
+	}
+	public void addListaSig(int n) {
+		listaSiguiente.add(n);
+	}
+	public ArrayList<Integer> getListaSig() { return listaSiguiente; }
+	public int getListaS(int i) { return listaSiguiente.get(i); }
 
     
 }

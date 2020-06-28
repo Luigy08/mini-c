@@ -550,7 +550,7 @@ terminal BOOLEAN, OPBOOL;
 terminal ASIGNACION, OPDECLARACION;
 
 //OPERADORES
-terminal AND, XOR, OR, NOT, EQUAL, OPREL, OPSUM, OPMULT;
+terminal AND, XOR, OR, NOT, EQUAL, OPREL, OPSUM, OPMULT, OPCONDICIONALES;
 
 //CICLOS
 terminal WHILE, FOR, REPEAT, DO, TO, UNTIL, DOWNTO;
@@ -601,6 +601,8 @@ non terminal asignacionVAR;
 non terminal termino;
 non terminal factor;
 non terminal expresion_matematica;
+non terminal incrementando;
+non terminal decrementando;
 
 non terminal declaracionesVAR;
 non terminal declaracionesVAR_procedure_funcion;
@@ -623,16 +625,14 @@ non terminal lista_parametros;
 non terminal lista_parametros_num;
 non terminal lista_parametros_id;
 
+non terminal marca;
 
 //PRECEDENCIAS
 
 precedence left ELSE;
-precedence left AND;
-precedence left OR;
-precedence left XOR;
-precedence left NOT;
 precedence left EQUAL;
 precedence left OPREL;
+precedence left OPCONDICIONALES;
 precedence left OPSUM;
 precedence left OPMULT;
 precedence left PARIZQ;
@@ -661,7 +661,7 @@ root ::= encabezado:hijo1 {:
         RESULT = nodo;
         :};
 
-encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_principales:hijo3 RETURN:t2 PUNTOCOMA:t4 CURLYDER:t5 declaraciones_principales:hijo4 {: //bloque principal, bloque = 0
+encabezado  ::= declaraciones_principales:hijo1 cuerpo_main:hijo2 declaraciones_principales:hijo3 RETURN:t2 NUM:t3 PUNTOCOMA:t4 CURLYDER:t5 declaraciones_principales:hijo4 {: //bloque principal, bloque = 0
 
                     //NODO PADRE
                     Nodo nodo = new Nodo();
@@ -1050,7 +1050,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                                                 elemento.setAmbito("%Global");
                                                 if( !(buscarExistenciaID(elemento) )){
                                                         ArregloSimbolos.add(elemento);
-                                                        System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
+                                                        //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
 
                                                 } else{  //error, ya existe ese simbolo
                                                         System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
@@ -1065,7 +1065,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
                                                         elemento.setAmbito("%Global");
                                                         if(  !(buscarExistenciaID(elemento)  )) {
                                                                 ArregloSimbolos.add(elemento);
-                                                                System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                                //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                         } else{  //error, ya existe ese simbolo
                                                                 System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo()  + ", Ambito: " + ambitoActual);
@@ -1087,7 +1087,7 @@ declaracionesVAR ::= tipovar:hijo1 listaIdentificadores:hijo2 PUNTOCOMA:t2 {: //
 
 :};
 
-condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
+condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1103,12 +1103,16 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
                 RESULT = nodo;
+
 :}
-         | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3 proposicion:hijo3 {:
+
+         | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5
+           ELSE:t7 CURLYIZQ:t8 listaProposiciones:hijo3 CURLYDER:t9 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF-ELSE");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1118,67 +1122,7 @@ condicionIF ::= IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 {:
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo;
 
-:}
-
-         | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones:hijo2 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                RESULT = nodo;
-
-:}
-         | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones_sinpuntocoma:hijo2 ELSE:t3 cuerpoProposiciones:hijo3 {:
-
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo;
-
-
-:}
-
-         | IF:t1 expresion:hijo1 THEN:t2 proposicion:hijo2 ELSE:t3  cuerpoProposiciones:hijo3 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo;
-:}
-         | IF:t1 expresion:hijo1 THEN:t2 cuerpoProposiciones_sinpuntocoma:hijo2 ELSE:t3  proposicion:hijo3 PUNTOCOMA:t4 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicionIF");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
-                RESULT = nodo;
+:};
 
          :};
 
@@ -1242,7 +1186,6 @@ tipovar ::= INT:t1 {:
 
 :};
 
-
 op_rel_completos ::= EQUAL:t1 {:
 
                 //NODO PADRE
@@ -1276,7 +1219,7 @@ op_rel_completos ::= EQUAL:t1 {:
 
 :};
 
-op_condicional ::= AND:t1 {:
+op_condicional ::= OPCONDICIONALES:t1 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1288,7 +1231,7 @@ op_condicional ::= AND:t1 {:
                 //TERMINALES
 
                 Nodo nAND = new Nodo();
-                nAND.setEtiqueta("AND");
+                nAND.setEtiqueta("OPCONDICIONAL");
                 nAND.setValor(t1.toString());
                 nAND.setId(parser.cont);
                 parser.cont++;
@@ -1298,77 +1241,8 @@ op_condicional ::= AND:t1 {:
                 }
 
                 RESULT = nodo;
-:}
-         | NOT:t1 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                Nodo nNOT = new Nodo();
-                nNOT.setEtiqueta("NOT");
-                nNOT.setValor(t1.toString());
-                nNOT.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
-
-                RESULT = nodo;
-:}
-         | XOR:t1 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                Nodo nXOR = new Nodo();
-                nXOR.setEtiqueta("XOR");
-                nXOR.setValor(t1.toString());
-                nXOR.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
-
-                RESULT = nodo;
-:}
-
-         | OR:t1 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                Nodo nOR = new Nodo();
-                nOR.setEtiqueta("OR");
-                nOR.setValor(t1.toString());
-                nOR.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
-
-                RESULT = nodo;
 :};
+
 
 //expresiones para condiciones de if
 expresion ::= expresion:hijo1 op_condicional:hijo2 expresion:hijo3 {:
@@ -1652,31 +1526,12 @@ proposicion ::= condicionIF:hijo1 {:
                 RESULT = nodo;
 :}
 
-         | cicloREPEAT:hijo1 {:
-
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("proposicion");
-                nodo.setValor("REPEAT");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                //AGREGAR NO TERMINALES
-
-                Nodo hijo = ((Nodo)hijo1);
-
-                for(int i = 0; i < hijo.getHijos().size() ; i++){
-                        nodo.addHijos(hijo.getHijos().get(i));
-                }
-                RESULT = nodo;
-:}
          | llamada_procedure_funcion:hijo1 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("proposicion");
+                nodo.setValor("LLAMADA");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
@@ -1766,6 +1621,45 @@ proposicion ::= condicionIF:hijo1 {:
 
                 RESULT = nodo;
 :}
+            | incrementando:hijo1 PUNTOCOMA:t1 {:
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+                nodo.setValor("INCREMENTADOR");
+
+                Nodo hijo = ((Nodo)hijo1);
+
+                nodo.setValor(hijo.getValor());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                for(int i = 0 ; i < hijo.getHijos().size() ; i++){ //pasar los hijos para arriba
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo;
+
+:}
+            | decrementando:hijo1 PUNTOCOMA:t1 {:
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("proposicion");
+                nodo.setValor("DECREMENTADOR");
+
+                Nodo hijo = ((Nodo)hijo1);
+
+                nodo.setValor(hijo.getValor());
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                for(int i = 0 ; i < hijo.getHijos().size() ; i++){ //pasar los hijos para arriba
+                        nodo.addHijos(hijo.getHijos().get(i));
+                }
+
+                RESULT = nodo;
+:}
             | error:hijo1 PUNTOCOMA:t1 {:
 
                 //NODO PADRE
@@ -1780,7 +1674,7 @@ proposicion ::= condicionIF:hijo1 {:
                 RESULT = nodo;
 :};
 
-cicloWHILE ::= WHILE:t1 condicion:hijo1 DO:t2 cuerpoProposiciones:hijo2 {:
+cicloWHILE ::= WHILE:t1 PARIZQ:t2 condicion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1795,7 +1689,8 @@ cicloWHILE ::= WHILE:t1 condicion:hijo1 DO:t2 cuerpoProposiciones:hijo2 {:
 
 :};
 
-cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:hijo2 {:
+cicloFOR ::= FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 PUNTOCOMA:t4 incrementando:hijo3 PARDER:t5
+             CURLYIZQ:t6 listaProposiciones:hijo4 CURLYDER:t7 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1806,10 +1701,31 @@ cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:h
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3);
+                nodo.addHijos((Nodo)hijo4);
                 RESULT = nodo;
 :}
 
-         | FOR:t1 asignacionVAR:hijo1 DOWNTO:t2 NUM:t3 DO:t4 cuerpoProposiciones:hijo2 {:
+        | FOR:t1 PARIZQ:t2 asignacionVAR:hijo1 PUNTOCOMA:t3 condicion:hijo2 PUNTOCOMA:t4 decrementando:hijo3 PARDER:t5
+          CURLYIZQ:t6 listaProposiciones:hijo4 CURLYDER:t7{:
+
+                 //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("cicloFOR");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3);
+                nodo.addHijos((Nodo)hijo4);
+                RESULT = nodo;
+
+:}
+
+         | FOR:t1 condicion:hijo1 QUESTIONMARK:t4 NUM:t5 DECISION:t6 NUM:t7 PUNTOCOMA:t8
+           proposicion:hijo2 {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
@@ -1824,18 +1740,29 @@ cicloFOR ::= FOR:t1 asignacionVAR:hijo1 TO:t2 NUM:t3 DO:t4 cuerpoProposiciones:h
 
 :};
 
+incrementando ::= IDENTIFICADOR:t1 INCREMENTADOR:t2 {:
 
-cicloREPEAT ::= REPEAT:t1 listaProposiciones:hijo1 UNTIL:t2 condicion:hijo2 PUNTOCOMA:t3 {:
-
-                //NODO PADRE
+                 //NODO PADRE
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("cicloREPEAT");
+                nodo.setEtiqueta("ID");
+                nodo.setValor(t1.toString() + "++");
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                //AGREGAR NO TERMINALES
-                nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
+
+                RESULT = nodo;
+:};
+
+decrementando ::= IDENTIFICADOR:t1 DECREMENTADOR:t2 {:
+
+                 //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("ID");
+                nodo.setValor(t1.toString() + "--");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+
                 RESULT = nodo;
 :};
 
@@ -2259,7 +2186,7 @@ factor ::= IDENTIFICADOR:t1 {:
 
                 Nodo nod = ((Nodo)hijo1);
 
-                for(Nodo node : nod.getHijos()){
+                for(Nodo node : nodo.getHijos()){
                         nodo.addHijos(node);
                 }
 
@@ -2370,7 +2297,7 @@ inicioProgram ::= tipomain:hijo1 MAIN:t1 PARIZQ:t2 PARDER:t3 CURLYIZQ:t4 {:
 
 
 //esta gramatica aguanta varias proposiciones adentro de un begin/end
-cuerpoProposiciones ::=  BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {:
+cuerpoProposiciones ::= BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2397,19 +2324,6 @@ cuerpoProposiciones ::=  BEGIN:t1 listaProposiciones:hijo1 END:t2 PUNTOCOMA:t3 {
 
               RESULT = nodo;
 
-:};
-
-//para los ifs
-cuerpoProposiciones_sinpuntocoma ::= BEGIN:t1 listaProposiciones:hijo1 END:t2 {:
-
-              //NODO PADRE
-              Nodo nodo = new Nodo();
-              nodo.setEtiqueta("cuerpoProposiciones_sinpuntocoma");
-              nodo.setId(parser.cont);
-              parser.cont++;
-
-              nodo.addHijos((Nodo)hijo1);
-              RESULT = nodo;
 :};
 
 inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 PUNTOCOMA:t4 cuerpoprocedure_funcion:hijo2 {:
@@ -2603,7 +2517,8 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 :}
 
         | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4
-          CURLYIZQ:t5 cuerpoprocedure_funcion:hijo3 CURLYDER:t6 {:
+          CURLYIZQ:t5 declaracionesVARAdentroFunctionProcedure:hijo3 listaProposiciones:hijo4
+          RETURN:t6 IDENTIFICADOR:t7 PUNTOCOMA:t8 CURLYDER:t9 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2727,9 +2642,11 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nodo.addHijos((Nodo)hijo1);
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
+              nodo.addHijos((Nodo)hijo4);
               RESULT = nodo;
 :};
 
+//estos son los parametros de la funcion como tal
 declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 {:
 
               //NODO PADRE
@@ -2757,7 +2674,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
                                 elemento.setAmbito("");
                                         if(BuscaTipoFuncion(elemento)){
                                                 ArregloFunciones.add(elemento);
-                                                System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                         } else {  //error, ya existe ese simbolo
                                                 System.out.println("Ya existe ese elemento con ese id, tipo y ambito");
@@ -2773,7 +2690,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
                                         elemento.setAmbito("");
                                                 if(BuscaTipoFuncion(elemento)){
                                                         ArregloFunciones.add(elemento);
-                                                        System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
+                                                        //System.out.println("ID agregado: " + elemento.getID() + ", Tipo: " + elemento.getTipo() + ", Ambito: " + elemento.getAmbito());
 
                                                 } else {  //error, ya existe ese simbolo
                                                         System.out.println("Ya existe una variable " + elemento.getID() + " con el tipo de: " + elemento.getTipo() + " y con el ambito: " + elemento.getAmbito());
@@ -2846,7 +2763,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
 
 
 
-llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 {:
+llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 PUNTOCOMA:t4 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2942,89 +2859,6 @@ lista_parametros ::=  factor:hijo1 lista_parametros:hijo2 {:
 
 :}; //fin lista_parametros
 
-// lista_parametros_id::= IDENTIFICADOR:t1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("ID");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-//               //TERMINALES
-
-//               RESULT = nodo;
-// :}
-//                 | IDENTIFICADOR:t1 COMA:t2 lista_parametros_num:hijo1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("ID");
-//               nodo.setValor(t1.toString() + ", " + ((Nodo)hijo1).getValor());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;
-
-// :};
-//                 | IDENTIFICADOR:t1 COMA:t2 lista_parametros_id:hijo1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("ID");
-//               nodo.setValor(t1.toString() + ", " + ((Nodo)hijo1).getValor());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;
-
-// :}; //fin lista_parametros_id
-
-// lista_parametros_num ::= NUM:t1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-
-//               RESULT = nodo;
-
-// :}
-//                 | NUM:t1 COMA:t2 lista_parametros_id:hijo1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;
-
-// :}
-//                 | NUM:t1 COMA:t2 lista_parametros_num:hijo1 {:
-
-//               //NODO PADRE
-//               Nodo nodo = new Nodo();
-//               nodo.setEtiqueta("NUM");
-//               nodo.setValor(t1.toString());
-//               nodo.setId(parser.cont);
-//               parser.cont++;
-
-//               nodo.addHijos((Nodo)hijo1);
-//               RESULT = nodo;
-
-// :};
-
-
 cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerpoProposiciones:hijo2 {:
 
               //NODO PADRE
@@ -3042,35 +2876,24 @@ cuerpoprocedure_funcion ::= declaracionesVARAdentroFunctionProcedure:hijo1 cuerp
 
               nodo.addHijos((Nodo)hijo2);
               RESULT = nodo;
-:}
-        | {:
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("vacio");
-                nodo.setValor("vacio");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = nodo;
-
 :};
 
-declaracionesVARAdentroFunctionProcedure ::= VAR:t1 listaIdentificadores:hijo1 OPDECLARACION:t2
-tipovar:hijo2 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3{:
+//declaracion de las variables adentro de una funcion
+declaracionesVARAdentroFunctionProcedure ::= tipovar:hijo2 listaIdentificadores:hijo1 PUNTOCOMA:t3 declaracionesVARAdentroFunctionProcedure:hijo3 {:
 
         Nodo nodo = new Nodo();
-              nodo.setEtiqueta("declaracionesVARAdentroFunctionProcedure");
-              nodo.setId(parser.cont);
-              parser.cont++;
+        nodo.setEtiqueta("declaracionesVARAdentroFunctionProcedure");
+        nodo.setId(parser.cont);
+        parser.cont++;
 
-               nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
-                nodo.addHijos((Nodo)hijo3);
+        nodo.addHijos((Nodo)hijo1);
+        nodo.addHijos((Nodo)hijo2);
+        nodo.addHijos((Nodo)hijo3);
 
               RESULT = nodo;
-
  :}
- | {:
+
+        | {:
 
                 //NODO PADRE
                 Nodo nodo = new Nodo();
