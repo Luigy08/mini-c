@@ -1917,14 +1917,9 @@ class CUP$parser$actions {
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_rel_completos");
-                nodo.setValor("vacio");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
-
                 RESULT = nodo;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("op_rel_completos",35, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1943,13 +1938,9 @@ class CUP$parser$actions {
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_rel_completos");
-                nodo.setValor("vacio");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
 
                 RESULT = nodo;
 
@@ -1970,21 +1961,9 @@ class CUP$parser$actions {
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                //TERMINALES
-
-                Nodo nAND = new Nodo();
-                nAND.setEtiqueta("OPCONDICIONAL");
-                nAND.setValor(t1.toString());
-                nAND.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
 
                 RESULT = nodo;
 
@@ -2008,16 +1987,11 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
+                Nodo nodo = (Nodo)hijo2;
                 //TERMINALES
 
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
 
                 RESULT = nodo;
@@ -2036,24 +2010,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion");
-
-                Nodo hijo = ((Nodo)hijo1);
-                nodo.setValor(hijo.getValor());
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                //AGREGAR NO TERMINALES
-
-        //        for(int i = 0; i < hijo.getHijos().size() ; i++){
-        //                 nodo.addHijos(hijo.getHijos().get(i));
-        //         }
-                nodo.addHijos(hijo);
-
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion",36, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -2085,7 +2042,7 @@ class CUP$parser$actions {
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion",36, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2142,11 +2099,8 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
 
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("ID");
@@ -2161,7 +2115,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nNUM);
 
                 RESULT = nodo;
@@ -2186,10 +2139,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("ID");
@@ -2204,7 +2154,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
                 RESULT = nodo;
@@ -2229,10 +2178,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("INTEGER");
@@ -2247,7 +2193,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
                 RESULT = nodo;
@@ -2272,10 +2217,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("CHAR");
@@ -2290,7 +2232,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
                 RESULT = nodo;
@@ -2315,13 +2256,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-
+                Nodo nodo = (Nodo)hijo1;
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("ID");
                 nid.setValor(t1.toString());
@@ -2335,7 +2270,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
 
@@ -3114,14 +3048,16 @@ class CUP$parser$actions {
                 nodo.addHijos((Nodo)hijo1);
                 nodo.setValor(hijo.getValor());
 
-                if(hijo.getError()){ //subir error y mensaje
+               /*
+               if(hijo.getError()){ //subir error y mensaje
                         nodo.setError(true);
                         hijo.setValor("Error de tipos.");
                         nodo.setMensaje(hijo.getMensaje());
                         CheckNodes.add(nodo);
                 }
+               */
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_matematica",23, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3154,7 +3090,7 @@ class CUP$parser$actions {
                 nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_matematica",23, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3177,18 +3113,35 @@ class CUP$parser$actions {
 		
 
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion_matematica");
+                nodo.setEtiqueta("OPSUM");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-                Nodo sum = new Nodo();
-                sum.setEtiqueta("OPSUM");
-                sum.setValor(t1.toString());
-                sum.setId(parser.cont);
-                parser.cont++;
 
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
+                if(returnTipo(hijoMAT.getValor()) == "INTEGER" || returnTipo(hijoMAT.getValor()) == "Error"){
+                  if(hijoMAT.getEtiqueta() != "INTEGER" && hijoMAT.getEtiqueta() != "OPMULT" && hijoMAT.getEtiqueta() != "OPSUM") {
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoMAT.getValor()+", tipo: "+hijoMAT.getEtiqueta()+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                }
+                } else {
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+hijoMAT.getValor()+", tipo: "+returnTipo(hijoMAT.getValor())+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                }
+
+                if(returnTipo(hijoTER.getValor()) == "INTEGER" || returnTipo(hijoTER.getValor()) == "Error"){
+                  if(hijoTER.getEtiqueta() != "INTEGER" && hijoTER.getEtiqueta() != "OPMULT" && hijoTER.getEtiqueta() != "OPSUM") {
+                   nodo.setError(true);
+                   nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoTER.getValor()+", tipo: "+hijoTER.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
+                  }
+                } else {
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+hijoTER.getValor()+", tipo: "+returnTipo(hijoTER.getValor())+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                }
+        System.out.println(nodo.getMensaje());
+
 
                 // if(!(hijoMAT.getValor().equals(hijoTER.getValor())) ){ //si los valores no son iguales, hay inconsistencia de tipos
                 //         nodo.setError(true);
@@ -3219,7 +3172,6 @@ class CUP$parser$actions {
                 // }
 
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)sum);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
@@ -3258,7 +3210,7 @@ class CUP$parser$actions {
 
                 nodo.addHijos(hijo);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("termino",21, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3281,16 +3233,22 @@ class CUP$parser$actions {
 		
 
                 Nodo nodo = new Nodo();
-                nodo.setEtiqueta("termino");
+                nodo.setEtiqueta("OPMULT");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                Nodo opmult = new Nodo();
-                opmult.setEtiqueta("OPMULT");
-                opmult.setValor(t1.toString());
-                opmult.setId(parser.cont);
-                parser.cont++;
-
+                Nodo nHijo1 = (Nodo)hijo1;
+                Nodo nHijo2 = (Nodo)hijo2;
+                if(nHijo1.getEtiqueta() != "INTEGER" && nHijo1.getEtiqueta() != "OPMULT" && nHijo1.getEtiqueta() != "OPSUM") {
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo1.getValor()+" tipo: "+nHijo1.getEtiqueta()+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                  System.out.println(nodo.getMensaje());
+                }
+                if(nHijo2.getEtiqueta() != "INTEGER" && nHijo2.getEtiqueta() != "OPMULT" && nHijo2.getEtiqueta() != "OPSUM") {
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo2.getValor()+" tipo: "+nHijo2.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
+                  System.out.println(nodo.getMensaje());
+                }
                 // Nodo hijoTER = ((Nodo)hijo1);
                 // Nodo hijoFAC = ((Nodo)hijo2);
 
@@ -3330,7 +3288,6 @@ class CUP$parser$actions {
                 // }
 
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)opmult);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
@@ -3381,7 +3338,7 @@ class CUP$parser$actions {
 
                 nodo.addHijos(nid);
 
-                RESULT = nodo;
+                RESULT = nid;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("factor",22, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -3620,7 +3577,7 @@ class CUP$parser$actions {
                 // for(int i = 0; i < hijito1.getHijos().size(); i++){
                 //        nodo.addHijos(hijito1.getHijos().get(i));
                 // }
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("factor",22, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
