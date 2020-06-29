@@ -1136,20 +1136,17 @@ public class Main {
 					Nodo M1 = new Nodo();
 					Nodo M2 = new Nodo();
 
-					if(hijo1.getValor() == null){ //operando la condicion del while
 						ArrayList<Nodo> children = hijo1.getHijos(); //hijos de la expresion
 						Nodo expr1 = children.get(0); //expresion a la izq
-						Nodo oprel = children.get(1); //oprel
-						Nodo expr2 = children.get(2); //expresion a la der
+						Nodo expr2 = children.get(1); //expresion a la der
 
 						String valorexpr1 = expr1.getValor();
-						String valoroprel = oprel.getValor();
 						String valorexpr2 = expr2.getValor();
 
 						hijo1.listaVerdadera = Backpatch.crearLista(siguienteSalto);
 						hijo1.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
 
-						TablaCuadruplo.gen(valoroprel, valorexpr1, valorexpr2, "etiq: " + Integer.toString(contadorEtiq));
+						TablaCuadruplo.gen(hijo1.getValor(), valorexpr1, valorexpr2, "etiq: " + Integer.toString(contadorEtiq));
 						contadorEtiq++;
 
 						TablaCuadruplo.gen("GOTO", "_", "_", "_");
@@ -1172,7 +1169,6 @@ public class Main {
 						TablaCuadruplo.gen("GOTO", "_","_", M2.getEtiquetaV());
 						TablaCuadruplo.imprimirTablaCuadruplo();*/
 
-					}
 
 				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("FOR")){
 					ArrayList<Nodo> hijos = node.getHijos();
