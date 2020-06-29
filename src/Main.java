@@ -2973,7 +2973,6 @@ private static int temporalOcupado() {
   return -1;
 }
 
-
 // Obtiene la posición del primer temporal ocupado que encuentra, sino retorna -1. [<-]
 private static int temporalOcupadoRL() {
     for (int i = temporales.length-1; i >= 0; i--) {
@@ -3003,7 +3002,6 @@ private static int temporalOcupadoRL() {
 	}
 	return -1;
 }
-
 
 
 // ########## FIN FUNCIONES DE APOYO PARA LA GENERACIÓN DE CÓDIGO FINAL ##########
