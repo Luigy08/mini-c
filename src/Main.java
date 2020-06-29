@@ -26,8 +26,8 @@ public class Main {
 	public static boolean[] argumentos = {false, false, false, false};
 	public static ArrayList<String> etiquetas = new ArrayList<String>();
 
-	public static int contadorTemp = 1;
-	public static int contadorEtiq = 1;
+	public static int contadorTemp = 0;
+	public static int contadorEtiq = 0;
 	public static boolean primeraVuelta = true;
 	public static int siguienteSalto = tablaCuadruplos.size();
 	public static String ambitoActual = "%Global";
@@ -45,7 +45,7 @@ public class Main {
 			parser p = new parser(new Lexer(new FileReader(argv[0])));
 			p.parse();
 			if (parser.ErroresSintacticos.isEmpty() && Lexer.lexical_errors.isEmpty()) {
-
+        System.out.println(p.ErroresSintacticos.size());
 				Nodo root = parser.padre;
 				checkTipoAmbito(root);
 				ImprimirTS1();
@@ -87,7 +87,9 @@ public class Main {
 
 	public static void checkTipoAmbito(Nodo root) { // sirve para recorrido de intermedio igual
 		for (Nodo node : root.hijos) {
-
+      if (node.getError()) {
+        System.out.println(node.getMensaje());
+      }
 			String valorNodo = node.getValor();
 			String etiquetaNodo = node.getEtiqueta();
 
@@ -411,7 +413,42 @@ public class Main {
 
 				break;
 			} // fin case llamada_procedure_funcion
+      case "OPSUM": {
+        ArrayList<Nodo> hijos = node.getHijos();
+        Nodo hijo = hijos.get(0);
+        Nodo hijo2 = hijos.get(1);
+        if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 2), "t"+ Integer.toString(contadorTemp - 1), "t" + contadorTemp);
+        } else if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 1), hijo2.getValor(), "t" + contadorTemp);
+        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), hijo.getValor(),"t"+ Integer.toString(contadorTemp - 1) ,"t" + contadorTemp);
+        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), hijo.getValor(),hijo2.getValor() ,"t" + contadorTemp);
+        }
+        TablaCuadruplo.imprimirTablaCuadruplo();
+        contadorTemp++;
 
+        break;
+      }
+      case "OPMULT": {
+        ArrayList<Nodo> hijos = node.getHijos();
+        Nodo hijo = hijos.get(0);
+        Nodo hijo2 = hijos.get(1);
+        if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 2), "t"+ Integer.toString(contadorTemp - 1), "t" + contadorTemp);
+        } else if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 1), hijo2.getValor(), "t" + contadorTemp);
+        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), hijo.getValor(),"t"+ Integer.toString(contadorTemp - 1) ,"t" + contadorTemp);
+        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+          TablaCuadruplo.gen(node.getValor(), hijo.getValor(),hijo2.getValor() ,"t" + contadorTemp);
+        }
+        TablaCuadruplo.imprimirTablaCuadruplo();
+        contadorTemp++;
+
+        break;
+      }
 			case "termino": {
 				ArrayList<Nodo> hijos = node.getHijos();
 				if (hijos.size() == 1) { // si el unico hijo de termino es un factor, subir valor del factor.
@@ -1053,10 +1090,21 @@ public class Main {
 			} // fin case expresion mat
 
 			case "cuerpoProposiciones":
-			case "asignacionVAR":
+      case "asignacionVAR":
 			case "proposicion": {
 				String valorProp = node.getValor();
-				Nodo marcador = new Nodo();
+        Nodo marcador = new Nodo();
+        if (valorProp.equals("=")) {
+          ArrayList<Nodo> hijos = node.getHijos();
+          Nodo hijo = hijos.get(0);
+          Nodo hijo2 = hijos.get(1);
+          if (hijo2.getEtiqueta() != "INTEGER") {
+            TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 1), "_", hijo.getValor());
+          } else if (hijo2.getEtiqueta() == "INTEGER") {
+            TablaCuadruplo.gen(node.getValor(), hijo2.getValor(),"_", hijo.getValor());
+          }
+          TablaCuadruplo.imprimirTablaCuadruplo();
+        }
 				if(node.getEtiqueta().equals("proposicion") && valorProp.equals("IF")){ //en el caso de que solo sea un if
 
 					ArrayList<Nodo> hijos = node.getHijos();
@@ -1387,6 +1435,7 @@ public class Main {
             String valorexpr1 = hijo.getValor();
 				  	TablaCuadruplo.gen("printf",valorexpr1,"_","_msg");
           }
+          TablaCuadruplo.imprimirTablaCuadruplo();
 
 
 
@@ -1401,6 +1450,7 @@ public class Main {
 					TablaCuadruplo.gen("read",valorexpr1,"_", "_msg");
 					//TablaCuadruplo.imprimirTablaCuadruplo();
 				}
+        TablaCuadruplo.imprimirTablaCuadruplo();
 
 			} //fin proposicion de intermedio
 

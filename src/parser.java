@@ -3187,6 +3187,27 @@ class CUP$parser$actions {
 
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
+                if(returnTipo(hijoMAT.getValor()) == "INTEGER" || returnTipo(hijoMAT.getValor()) == "Error"){
+                  if(hijoMAT.getEtiqueta() != "INTEGER" && hijoMAT.getEtiqueta() != "OPMULT" && hijoMAT.getEtiqueta() != "OPSUM") {
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoMAT.getValor()+", tipo: "+hijoMAT.getEtiqueta()+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                }
+                } else {
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+hijoMAT.getValor()+", tipo: "+returnTipo(hijoMAT.getValor())+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                }
+
+                if(returnTipo(hijoTER.getValor()) == "INTEGER" || returnTipo(hijoTER.getValor()) == "Error"){
+                  if(hijoTER.getEtiqueta() != "INTEGER" && hijoTER.getEtiqueta() != "OPMULT" && hijoTER.getEtiqueta() != "OPSUM") {
+                   nodo.setError(true);
+                   nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoTER.getValor()+", tipo: "+hijoTER.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
+                  }
+                } else {
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+hijoTER.getValor()+", tipo: "+returnTipo(hijoTER.getValor())+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                }
+        System.out.println(nodo.getMensaje());
+
 
                 // if(!(hijoMAT.getValor().equals(hijoTER.getValor())) ){ //si los valores no son iguales, hay inconsistencia de tipos
                 //         nodo.setError(true);
@@ -3282,7 +3303,18 @@ class CUP$parser$actions {
                 nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
+                Nodo nHijo1 = (Nodo)hijo1;
+                Nodo nHijo2 = (Nodo)hijo2;
+                if(nHijo1.getEtiqueta() != "INTEGER" && nHijo1.getEtiqueta() != "OPMULT" && nHijo1.getEtiqueta() != "OPSUM") {
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo1.getValor()+" tipo: "+nHijo1.getEtiqueta()+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                  System.out.println(nodo.getMensaje());
+                }
+                if(nHijo2.getEtiqueta() != "INTEGER" && nHijo2.getEtiqueta() != "OPMULT" && nHijo2.getEtiqueta() != "OPSUM") {
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo2.getValor()+" tipo: "+nHijo2.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
+                  System.out.println(nodo.getMensaje());
+                }
                 // Nodo hijoTER = ((Nodo)hijo1);
                 // Nodo hijoFAC = ((Nodo)hijo2);
 
