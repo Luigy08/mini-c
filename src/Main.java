@@ -48,7 +48,8 @@ public class Main {
 			if (parser.ErroresSintacticos.isEmpty() && Lexer.lexical_errors.isEmpty()) {
         System.out.println(p.ErroresSintacticos.size());
 				Nodo root = parser.padre;
-				checkTipoAmbito(root);
+        checkTipoAmbito(root);
+        TablaCuadruplo.imprimirTablaCuadruplo();
 				ImprimirTS1();
 				ImprimirTSFunc();
 				Graficar(recorrido(root));
@@ -83,6 +84,26 @@ public class Main {
       }
       getValueOfId(node,root,value); // recursion
 
+    }
+  }
+
+  public static void codigoIntermedioIf (Nodo condicionalActual) {
+    System.out.println(condicionalActual.getEtiqueta() + " " + condicionalActual.getValor());
+    Nodo operadorCompleto = condicionalActual.hijos.get(0);
+    Nodo left = operadorCompleto.hijos.get(0);
+    Nodo right = operadorCompleto.hijos.get(1);
+    TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(contadorEtiq));
+    TablaCuadruplo.gen("GOTO", "_", "_", "_");
+    contadorEtiq++;
+    if (condicionalActual.hijos.get(1).getEtiqueta().equals("op_rel_completos")) {
+    operadorCompleto = condicionalActual.hijos.get(1);
+      left = operadorCompleto.hijos.get(0);
+      right = operadorCompleto.hijos.get(1);
+      TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" +  Integer.toString(contadorEtiq));
+      TablaCuadruplo.gen("GOTO", "_", "_", "_");
+      contadorEtiq++;
+    } else {
+      codigoIntermedioIf(condicionalActual.hijos.get(1));
     }
   }
 
@@ -1106,8 +1127,9 @@ public class Main {
             TablaCuadruplo.gen(node.getValor(), hijo2.getValor(),"_", hijo.getValor());
           }
           TablaCuadruplo.imprimirTablaCuadruplo();
-        }
-				if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
+        } else if(node.getValor().equals("IF")){
+          codigoIntermedioIf(node.hijos.get(0).hijos.get(0)); //envio del primer condicional
+        } else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo1 = hijos.get(0); //nodo de condicion
 					Nodo hijo2 = hijos.get(1); //nodo de prop
@@ -1166,11 +1188,10 @@ public class Main {
 					//proposicion es el hijo condicion y despues procedemos a conseguir los hijos de condicion
 					ArrayList<Nodo> childprop = proposicion.getHijos();
 					Nodo firstchild = childprop.get(0);
-					Nodo rel = childprop.get(1);
-					Nodo secondchild = childprop.get(2);
+					Nodo secondchild = childprop.get(1);
 
 					//metiendo al cuadruplo la condicion
-					TablaCuadruplo.gen(rel.getValor(), firstchild.getValor(), secondchild.getValor(), "t" + Integer.toString(contadorTemp));
+					TablaCuadruplo.gen(proposicion.getValor(), firstchild.getValor(), secondchild.getValor(), "t" + Integer.toString(contadorTemp));
 
 					//creando intermedio para el nodo N
 					N.listaSiguiente = Backpatch.crearLista(siguienteSalto);
@@ -1178,8 +1199,8 @@ public class Main {
 
 					//genera el intermedio del decremento/incremento
 					if(incdec.getValor().equals("i--")){
-						TablaCuadruplo.gen("-", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp));
-						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-1), "_", "i");
+						TablaCuadruplo.gen("-", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp + 1));
+						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp), "_", "i");
 					}else if(incdec.getValor().equals("i++")){
 						TablaCuadruplo.gen("+", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp));
 						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-1), "_", "i");
