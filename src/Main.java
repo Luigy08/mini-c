@@ -3004,6 +3004,8 @@ private static int temporalOcupadoRL() {
 	return -1;
 }
 
+
+
 // ########## FIN FUNCIONES DE APOYO PARA LA GENERACIÓN DE CÓDIGO FINAL ##########
 
 private static String temporalNuevo() { return "%t" + temporal++; }
