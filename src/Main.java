@@ -1128,7 +1128,8 @@ public class Main {
           }
           TablaCuadruplo.imprimirTablaCuadruplo();
         } else if(node.getValor().equals("IF")){
-          codigoIntermedioIf(node.hijos.get(0).hijos.get(0)); //envio del primer condicional
+		  codigoIntermedioIf(node.hijos.get(0).hijos.get(0)); //envio del primer condicional
+		  
         } else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo1 = hijos.get(0); //nodo de condicion
