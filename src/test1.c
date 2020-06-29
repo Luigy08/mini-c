@@ -7,8 +7,8 @@ void main()
 {
   int edad, resultado, nuevo;
   char genero;
-  genero='3';
-  edad = 2 + 4;
+  edad=2+3;
+  resultado=edad;
   if (2 >= 3 || 2>1 || 3<4 || 5==5)
   {
     printf("edad: %d", edad);

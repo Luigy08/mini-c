@@ -1099,9 +1099,10 @@ public class Main {
           ArrayList<Nodo> hijos = node.getHijos();
           Nodo hijo = hijos.get(0);
           Nodo hijo2 = hijos.get(1);
-          if (hijo2.getEtiqueta() != "INTEGER") {
-            TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 1), "_", hijo.getValor());
-          } else if (hijo2.getEtiqueta() == "INTEGER") {
+          if (!hijo2.getEtiqueta().equals("INTEGER") && !hijo2.getEtiqueta().equals("CHAR") && !hijo2.getEtiqueta().equals("ID")) {
+          System.out.println(hijo2.getEtiqueta() + " | " + hijo.getEtiqueta());
+          TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)), "_", hijo.getValor());
+          } else{
             TablaCuadruplo.gen(node.getValor(), hijo2.getValor(),"_", hijo.getValor());
           }
           TablaCuadruplo.imprimirTablaCuadruplo();
