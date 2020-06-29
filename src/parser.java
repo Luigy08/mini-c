@@ -1917,14 +1917,9 @@ class CUP$parser$actions {
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_rel_completos");
-                nodo.setValor("vacio");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
-
                 RESULT = nodo;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("op_rel_completos",35, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1943,13 +1938,9 @@ class CUP$parser$actions {
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_rel_completos");
-                nodo.setValor("vacio");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
 
                 RESULT = nodo;
 
@@ -1970,21 +1961,9 @@ class CUP$parser$actions {
                 //NODO PADRE
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("op_condicional");
-                nodo.setValor("vacio");
+                nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
-                //TERMINALES
-
-                Nodo nAND = new Nodo();
-                nAND.setEtiqueta("OPCONDICIONAL");
-                nAND.setValor(t1.toString());
-                nAND.setId(parser.cont);
-                parser.cont++;
-
-                if(nodo.getValor().equals("vacio")){
-                        nodo.setValor(t1.toString());
-                }
 
                 RESULT = nodo;
 
@@ -2008,16 +1987,11 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
+                Nodo nodo = (Nodo)hijo2;
                 //TERMINALES
 
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
-                nodo.addHijos((Nodo)hijo2);
                 nodo.addHijos((Nodo)hijo3);
 
                 RESULT = nodo;
@@ -2036,24 +2010,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion");
-
-                Nodo hijo = ((Nodo)hijo1);
-                nodo.setValor(hijo.getValor());
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //TERMINALES
-
-                //AGREGAR NO TERMINALES
-
-        //        for(int i = 0; i < hijo.getHijos().size() ; i++){
-        //                 nodo.addHijos(hijo.getHijos().get(i));
-        //         }
-                nodo.addHijos(hijo);
-
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion",36, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -2085,7 +2042,7 @@ class CUP$parser$actions {
                         nodo.addHijos(hijo.getHijos().get(i));
                 }
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion",36, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2142,11 +2099,8 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
 
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("ID");
@@ -2161,7 +2115,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nNUM);
 
                 RESULT = nodo;
@@ -2186,10 +2139,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("ID");
@@ -2204,7 +2154,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
                 RESULT = nodo;
@@ -2229,10 +2178,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("INTEGER");
@@ -2247,7 +2193,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
                 RESULT = nodo;
@@ -2272,10 +2217,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
+                Nodo nodo = (Nodo)hijo1;
 
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("CHAR");
@@ -2290,7 +2232,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
                 RESULT = nodo;
@@ -2315,13 +2256,7 @@ class CUP$parser$actions {
 		
 
                 //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("condicion");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                //AGREGAR NO TERMINALES
-
+                Nodo nodo = (Nodo)hijo1;
                 Nodo nid = new Nodo();
                 nid.setEtiqueta("ID");
                 nid.setValor(t1.toString());
@@ -2335,7 +2270,6 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 nodo.addHijos(nid);
-                nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos(nodo2);
 
 
