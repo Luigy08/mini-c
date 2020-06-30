@@ -199,13 +199,8 @@ CHARESPECIALES = (".."|"^")
 
     {COMILLASDOBLE} {
         longitudentrada++;
-        if(longitudentrada == 2){
-            yybegin(YYINITIAL);
-            return new Symbol(sym.CONSTCHAR, yycolumn, yyline, entrada);
-        } else{
             yybegin(YYINITIAL);
             return new Symbol(sym.CONSTSTRING, yycolumn, yyline, entrada);
-        }
     }
     . {
         entrada += yytext();

@@ -1044,13 +1044,8 @@ class Lexer implements java_cup.runtime.Scanner {
           case 100: break;
           case 25: 
             { longitudentrada++;
-        if(longitudentrada == 2){
-            yybegin(YYINITIAL);
-            return new Symbol(sym.CONSTCHAR, yycolumn, yyline, entrada);
-        } else{
             yybegin(YYINITIAL);
             return new Symbol(sym.CONSTSTRING, yycolumn, yyline, entrada);
-        }
             } 
             // fall through
           case 101: break;
