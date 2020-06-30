@@ -25,7 +25,7 @@ public class Main {
 	public static boolean[] temporales = {false, false, false, false, false, false, false, false, false, false};
 	public static boolean[] argumentos = {false, false, false, false};
 	public static ArrayList<String> etiquetas = new ArrayList<String>();
-
+	public static ArrayList<String> temporalesIntermedio = new ArrayList<String>();
 	public static int contadorTemp = 0;
 	public static int contadorEtiq = 0;
 	public static boolean primeraVuelta = true;
@@ -34,6 +34,7 @@ public class Main {
 	public static int offset = 0;
 	public static int despPila;
 	public static int temporal = 0;
+	public static int temporalActual = 0;
 
 	// Manejo de Errores de Tipo en Llamadas de Funcion:
 	public static String tipoFuncion = "";
@@ -53,7 +54,8 @@ public class Main {
 				ImprimirTS1();
 				ImprimirTSFunc();
 				Graficar(recorrido(root));
-				System.out.println("\n");
+        System.out.println("\n");
+
 				codigoFinal();
 				System.out.println("AST generado.");
 			} else {
@@ -439,16 +441,17 @@ public class Main {
         ArrayList<Nodo> hijos = node.getHijos();
         Nodo hijo = hijos.get(0);
         Nodo hijo2 = hijos.get(1);
-        if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+        if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER" && hijo.getEtiqueta() != "ID" && hijo2.getEtiqueta() != "ID") {
           TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 2), "t"+ Integer.toString(contadorTemp - 1), "t" + contadorTemp);
-        } else if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+        } else if (hijo.getEtiqueta() != "ID" && hijo.getEtiqueta() != "INTEGER" && (hijo2.getEtiqueta() == "INTEGER" ||hijo2.getEtiqueta() == "ID")) {
           TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 1), hijo2.getValor(), "t" + contadorTemp);
-        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+        } else if ((hijo.getEtiqueta() == "INTEGER" || hijo.getEtiqueta() == "ID") && hijo2.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "ID") {
           TablaCuadruplo.gen(node.getValor(), hijo.getValor(),"t"+ Integer.toString(contadorTemp - 1) ,"t" + contadorTemp);
-        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+        } else if ((hijo.getEtiqueta() == "INTEGER" || hijo.getEtiqueta() == "ID") && (hijo2.getEtiqueta() == "INTEGER" || hijo2.getEtiqueta() == "ID")) {
           TablaCuadruplo.gen(node.getValor(), hijo.getValor(),hijo2.getValor() ,"t" + contadorTemp);
         }
         TablaCuadruplo.imprimirTablaCuadruplo();
+        temporalesIntermedio.add("t"+contadorTemp);
         contadorTemp++;
 
         break;
@@ -457,16 +460,17 @@ public class Main {
         ArrayList<Nodo> hijos = node.getHijos();
         Nodo hijo = hijos.get(0);
         Nodo hijo2 = hijos.get(1);
-        if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+        if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER" && hijo.getEtiqueta() != "ID" && hijo2.getEtiqueta() != "ID") {
           TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 2), "t"+ Integer.toString(contadorTemp - 1), "t" + contadorTemp);
-        } else if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+        } else if (hijo.getEtiqueta() != "ID" && hijo.getEtiqueta() != "INTEGER" && (hijo2.getEtiqueta() == "INTEGER" ||hijo2.getEtiqueta() == "ID")) {
           TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString(contadorTemp - 1), hijo2.getValor(), "t" + contadorTemp);
-        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() != "INTEGER") {
+        } else if ((hijo.getEtiqueta() == "INTEGER" || hijo.getEtiqueta() == "ID") && hijo2.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "ID") {
           TablaCuadruplo.gen(node.getValor(), hijo.getValor(),"t"+ Integer.toString(contadorTemp - 1) ,"t" + contadorTemp);
-        } else if (hijo.getEtiqueta() == "INTEGER" && hijo2.getEtiqueta() == "INTEGER") {
+        } else if ((hijo.getEtiqueta() == "INTEGER" || hijo.getEtiqueta() == "ID") && (hijo2.getEtiqueta() == "INTEGER" || hijo2.getEtiqueta() == "ID")) {
           TablaCuadruplo.gen(node.getValor(), hijo.getValor(),hijo2.getValor() ,"t" + contadorTemp);
         }
         TablaCuadruplo.imprimirTablaCuadruplo();
+        temporalesIntermedio.add("t"+contadorTemp);
         contadorTemp++;
 
         break;
@@ -591,12 +595,14 @@ public class Main {
 									TablaCuadruplo.gen(operando.getValor(), hijoTER.getValor(), hijoFAC.getValor(),
 											"t" + contadorTemp);
 									TablaCuadruplo.imprimirTablaCuadruplo();
-									contadorTemp++;
+                   temporalesIntermedio.add("t"+contadorTemp);
+                    contadorTemp++;
 								} else {
 									TablaCuadruplo.gen(operando.getValor(), hijoTER.getValor(),
 											"t" + Integer.toString(contadorTemp - 1), "t" + contadorTemp);
 									TablaCuadruplo.imprimirTablaCuadruplo();
-									contadorTemp++;
+                  temporalesIntermedio.add("t"+contadorTemp);
+                  contadorTemp++;
 								}
 								primeraVuelta = false;
 							}
@@ -706,13 +712,15 @@ public class Main {
 									if (primeraVuelta) {
 										TablaCuadruplo.gen(operando.getValor(), hijoTER.getValor(), hijoFAC.getValor(),
 												"t" + contadorTemp);
-										TablaCuadruplo.imprimirTablaCuadruplo();
-										contadorTemp++;
+                    TablaCuadruplo.imprimirTablaCuadruplo();
+                    temporalesIntermedio.add("t"+contadorTemp);
+                    contadorTemp++;
 									} else {
 										TablaCuadruplo.gen(operando.getValor(), hijoTER.getValor(),
 												"t" + Integer.toString(contadorTemp - 1), "t" + contadorTemp);
 										TablaCuadruplo.imprimirTablaCuadruplo();
-										contadorTemp++;
+                    temporalesIntermedio.add("t"+contadorTemp);
+                    contadorTemp++;
 									}
 									primeraVuelta = false;
 								}
@@ -1087,12 +1095,14 @@ public class Main {
 										"t" + contadorTemp);
 									//System.out.println("contador de temp en: " + Integer.toString(contadorTemp));
 								TablaCuadruplo.imprimirTablaCuadruplo();
-								contadorTemp++;
+                temporalesIntermedio.add("t"+contadorTemp);
+                contadorTemp++;
 							} else {
 								TablaCuadruplo.gen(operando.getValor(), "t" + Integer.toString(contadorTemp - 1),
 										hijoMAT.getValor(), "t" + contadorTemp);
 								TablaCuadruplo.imprimirTablaCuadruplo();
-								contadorTemp++;
+                temporalesIntermedio.add("t"+contadorTemp);
+                contadorTemp++;
 							}
 							primeraVuelta = false;
 						}
@@ -1247,8 +1257,16 @@ public class Main {
           if (hijos.size() == 1) {
             Nodo hijo = hijos.get(0);
             String valorexpr1 = hijo.getValor();
-            TablaCuadruplo.gen("printf",valorexpr1,"_","_msg");
-            tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1,"_","_msg"));
+            System.out.println("/////////////////");
+            System.out.println(hijo.getEtiqueta());
+            if (hijo.getEtiqueta().equals("CONSTSTRING")) {
+              TablaCuadruplo.gen("printf",valorexpr1,"_","_msg");
+              tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1,"_","_msg"));
+            }else {
+              TablaCuadruplo.gen("printf","_",valorexpr1,"_msg");
+            tablaCuadruplos.add(new Cuadruplo("printf", "_",valorexpr1,"_msg"));
+            }
+
           }
           TablaCuadruplo.imprimirTablaCuadruplo();
 
@@ -1262,7 +1280,7 @@ public class Main {
 
 					String valorexpr1 = hijo.getValor();
 
-					TablaCuadruplo.gen("read",valorexpr1,"_", "_msg");
+					TablaCuadruplo.gen(valorProp,valorexpr1,"_", "_msg");
 					//TablaCuadruplo.imprimirTablaCuadruplo();
 				}
         TablaCuadruplo.imprimirTablaCuadruplo();
@@ -2985,7 +3003,7 @@ private static int temporalOcupadoRL() {
 }
 
   // Obtiene la posición del primer argumento ocupado que encuentra, sino retorna -1. [<-]
-  private static int argumentoOcupado() {
+private static int argumentoOcupado() {
     for (int i = argumentos.length-1; i >= 0; i--) {
         if (argumentos[i]) {
             return i;
@@ -3003,7 +3021,31 @@ private static int temporalOcupadoRL() {
 	}
 	return -1;
 }
-
+private static void liberalTemporal(int indice) {
+  temporales[indice] = false;
+}
+private static int nuevoTeporal() {
+  for (int i = 0; i < temporales.length; i++) {
+    if (!temporales[i]) {
+      temporalActual=i;
+      temporales[i] = true;
+      return i;
+    }
+  }
+  liberalTemporal(0);
+  return 0;
+}
+private static Boolean isTemporal(String value) {
+  return temporalesIntermedio.indexOf(value) != -1;
+}
+private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+}
 // ########## FIN FUNCIONES DE APOYO PARA LA GENERACIÓN DE CÓDIGO FINAL ##########
 
 private static String temporalNuevo() { return "%t" + temporal++; }
@@ -3012,7 +3054,6 @@ private static String temporalNuevo() { return "%t" + temporal++; }
 		System.out.println("Codigo Final en MIPS");
 		System.out.println("\n");
 		MIPS.add("	.data");
-
 		//final para los elementos globales en la TS
 		for(ElementoTS elementoTS: ArregloSimbolos){
 			String idEnTabla = elementoTS.getID();
@@ -3021,28 +3062,26 @@ private static String temporalNuevo() { return "%t" + temporal++; }
 
 			if(ambitoEnTabla.equals("%Global")) {
 				if(tipoEnTabla.equals("char")){
-					MIPS.add("_" + idEnTabla + ": .space 2");
+					MIPS.add("_" + idEnTabla + ":   .space 2");
 				}else{
-					MIPS.add("_" + idEnTabla + ": .word 0");
+					MIPS.add("_" + idEnTabla + ":   .word 0");
 				}
 			}
 		}
-
 			//final para los mensajes
 			for(Cuadruplo cuadruplo: tablaCuadruplos){
 				String operadorCuad = cuadruplo.getOperador();
 				String arg1Cuad = cuadruplo.getArgumento1();
 				String arg2Cuad = cuadruplo.getArgumento2();
-
-				if(operadorCuad.equals("printf")) {
+				if(operadorCuad.equals("printf") && !arg1Cuad.equals("_")) {
 					arg1Cuad = arg1Cuad.replaceAll("\"", "\"");
 					if(arg2Cuad == "_"){
 						//escribe el mensaje en el codigo final
 						int position = mensajeRepetido(arg1Cuad);
 						if(position == -1){
 							//System.out.println("aqui entre");
-							mensajes.add(arg1Cuad); //guarda el mensaje en el arreglo de mensaje en cuyo caso no exista
-							MIPS.add("_msg" + (mensajes.size() - 1) + ": " + arg1Cuad + " .asciiz ");
+              mensajes.add(arg1Cuad); //guarda el mensaje en el arreglo de mensaje en cuyo caso no exista
+							MIPS.add("_msg" + (mensajes.size() - 1) + ": " +" .asciiz "+ arg1Cuad );
 						}else{/*nada pasa*/}
 
 					}else{ //existe un segundo argumento
@@ -3079,6 +3118,90 @@ private static String temporalNuevo() { return "%t" + temporal++; }
 				//System.out.println("Los parametros son: " + elementoTSArreglo.getParametros());
 			}
 		}
+    //inicio de cuerpo de codigo final
+
+    for(Cuadruplo cuadruplo: TablaCuadruplo.getTablaCuadruplo()){
+      String operadorCuad = cuadruplo.getOperador();
+      String arg1Cuad = cuadruplo.getArgumento1();
+      String arg2Cuad = cuadruplo.getArgumento2();
+      String respuesta = cuadruplo.getRespuesta();
+
+      if (operadorCuad.equals("printf") && !arg1Cuad.equals("_")) {
+        MIPS.add("  li  $v0,  4");
+        MIPS.add("  la  $a0,  _msg"+mensajeRepetido(arg1Cuad));
+        MIPS.add("  syscall");
+        MIPS.add("");
+      } else if (operadorCuad.equals("printf") && arg1Cuad.equals("_")) {
+        MIPS.add("  li  $v0,  1");
+        MIPS.add("  la  $a0,  _"+arg2Cuad);
+        MIPS.add("  syscall");
+        MIPS.add("");
+      } else if (operadorCuad.equals("scanf")) {
+        MIPS.add("  li  $v0,  5");
+        MIPS.add("  syscall");
+        MIPS.add("  sw  $v0,  _"+arg1Cuad);
+        MIPS.add("");
+      } else if (operadorCuad.equals("+") ||operadorCuad.equals("*") ||operadorCuad.equals("-") ||operadorCuad.equals("/")) {
+        int primerTemporal;
+        int segundoTemporal;
+        if (!isTemporal(arg1Cuad)) {
+          primerTemporal = nuevoTeporal();
+          if (isNumeric(arg1Cuad)) {
+            MIPS.add("  lw  $t"+primerTemporal+",  "+arg1Cuad);
+          } else {
+            MIPS.add("  lw  $t"+primerTemporal+",  _"+arg1Cuad);
+          }
+        } else {
+          if (isTemporal(arg1Cuad) && isTemporal(arg2Cuad)) {
+            primerTemporal = temporalActual-1;
+          } else {
+            primerTemporal = temporalActual;
+          }
+
+        }
+        if (!isTemporal(arg2Cuad)) {
+          segundoTemporal = nuevoTeporal();
+          if (isNumeric(arg2Cuad)) {
+            MIPS.add("  lw  $t"+segundoTemporal+", "+arg2Cuad);
+          } else {
+            MIPS.add("  lw  $t"+segundoTemporal+", _"+arg2Cuad);
+          }
+        } else  {
+          segundoTemporal = temporalActual;
+        }
+        int resultadoTemporal = nuevoTeporal();
+        String comando = "";
+        if (operadorCuad.equals("+")) {
+          comando="add";
+        } else if (operadorCuad.equals("-")) {
+          comando="sub";
+        } else if (operadorCuad.equals("*")) {
+          comando="mul";
+        } else if (operadorCuad.equals("/")) {
+          comando="div";
+        }
+        MIPS.add("  "+comando + " $t"+resultadoTemporal+",  $t"+primerTemporal+", $t"+segundoTemporal);
+        liberalTemporal(primerTemporal);
+        liberalTemporal(segundoTemporal);
+        MIPS.add("");
+      } else if (operadorCuad.equals("=")) {
+        if (isTemporal(arg1Cuad)) {
+          MIPS.add("  sw  $t"+temporalActual+",  _"+respuesta);
+        } else {
+          int primerTemporal = nuevoTeporal();
+          if (isNumeric(arg1Cuad)) {
+            MIPS.add("  lw  $t"+primerTemporal+",  "+arg1Cuad);
+          } else {
+            MIPS.add("  lw  $t"+primerTemporal+",  _"+arg1Cuad);
+          }
+          MIPS.add("  sw  $t"+primerTemporal+",  _"+respuesta);
+          liberalTemporal(primerTemporal);
+        }
+        MIPS.add("");
+      }
+    }
+    MIPS.add("li  $v0,  10");
+    MIPS.add("syscall");
 
 		//impresion del codigo final
 		for(String codigo : MIPS){
