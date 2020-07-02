@@ -4693,7 +4693,7 @@ class CUP$parser$actions {
               parser.cont+=2;
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
@@ -4762,7 +4762,7 @@ class CUP$parser$actions {
               parser.cont+=2;
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
@@ -4816,7 +4816,7 @@ class CUP$parser$actions {
               //TERMINALES
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont++;//string
 
@@ -4870,7 +4870,7 @@ class CUP$parser$actions {
               //TERMINALES
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
@@ -4919,7 +4919,7 @@ class CUP$parser$actions {
               parser.cont+=2;
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 

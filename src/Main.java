@@ -35,7 +35,7 @@ public class Main {
 	public static int despPila;
 	public static int temporal = 0;
 	public static int temporalActual = 0;
-
+  public static ArrayList<Integer> idRecorridos = new ArrayList<Integer>();
 	// Manejo de Errores de Tipo en Llamadas de Funcion:
 	public static String tipoFuncion = "";
 	public static String ErrorFuncion = "";
@@ -66,56 +66,65 @@ public class Main {
 		}
 
 	}
-  public static void getValueOfId(Nodo root,Nodo padreActual ,String value) {
-    for (Nodo node : root.hijos) {
 
-			String valorNodo = node.getValor();
-      String etiquetaNodo = node.getEtiqueta();
-
-      if (valorNodo == value) {
-        System.out.println("//////////////////");
-        System.out.println(valorNodo);
-        System.out.println(padreActual.hijos.size());
-        for (Nodo elemeNodo : padreActual.hijos) {
-        System.out.println(elemeNodo.getValor());
-
-        System.out.println("/--------------/");
-        getValueOfId(elemeNodo,null,value); // recursion
-
-        }
+  public static void codigoIntermedioIf (Nodo condicionalActual, String tipo) {
+    if (condicionalActual.getEtiqueta().equals("op_rel_completos")){
+      Nodo left = condicionalActual.hijos.get(0);
+      Nodo right = condicionalActual.hijos.get(1);
+      int etiquetaVerdadera = contadorEtiq;
+      contadorEtiq++;
+      TablaCuadruplo.gen("IF" + condicionalActual.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(etiquetaVerdadera));
+      if (tipo.equals("IF")) {
+        TablaCuadruplo.gen("GOTO", "_", "_","_");
+      } else {
+        TablaCuadruplo.gen("GOTO", "_", "_","_etiq"+contadorEtiq);
+        contadorEtiq++;
       }
-      getValueOfId(node,root,value); // recursion
-
-    }
-  }
-
-  public static void codigoIntermedioIf (Nodo condicionalActual) {
-    System.out.println(condicionalActual.getEtiqueta() + " " + condicionalActual.getValor());
-    Nodo operadorCompleto = condicionalActual.hijos.get(0);
-    Nodo left = operadorCompleto.hijos.get(0);
-    Nodo right = operadorCompleto.hijos.get(1);
-    TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(contadorEtiq));
-    TablaCuadruplo.gen("GOTO", "_", "_", "_");
-    contadorEtiq++;
-    if (condicionalActual.hijos.get(1).getEtiqueta().equals("op_rel_completos")) {
-    operadorCompleto = condicionalActual.hijos.get(1);
-      left = operadorCompleto.hijos.get(0);
-      right = operadorCompleto.hijos.get(1);
-      TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" +  Integer.toString(contadorEtiq));
+      TablaCuadruplo.gen("LABEL","_etiq"+etiquetaVerdadera,"_","_");
+    } else {
+      Nodo operadorCompleto = condicionalActual.hijos.get(0);
+      Nodo left = operadorCompleto.hijos.get(0);
+      Nodo right = operadorCompleto.hijos.get(1);
+      TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(contadorEtiq));
       TablaCuadruplo.gen("GOTO", "_", "_", "_");
       contadorEtiq++;
-    } else {
-      codigoIntermedioIf(condicionalActual.hijos.get(1));
+      if (condicionalActual.hijos.get(1).getEtiqueta().equals("op_rel_completos")) {
+      operadorCompleto = condicionalActual.hijos.get(1);
+        left = operadorCompleto.hijos.get(0);
+        right = operadorCompleto.hijos.get(1);
+        TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" +  Integer.toString(contadorEtiq));
+        TablaCuadruplo.gen("GOTO", "_", "_", "_");
+        contadorEtiq++;
+      } else {
+        codigoIntermedioIf(condicionalActual.hijos.get(1), tipo);
+      }
     }
+
+  }
+  public static void generarIncrementadorDecrementador(Nodo root, String variable) {
+    char tipo = root.getValor().charAt(root.getValor().length() - 1);
+    TablaCuadruplo.gen("" + tipo, variable ,"1" ,"t" + contadorTemp);
+    contadorTemp++;
+    TablaCuadruplo.gen("=", "t"+contadorTemp,"_", tipo);
+  }
+  public static void generarAsignacion(Nodo root) {
+    ArrayList<Nodo> hijos = root.getHijos();
+    Nodo hijo = hijos.get(0);
+    Nodo hijo2 = hijos.get(1);
+    checkTipoAmbito(hijo2);
+    if (!hijo2.getEtiqueta().equals("INTEGER") && !hijo2.getEtiqueta().equals("CHAR") && !hijo2.getEtiqueta().equals("ID")) {
+    System.out.println(hijo2.getEtiqueta() + " | " + hijo.getEtiqueta());
+    TablaCuadruplo.gen(root.getValor(), "t"+ Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)), "_", hijo.getValor());
+    } else{
+      TablaCuadruplo.gen(root.getValor(), hijo2.getValor(),"_", hijo.getValor());
+    }
+    TablaCuadruplo.imprimirTablaCuadruplo();
   }
 
-	public static void checkTipoAmbito(Nodo root) { // sirve para recorrido de intermedio igual
-		for (Nodo node : root.hijos) {
-      if (node.getError()) {
-        System.out.println(node.getMensaje());
-      }
-			String valorNodo = node.getValor();
+  public static void checkTipoAmbito(Nodo node) { // sirve para recorrido de intermedio igual
+    String valorNodo = node.getValor();
 			String etiquetaNodo = node.getEtiqueta();
+      idRecorridos.add(node.getId());
 
 			/*
 			 *
@@ -139,7 +148,6 @@ public class Main {
 			} catch (Exception e) {
 			}
 
-			checkTipoAmbito(node); // recursion
 
 			switch (etiquetaNodo) {
 
@@ -1122,129 +1130,70 @@ public class Main {
 			} // fin case expresion mat
 
 			case "cuerpoProposiciones":
-      case "asignacionVAR":
+      case "asignacionVAR": {
+        break;
+      }
 			case "proposicion": {
 				String valorProp = node.getValor();
-        Nodo marcador = new Nodo();
         if (valorProp.equals("=")) {
-          ArrayList<Nodo> hijos = node.getHijos();
-          Nodo hijo = hijos.get(0);
-          Nodo hijo2 = hijos.get(1);
-          if (!hijo2.getEtiqueta().equals("INTEGER") && !hijo2.getEtiqueta().equals("CHAR") && !hijo2.getEtiqueta().equals("ID")) {
-          System.out.println(hijo2.getEtiqueta() + " | " + hijo.getEtiqueta());
-          TablaCuadruplo.gen(node.getValor(), "t"+ Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)), "_", hijo.getValor());
-          } else{
-            TablaCuadruplo.gen(node.getValor(), hijo2.getValor(),"_", hijo.getValor());
-          }
-          TablaCuadruplo.imprimirTablaCuadruplo();
+          generarAsignacion(node);
         } else if(node.getValor().equals("IF")){
-          codigoIntermedioIf(node.hijos.get(0).hijos.get(0)); //envio del primer condicional
+          codigoIntermedioIf(node.hijos.get(0).hijos.get(0), node.hijos.get(0).getValor()); //envio del primer condicional
+          if (node.hijos.get(0).getValor().equals("IF-ELSE")) {
+            checkTipoAmbito(node.hijos.get(0).hijos.get(1));
+            TablaCuadruplo.gen("LABEL","_etiq"+(contadorEtiq -1),"_","_");
+            checkTipoAmbito(node.hijos.get(0).hijos.get(2));
+          }
         } else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("WHILE")){
 					ArrayList<Nodo> hijos = node.getHijos();
 					Nodo hijo1 = hijos.get(0); //nodo de condicion
 					Nodo hijo2 = hijos.get(1); //nodo de prop
 					Nodo M1 = new Nodo();
 					Nodo M2 = new Nodo();
+          int primerEtiqueta = contadorEtiq;
+          contadorEtiq++;
+          TablaCuadruplo.gen("LABEL","_etiq"+primerEtiqueta,"_","_");
 
 						ArrayList<Nodo> children = hijo1.getHijos(); //hijos de la expresion
 						Nodo expr1 = children.get(0); //expresion a la izq
-						Nodo expr2 = children.get(1); //expresion a la der
-
-						String valorexpr1 = expr1.getValor();
+            Nodo expr2 = children.get(1); //expresion a la der
+            String valorexpr1 = expr1.getValor();
 						String valorexpr2 = expr2.getValor();
-
-						hijo1.listaVerdadera = Backpatch.crearLista(siguienteSalto);
-						hijo1.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
-
-						TablaCuadruplo.gen(hijo1.getValor(), valorexpr1, valorexpr2, "etiq: " + Integer.toString(contadorEtiq));
+            TablaCuadruplo.gen("IF"+hijo1.getValor(), valorexpr1, valorexpr2, "_etiq" + Integer.toString(contadorEtiq));
 						contadorEtiq++;
+            checkTipoAmbito(hijo2);
+            TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(primerEtiqueta));
+            TablaCuadruplo.gen("LABEL","_etiq"+contadorEtiq,"_","_");
+            contadorEtiq++;
 
-						TablaCuadruplo.gen("GOTO", "_", "_", "_");
-						TablaCuadruplo.imprimirTablaCuadruplo();
-
-						Backpatch.completa(hijo1.getListaVerdadera(), M2.getCuad());
-						node.setListaSig(hijo1.getListaFalsa());
-						Backpatch.completa(hijo2.getListaSig(), M1.getCuad());
-
-						tablaCuadruplos.add(new Cuadruplo("GOTO", " ", " ", String.valueOf(M1.getCuad())));
-						/*M1.setEtiqueta("etiq:" + Integer.toString(contadorEtiq));
-						contadorEtiq++;
-
-						M2.setEtiquetaV("etiq:" + Integer.toString(contadorEtiq));
-						contadorEtiq++;
-
-						Backpatch.completa(hijo1.listaVerdadera, M2.lineaCuadruplo);
-						node.listaSiguiente = hijo1.listaFalsa;
-						Backpatch.completa(hijo2.listaSiguiente, M1.lineaCuadruplo);
-						TablaCuadruplo.gen("GOTO", "_","_", M2.getEtiquetaV());
-						TablaCuadruplo.imprimirTablaCuadruplo();*/
-
-
-				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("FOR")){
-					ArrayList<Nodo> hijos = node.getHijos();
-					Nodo M1 = new Nodo();
-					Nodo M2 = new Nodo();
-					Nodo M3 = new Nodo();
-					Nodo N = new Nodo();
-					//Nodo hijo = hijos.get(0); //agarrando la asignacion principal
-					Nodo proposicion = hijos.get(1);
-					Nodo incdec = hijos.get(2);
-					Nodo S1 = hijos.get(3);
-
-					//proposicion es el hijo condicion y despues procedemos a conseguir los hijos de condicion
-					ArrayList<Nodo> childprop = proposicion.getHijos();
-					Nodo firstchild = childprop.get(0);
-					Nodo secondchild = childprop.get(1);
-
-					//metiendo al cuadruplo la condicion
-					TablaCuadruplo.gen(proposicion.getValor(), firstchild.getValor(), secondchild.getValor(), "t" + Integer.toString(contadorTemp));
-
-					//creando intermedio para el nodo N
-					N.listaSiguiente = Backpatch.crearLista(siguienteSalto);
-					tablaCuadruplos.add(new Cuadruplo("GOTO","_", "_", "_"));
-
-					//genera el intermedio del decremento/incremento
-					if(incdec.getValor().equals("i--")){
-						TablaCuadruplo.gen("-", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp + 1));
-						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp), "_", "i");
-					}else if(incdec.getValor().equals("i++")){
-						TablaCuadruplo.gen("+", "t" + Integer.toString(contadorTemp), "1", "t" + Integer.toString(contadorTemp));
-						TablaCuadruplo.gen("=","t" + Integer.toString(contadorTemp-1), "_", "i");
-					}
-
-					//generando intermedio del FOR como tal
-					Backpatch.completa(S1.getListaSig(), M2.getCuad());
-					Backpatch.completa(proposicion.getListaVerdadera(), M3.getCuad());
-					node.listaSiguiente = proposicion.getListaFalsa();
-					Backpatch.completa(N.getListaSig(), M1.getCuad());
-					TablaCuadruplo.gen("GOTO","_", "_", String.valueOf(M2.getCuad()));
-
-					tablaCuadruplos.add(new Cuadruplo("GOTO", "_", "_", String.valueOf(M2.getCuad())));
-
-					/*ArrayList<Nodo> children = hijo.getHijos();
-					Nodo expr1 = children.get(0);
-					//System.out.println("valor de expr1: " + expr1.getValor());
-					Nodo expr2 = children.get(1);
-					//System.out.println("valor de expr1: " + expr1.getValor());
-
-					ArrayList<Nodo> childExpr2 = expr2.getHijos();
-					Nodo hijo1 = childExpr2.get(0);
-
-					ArrayList<Nodo> childOfChild = hijo1.getHijos();
-					Nodo hijo2 = childOfChild.get(0);
-
-					TablaCuadruplo.gen("=", hijo2.getValor(), expr1.getValor(), "I");
-					//TablaCuadruplo.imprimirTablaCuadruplo();
-
-					Backpatch.completa(firstchild.listaSiguiente, siguienteSalto);
-					//System.out.println("siguientesalto: " + Integer.toString(siguienteSalto));
-					TablaCuadruplo.gen("=",expr1.getValor(),"t" + Integer.toString(contadorTemp - 1),"_");
-					TablaCuadruplo.imprimirTablaCuadruplo();*/
-
-
-				}else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("printf")){
+				} else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("FOR")){
           ArrayList<Nodo> hijos = node.getHijos();
-
+          Nodo operadorCompleto = hijos.get(1);
+          Nodo operacionDelID = hijos.get(2);
+          Nodo left = operadorCompleto.hijos.get(0);
+          Nodo right = operadorCompleto.hijos.get(1);
+          Nodo asignacion = hijos.get(0);
+          int primerEtiqueta = contadorEtiq;
+          generarAsignacion(asignacion);
+          TablaCuadruplo.gen("LABEL","_etiq"+primerEtiqueta,"_","_");
+          contadorEtiq++;
+          int segundaEtiqueta = contadorEtiq;
+          TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(segundaEtiqueta));
+          contadorEtiq++;
+          int terceraEtiqueta = contadorEtiq;
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+terceraEtiqueta);
+          contadorEtiq++;
+          TablaCuadruplo.gen("LABEL","_etiq"+contadorEtiq,"_","_");
+          contadorEtiq++;
+          generarIncrementadorDecrementador(operacionDelID, asignacion.hijos.get(0).getValor());
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(primerEtiqueta));
+          TablaCuadruplo.gen("LABEL","_etiq"+segundaEtiqueta,"_","_");
+          checkTipoAmbito(node.hijos.get(3));
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(terceraEtiqueta));
+     //     TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
+       //   tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1, valorexpr2,"_msg"));
+				} else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("printf")){
+          ArrayList<Nodo> hijos = node.getHijos();
           if (hijos.size() == 2) {
             Nodo hijo = hijos.get(0);
             Nodo hijo2 = hijos.get(1);
@@ -1253,12 +1202,11 @@ public class Main {
             // getValueOfId(root,null,valorexpr2);
             TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
             tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1, valorexpr2,"_msg"));
+            TablaCuadruplo.imprimirTablaCuadruplo();
           }
           if (hijos.size() == 1) {
             Nodo hijo = hijos.get(0);
             String valorexpr1 = hijo.getValor();
-            System.out.println("/////////////////");
-            System.out.println(hijo.getEtiqueta());
             if (hijo.getEtiqueta().equals("CONSTSTRING")) {
               TablaCuadruplo.gen("printf",valorexpr1,"_","_msg");
               tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1,"_","_msg"));
@@ -2549,7 +2497,11 @@ public class Main {
 			} // fin case expresion_parentesis
 			default:
 				break;
-			}
+      }
+		for (Nodo hijo : node.hijos) {
+      if (!idRecorridos.contains(hijo.getId())) {
+		  	checkTipoAmbito(hijo);
+      }
 		}
 	}
 

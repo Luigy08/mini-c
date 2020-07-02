@@ -2911,7 +2911,7 @@ printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6
               parser.cont+=2;
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
@@ -2955,7 +2955,7 @@ printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6
               parser.cont+=2;
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
@@ -2983,7 +2983,7 @@ printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6
               //TERMINALES
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont++;//string
 
@@ -3011,7 +3011,7 @@ printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6
               //TERMINALES
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
@@ -3040,7 +3040,7 @@ printf ::= PRINTF:t1 PARIZQ:t2 CONSTSTRING:t3 COMA:t4 IDENTIFICADOR:t5 PARDER:t6
               parser.cont+=2;
               Nodo nCONSTSTRING = new Nodo();
               nCONSTSTRING.setEtiqueta("CONSTSTRING");
-              nCONSTSTRING.setValor("\""+t3.toString()+"\"");
+              nCONSTSTRING.setValor(t3.toString());
               nCONSTSTRING.setId(parser.cont);
               parser.cont+=1;
 
