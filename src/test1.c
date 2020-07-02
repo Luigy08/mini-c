@@ -1,11 +1,12 @@
 int o, result;
 void main()
 {
-  o=10;
+      o=10;
+
   while (o>0)
   {
     printf("entro");
-    o--;
+    o=o-1;
   }
 
 

@@ -111,6 +111,7 @@ public class Main {
     ArrayList<Nodo> hijos = root.getHijos();
     Nodo hijo = hijos.get(0);
     Nodo hijo2 = hijos.get(1);
+    checkTipoAmbito(hijo2);
     if (!hijo2.getEtiqueta().equals("INTEGER") && !hijo2.getEtiqueta().equals("CHAR") && !hijo2.getEtiqueta().equals("ID")) {
     System.out.println(hijo2.getEtiqueta() + " | " + hijo.getEtiqueta());
     TablaCuadruplo.gen(root.getValor(), "t"+ Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)), "_", hijo.getValor());
@@ -1149,40 +1150,21 @@ public class Main {
 					Nodo hijo2 = hijos.get(1); //nodo de prop
 					Nodo M1 = new Nodo();
 					Nodo M2 = new Nodo();
+          int primerEtiqueta = contadorEtiq;
+          contadorEtiq++;
+          TablaCuadruplo.gen("LABEL","_etiq"+primerEtiqueta,"_","_");
 
 						ArrayList<Nodo> children = hijo1.getHijos(); //hijos de la expresion
 						Nodo expr1 = children.get(0); //expresion a la izq
-						Nodo expr2 = children.get(1); //expresion a la der
-
-						String valorexpr1 = expr1.getValor();
+            Nodo expr2 = children.get(1); //expresion a la der
+            String valorexpr1 = expr1.getValor();
 						String valorexpr2 = expr2.getValor();
-
-						hijo1.listaVerdadera = Backpatch.crearLista(siguienteSalto);
-						hijo1.listaFalsa = Backpatch.crearLista(siguienteSalto + 1);
-
-						TablaCuadruplo.gen(hijo1.getValor(), valorexpr1, valorexpr2, "etiq: " + Integer.toString(contadorEtiq));
+            TablaCuadruplo.gen("IF"+hijo1.getValor(), valorexpr1, valorexpr2, "_etiq" + Integer.toString(contadorEtiq));
 						contadorEtiq++;
-
-						TablaCuadruplo.gen("GOTO", "_", "_", "_");
-						TablaCuadruplo.imprimirTablaCuadruplo();
-
-						Backpatch.completa(hijo1.getListaVerdadera(), M2.getCuad());
-						node.setListaSig(hijo1.getListaFalsa());
-						Backpatch.completa(hijo2.getListaSig(), M1.getCuad());
-
-						tablaCuadruplos.add(new Cuadruplo("GOTO", " ", " ", String.valueOf(M1.getCuad())));
-						/*M1.setEtiqueta("etiq:" + Integer.toString(contadorEtiq));
-						contadorEtiq++;
-
-						M2.setEtiquetaV("etiq:" + Integer.toString(contadorEtiq));
-						contadorEtiq++;
-
-						Backpatch.completa(hijo1.listaVerdadera, M2.lineaCuadruplo);
-						node.listaSiguiente = hijo1.listaFalsa;
-						Backpatch.completa(hijo2.listaSiguiente, M1.lineaCuadruplo);
-						TablaCuadruplo.gen("GOTO", "_","_", M2.getEtiquetaV());
-						TablaCuadruplo.imprimirTablaCuadruplo();*/
-
+            checkTipoAmbito(hijo2);
+            TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(primerEtiqueta));
+            TablaCuadruplo.gen("LABEL","_etiq"+contadorEtiq,"_","_");
+            contadorEtiq++;
 
 				} else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("FOR")){
           ArrayList<Nodo> hijos = node.getHijos();
