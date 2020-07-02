@@ -1,9 +1,13 @@
-int a,b,c;
-
+int o, result;
 void main()
 {
-  c=3;
-  printf("El resultado es: ");
-  printf(c);
+  o=10;
+  while (o>0)
+  {
+    printf("entro");
+    o--;
+  }
+
+
   return 0;
 }
