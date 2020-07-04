@@ -1,13 +1,13 @@
-int o, result;
+int i, o;
 void main()
 {
-      o=10;
-
-  while (o>0)
+  o=4+3;
+  for (i = 0; i < 4; i++)
   {
-    printf("entro");
-    o=o-1;
+    printf("Hola");
+    /* code */
   }
+
 
 
   return 0;
