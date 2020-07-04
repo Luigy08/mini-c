@@ -105,7 +105,7 @@ public class Main {
     char tipo = root.getValor().charAt(root.getValor().length() - 1);
     TablaCuadruplo.gen("" + tipo, variable ,"1" ,"t" + contadorTemp);
     contadorTemp++;
-    TablaCuadruplo.gen("=", "t"+contadorTemp,"_", tipo);
+    TablaCuadruplo.gen("=","t"+contadorTemp,"_",variable);
   }
   public static void generarAsignacion(Nodo root) {
     ArrayList<Nodo> hijos = root.getHijos();
@@ -113,8 +113,7 @@ public class Main {
     Nodo hijo2 = hijos.get(1);
     checkTipoAmbito(hijo2);
     if (!hijo2.getEtiqueta().equals("INTEGER") && !hijo2.getEtiqueta().equals("CHAR") && !hijo2.getEtiqueta().equals("ID")) {
-    System.out.println(hijo2.getEtiqueta() + " | " + hijo.getEtiqueta());
-    TablaCuadruplo.gen(root.getValor(), "t"+ Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)), "_", hijo.getValor());
+    TablaCuadruplo.gen(root.getValor(),hijo.getValor() , "_", "t"+ Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)));
     } else{
       TablaCuadruplo.gen(root.getValor(), hijo2.getValor(),"_", hijo.getValor());
     }
@@ -3150,6 +3149,8 @@ private static String temporalNuevo() { return "%t" + temporal++; }
           liberalTemporal(primerTemporal);
         }
         MIPS.add("");
+      } else if (operadorCuad.equals("LABEL")) {
+
       }
     }
     MIPS.add("li  $v0,  10");
