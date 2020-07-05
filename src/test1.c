@@ -1,12 +1,9 @@
-int i, o, res;
-void main()
-{
-  for (i = 0; i < 10; i++)
+int i, j;
+void main() {
+  if (4<5)
   {
-    printf(i);
+    printf("entro");
   }
-
-
 
   return 0;
 }
