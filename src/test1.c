@@ -1,14 +1,9 @@
-int i, o, res;
-void main()
-{
-  printf("ingrese un numero: ");
-  scanf(o);
-  while (o>0)
+int i, j;
+void main() {
+  if (4<5)
   {
-    printf(o);
-    o=o-1;
+    printf("entro");
   }
-
 
   return 0;
 }

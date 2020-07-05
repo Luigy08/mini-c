@@ -68,7 +68,15 @@ public class Main {
 
 	}
 
-  public static void codigoIntermedioIf (Nodo condicionalActual, String tipo, int etiquetaFalsa) {
+  public static int contadorDeCondiones (Nodo root, int inicial) {
+    if (root.getValor().equals("||") ) {
+      return contadorDeCondiones(root.hijos.get(1), inicial+ 1);
+    } else {
+      return inicial;
+    }
+  }
+
+  public static void codigoIntermedioIf (Nodo condicionalActual, String tipo, int etiquetaFalsa, int indice) {
     if (condicionalActual.getEtiqueta().equals("op_rel_completos")){
       Nodo left = condicionalActual.hijos.get(0);
       Nodo right = condicionalActual.hijos.get(1);
@@ -87,18 +95,37 @@ public class Main {
       Nodo operadorCompleto = condicionalActual.hijos.get(0);
       Nodo left = operadorCompleto.hijos.get(0);
       Nodo right = operadorCompleto.hijos.get(1);
-      TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(contadorEtiq));
-      TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+etiquetaFalsa);
-      contadorEtiq++;
+        int etiquetaVerdadera = contadorEtiq;
+        TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),  right.getValor(),"etiq" + etiquetaVerdadera);
+        contadorEtiq++;
+        if (condicionalActual.getValor().equals("||")) {
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+contadorEtiq);
+          contadorEtiq++;
+        } else {
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+etiquetaFalsa);
+          if (indice == 0) {
+            contadorEtiq++;
+          }
+        }
+        TablaCuadruplo.gen("LABEL","_etiq"+etiquetaVerdadera,"_","_");
+
       if (condicionalActual.hijos.get(1).getEtiqueta().equals("op_rel_completos")) {
       operadorCompleto = condicionalActual.hijos.get(1);
         left = operadorCompleto.hijos.get(0);
         right = operadorCompleto.hijos.get(1);
-        TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" +  Integer.toString(contadorEtiq));
-        TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+etiquetaFalsa);
+        int etiquetaVerdaderaUltima = contadorEtiq;
         contadorEtiq++;
+        TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" +  etiquetaVerdaderaUltima);
+        if (condicionalActual.getValor().equals("||")) {
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+contadorEtiq);
+          contadorEtiq++;
+        } else {
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+etiquetaFalsa);
+        }
+        TablaCuadruplo.gen("LABEL","_etiq"+etiquetaVerdaderaUltima,"_","_");
+
       } else {
-        codigoIntermedioIf(condicionalActual.hijos.get(1), tipo, etiquetaFalsa);
+        codigoIntermedioIf(condicionalActual.hijos.get(1), tipo, etiquetaFalsa, indice + 1);
       }
     }
 
@@ -106,8 +133,9 @@ public class Main {
   public static void generarIncrementadorDecrementador(Nodo root, String variable) {
     char tipo = root.getValor().charAt(root.getValor().length() - 1);
     TablaCuadruplo.gen("" + tipo, variable ,"1" ,"t" + contadorTemp);
-    contadorTemp++;
+    temporalesIntermedio.add("t"+contadorTemp);
     TablaCuadruplo.gen("=","t"+contadorTemp,"_",variable);
+    contadorTemp++;
   }
   public static void generarAsignacion(Nodo root) {
     ArrayList<Nodo> hijos = root.getHijos();
@@ -1141,7 +1169,10 @@ public class Main {
           generarAsignacion(node);
         } else if(node.getValor().equals("IF")){
           int etiquetaFalsa = contadorEtiq+1;
-          codigoIntermedioIf(node.hijos.get(0).hijos.get(0), node.hijos.get(0).getValor(), etiquetaFalsa); //envio del primer condicional
+          if (node.hijos.get(0).hijos.get(0).getValor().equals("||")){
+            etiquetaFalsa = (contadorDeCondiones(node.hijos.get(0).hijos.get(0), 0) * 2) + 1;
+          }
+          codigoIntermedioIf(node.hijos.get(0).hijos.get(0), node.hijos.get(0).getValor(), etiquetaFalsa, 0); //envio del primer condicional
           if (node.hijos.get(0).getValor().equals("IF-ELSE")) {
             checkTipoAmbito(node.hijos.get(0).hijos.get(1));
             int salida = contadorEtiq;
@@ -1191,18 +1222,21 @@ public class Main {
           TablaCuadruplo.gen("LABEL","_etiq"+primerEtiqueta,"_","_");
           contadorEtiq++;
           int segundaEtiqueta = contadorEtiq;
-          TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"etiq" + Integer.toString(segundaEtiqueta));
+          TablaCuadruplo.gen("IF" + operadorCompleto.getValor(),left.getValor(),right.getValor(),"_etiq" + Integer.toString(segundaEtiqueta));
           contadorEtiq++;
           int terceraEtiqueta = contadorEtiq;
           TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+terceraEtiqueta);
           contadorEtiq++;
-          TablaCuadruplo.gen("LABEL","_etiq"+contadorEtiq,"_","_");
+          int etiquetaIncrementador = contadorEtiq;
+          TablaCuadruplo.gen("LABEL","_etiq"+etiquetaIncrementador,"_","_");
           contadorEtiq++;
           generarIncrementadorDecrementador(operacionDelID, asignacion.hijos.get(0).getValor());
           TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(primerEtiqueta));
           TablaCuadruplo.gen("LABEL","_etiq"+segundaEtiqueta,"_","_");
           checkTipoAmbito(node.hijos.get(3));
-          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(terceraEtiqueta));
+          TablaCuadruplo.gen("GOTO", "_", "_", "_etiq"+(etiquetaIncrementador));
+          TablaCuadruplo.gen("LABEL","_etiq"+terceraEtiqueta,"_","_");
+
      //     TablaCuadruplo.gen("printf",valorexpr1,valorexpr2,"_msg");
        //   tablaCuadruplos.add(new Cuadruplo("printf", valorexpr1, valorexpr2,"_msg"));
 				} else if(node.getEtiqueta().equals("proposicion") && valorProp.equals("printf")){
@@ -3183,14 +3217,14 @@ private static String temporalNuevo() { return "%t" + temporal++; }
         liberalTemporal(segundoTemporal);
         MIPS.add("");
       } else if (operadorCuad.equals("=")) {
-
         if (isTemporal(arg1Cuad)) {
           MIPS.add("  sw  $t"+temporalActual+",  _"+respuesta);
+          liberalTemporal(temporalActual);
         } else {
           int primerTemporal = nuevoTeporal();
           if (isNumeric(arg1Cuad)) {
             MIPS.add("  li  $t"+primerTemporal+",  "+arg1Cuad);
-          } else {
+          } else if (!isTemporal(arg1Cuad)){
             MIPS.add("  lw  $t"+primerTemporal+",  _"+arg1Cuad);
           }
           MIPS.add("  sw  $t"+primerTemporal+",  _"+respuesta);
@@ -3199,21 +3233,17 @@ private static String temporalNuevo() { return "%t" + temporal++; }
         MIPS.add("");
       } else if (operadorCuad.equals("LABEL")) {
         MIPS.add(arg1Cuad+":");
-      } else if (operadorCuad.equals("IF>") || operadorCuad.equals("IF<") || operadorCuad.equals("IF=") || operadorCuad.equals("IF>=") || operadorCuad.equals("IF<=")){
-        int primerValor;
-        int segudoValor;
+      } else if (operadorCuad.equals("IF>") || operadorCuad.equals("IF<") || operadorCuad.equals("IF==") || operadorCuad.equals("IF>=") || operadorCuad.equals("IF<=") || operadorCuad.equals("IF!=")){
+        int primerValor= nuevoTeporal();
+        int segudoValor= nuevoTeporal();
         if (isNumeric(arg1Cuad)) {
-          primerValor = nuevoTeporal();
           MIPS.add("  li  $t"+primerValor+",  "+arg1Cuad);
         } else if (!isNumeric(arg1Cuad) && !isTemporal(arg1Cuad)) {
-          primerValor = nuevoTeporal();
           MIPS.add("  lw  $t"+primerValor+",  _"+arg1Cuad);
         }
         if (isNumeric(arg2Cuad)) {
-          segudoValor = nuevoTeporal();
           MIPS.add("  li  $t"+segudoValor+",  "+arg2Cuad);
         } else if (!isNumeric(arg2Cuad) && !isTemporal(arg2Cuad)) {
-          segudoValor = nuevoTeporal();
           MIPS.add("  lw  $t"+segudoValor+",  _"+arg2Cuad);
         }
         String tipo = "";
@@ -3231,11 +3261,12 @@ private static String temporalNuevo() { return "%t" + temporal++; }
           tipo = "bne";
         }
         MIPS.add("  "+tipo+"  $t"+(temporalActual-1)+", $t"+temporalActual+",  "+respuesta);
+        liberalTemporal(primerValor);
+        liberalTemporal(segudoValor);
+
       } else if (operadorCuad.equals("GOTO")) {
         MIPS.add("  b "+respuesta);
         MIPS.add("");
-      } else if (operadorCuad.equals("GOTO")) {
-
       }
     }
     MIPS.add("  li  $v0,  10");
