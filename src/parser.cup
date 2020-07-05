@@ -1125,6 +1125,20 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 nodo.addHijos((Nodo)hijo3); 
                 RESULT = nodo;
 :}
+        | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 RETURN:t5 expresion_matematica:hijo2 PUNTOCOMA:t6 CURLYDER:t7 {:
+
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2); 
+                RESULT = nodo;
+:}
 
          | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5
            ELSE:t7 CURLYIZQ:t8 listaProposiciones:hijo3 CURLYDER:t9 {:
@@ -1142,7 +1156,7 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo;
 
-:};
+:}; 
 
 //define el tipo de main
 tipomain ::= INT:t1 {:
