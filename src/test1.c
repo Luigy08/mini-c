@@ -1,14 +1,17 @@
-int variable, variable2;
-char char1, char2;
-int mifuncion(int a, char b);
-int x, i;
-
-void main()
-{
-  if (2 >= 3 || 2>1 || 3<4 || 5==5)
-  {
-    printf("edad: %d", edad);
-  }
-
+	int x, res;
+int sumaCuadrados(int n);
+void main() {
+  printf("Ingrese un numero: ");
+	scanf(x);
+	res = sumaCuadrados(x);
+  printf(res);
   return 0;
+}
+int sumaCuadrados(int n) {
+	if(n==0) {
+		return 1;
+	}
+	else {
+		return n*n + sumaCuadrados(n - 1);
+	}
 }
