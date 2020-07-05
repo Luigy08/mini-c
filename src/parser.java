@@ -2289,12 +2289,9 @@ class CUP$parser$actions {
                 parser.cont++;
                 String tipo = returnTipo(nid.getValor());
                 String tipo2 = returnTipo(nodo2.getValor());
-                System.out.println("/////////////////////");
-                System.out.println(tipo);
-                System.out.println(tipo2);
                 if(!tipo.equals(tipo2)){
                   nodo.setError(true);
-                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+nid.getValor()+" Tipo: "+tipo+" ID: "+nodo2.getValor()+" Valor: "+tipo2+"] " +" [line: " + (t1left + 1) + " columna: " + t1right + "]");
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+nid.getValor()+" Tipo: "+tipo+", ID: "+nodo2.getValor()+" Valor: "+tipo2+"] " +" [line: " + (t1left + 1) + " columna: " + t1right + "]");
                   ErroresSintacticos.add(nodo.getMensaje());
                 }
                 nodo.addHijos(nid);
@@ -2842,7 +2839,12 @@ class CUP$parser$actions {
                 nodo.setValor(t1.toString() + "++");
                 nodo.setId(parser.cont);
                 parser.cont++;
-
+                String tipo = returnTipo(t1.toString());
+                if(!tipo.equals("INTEGER")){
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nodo.getValor()+" tipo: "+tipo+"] " +" [line: " + (t1left) + " columna: " + t1right + "]");
+                  ErroresSintacticos.add(nodo.getMensaje());
+                }
 
                 RESULT = nodo;
 
@@ -2869,7 +2871,12 @@ class CUP$parser$actions {
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-
+                String tipo = returnTipo(t1.toString());
+                if(!tipo.equals("INTEGER")){
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nodo.getValor()+" tipo: "+tipo+"] " +" [line: " + (t1left) + " columna: " + t1right + "]");
+                  ErroresSintacticos.add(nodo.getMensaje());
+                }
                 RESULT = nodo;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("decrementando",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -2907,10 +2914,18 @@ class CUP$parser$actions {
                 parser.cont++;
 
                 Nodo hijo = ((Nodo)hijo1);
+                String tipo = returnTipo(t1.toString());
 
+                if(tipo.equals("CHAR") && !hijo.getEtiqueta().equals("CHAR")) {
+                  nodo.setError(true);
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nid.getValor()+" tipo: "+tipo+"] " +" [line: " + (t1left) + " columna: " + t1right + "]");
+                  ErroresSintacticos.add(nodo.getMensaje());
+                }
+                if(!tipo.equals(hijo.getEtiqueta())){
+
+                }
                 //comprobacion de tipos
                 //revisar que T1 sea el mismo tipo de expresion_matematica
-                String tipo = returnTipo(t1.toString());
                 // String tipo1 = returnAmbitoFuncion(t1.toString());
                 // if(tipo.equals("Error")){
 
@@ -3146,32 +3161,48 @@ class CUP$parser$actions {
                 nodo.setId(parser.cont);
                 parser.cont++;
 
-
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
-                if(returnTipo(hijoMAT.getValor()) == "INTEGER" || returnTipo(hijoMAT.getValor()) == "Error"){
-                  if(hijoMAT.getEtiqueta() != "INTEGER" && hijoMAT.getEtiqueta() != "OPMULT" && hijoMAT.getEtiqueta() != "OPSUM") {
-                    nodo.setError(true);
-                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoMAT.getValor()+", tipo: "+hijoMAT.getEtiqueta()+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
-                  ErroresSintacticos.add(nodo.getMensaje());
-                }
+                String tipo1="";
+                String tipo2="";
+                if (hijoMAT.getEtiqueta().equals("ID")) {
+                  tipo1= returnTipo(hijoMAT.getValor());
                 } else {
+                  tipo1= hijoMAT.getEtiqueta();
+                }
+                System.out.println(".........................");
+                if (hijoTER.getEtiqueta().equals("ID")) {
+                  tipo2= returnTipo(hijoTER.getValor());
+                } else {
+                  tipo2= hijoTER.getEtiqueta();
+                }
+
+                 if (tipo1.equals("OPMULT") || tipo1.equals("OPSUM")) {
+                  System.out.println(hijoMAT.getMensaje());
+                  nodo.setError(hijoMAT.getError());
+                  nodo.setMensaje(hijoMAT.getMensaje());
+                  if (hijoMAT.getError()) {
+                    ErroresSintacticos.add(hijoMAT.getMensaje());
+                  }
+                } else if(!tipo1.equals("INTEGER")){
                     nodo.setError(true);
-                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+hijoMAT.getValor()+", tipo: "+returnTipo(hijoMAT.getValor())+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoMAT.getValor()+", tipo: "+tipo1+"] " +" [linea: " + (t1left-1) + " columna: " + hijo1right + "]");
                   ErroresSintacticos.add(nodo.getMensaje());
                 }
 
-                if(returnTipo(hijoTER.getValor()) == "INTEGER" || returnTipo(hijoTER.getValor()) == "Error"){
-                  if(hijoTER.getEtiqueta() != "INTEGER" && hijoTER.getEtiqueta() != "OPMULT" && hijoTER.getEtiqueta() != "OPSUM") {
-                   nodo.setError(true);
-                   nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoTER.getValor()+", tipo: "+hijoTER.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
+                if (tipo2.equals("OPMULT") || tipo2.equals("OPSUM")) {
+                  nodo.setError(hijoTER.getError());
+                  nodo.setMensaje(hijoTER.getMensaje());
+                  if (hijoTER.getError()) {
+                    ErroresSintacticos.add(hijoTER.getMensaje());
                   }
-                  ErroresSintacticos.add(nodo.getMensaje());
-                } else {
+                } else if(!tipo2.equals("INTEGER")){
                     nodo.setError(true);
-                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+hijoTER.getValor()+", tipo: "+returnTipo(hijoTER.getValor())+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoTER.getValor()+", tipo: "+tipo2+"] " +" [linea: " + (t1left-1) + " columna: " + hijo2right + "]");
                   ErroresSintacticos.add(nodo.getMensaje());
                 }
+
+
 
 
                 // if(!(hijoMAT.getValor().equals(hijoTER.getValor())) ){ //si los valores no son iguales, hay inconsistencia de tipos
