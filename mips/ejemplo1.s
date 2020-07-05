@@ -2,7 +2,6 @@
 _i:   .word 0
 _o:   .word 0
 _res:   .word 0
-_msg0:  .asciiz "ingrese un numero: "
 
 
         .text
@@ -10,33 +9,31 @@ _msg0:  .asciiz "ingrese un numero: "
 
 
 main:
-  li  $v0,  4
-  la  $a0,  _msg0
-  syscall
-
-  li  $v0,  5
-  syscall
-  sw  $v0,  _o
+  li  $t0,  0
+  sw  $t0,  _i
 
 _etiq0:
-  lw  $t0,  _o
-  li  $t1,  0
-  bgt  $t0, $t1,  _etiq1
+  lw  $t0,  _i
+  li  $t1,  10
+  blt  $t0, $t1,  _etiq1
   b _etiq2
 
-_etiq1:
-  lw  $t2,  _o
-  li  $v0,  1
-  move  $a0,  $t2
-  syscall
+_etiq3:
+  lw  $t0,  _i
+  li  $t1, 1
+  add $t2,  $t0, $t1
 
-  lw  $t3,  _o
-  li  $t4, 1
-  sub $t5,  $t3, $t4
-
-  sw  $t5,  _o
+  sw  $t2,  _i
 
   b _etiq0
+
+_etiq1:
+  lw  $t0,  _i
+  li  $v0,  1
+  move  $a0,  $t0
+  syscall
+
+  b _etiq3
 
 _etiq2:
   li  $v0,  10

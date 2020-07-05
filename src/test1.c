@@ -1,13 +1,11 @@
 int i, o, res;
 void main()
 {
-  printf("ingrese un numero: ");
-  scanf(o);
-  while (o>0)
+  for (i = 0; i < 10; i++)
   {
-    printf(o);
-    o=o-1;
+    printf(i);
   }
+
 
 
   return 0;
