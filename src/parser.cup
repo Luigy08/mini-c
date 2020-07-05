@@ -1107,6 +1107,24 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 RESULT = nodo;
 
 :}
+        | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 RETURN:t5 expresion_matematica:hijo3 PUNTOCOMA:t6 CURLYDER:t7 {:
+                
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //TERMINALES
+
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3); 
+                RESULT = nodo;
+:}
 
          | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 CURLYDER:t5
            ELSE:t7 CURLYIZQ:t8 listaProposiciones:hijo3 CURLYDER:t9 {:
@@ -1894,40 +1912,11 @@ expresion_matematica ::= termino:hijo1 {: //por ejemplo 2x+a, el termino es 2x y
                 }
         System.out.println(nodo.getMensaje());
 
-
-                // if(!(hijoMAT.getValor().equals(hijoTER.getValor())) ){ //si los valores no son iguales, hay inconsistencia de tipos
-                //         nodo.setError(true);
-                //         if(hijoMAT.getError() || hijoTER.getError()){ //revisar si alguno de los hijos tiene errores
-                //                 nodo.setMensaje(hijoMAT.getMensaje());  //asignar el error de la izquierda
-                //                 nodo.setValor("Error de Tipos");
-
-                //                 // CheckNodes.add(nodo);
-
-                //                 // // //comprobacion de ambito y de tipos:
-                //                 // // //subir valor a checknodes para revisarlo mas arriba en funcion
-
-                //                 CheckNodes.add(nodo);
-                //         }
-                //         else{ //si todo esta bien, asignar error de inconsistencia a nodo padre
-                //                 nodo.setMensaje("Tipos diferentes en expresion matematica. " +
-                //         "Se esta operando un tipo " + hijoMAT.getValor() + " y un tipo " + hijoTER.getValor());
-                //                 nodo.setValor("Error de Tipos.");
-
-                //                 // //comprobacion de ambito y de tipos:
-                //                 // //subir valor a checknodes para revisarlo mas arriba en funcion
-
-                //                 CheckNodes.add(nodo);
-                //         }
-
-                // } else{ //setear el valor si todo esta bien
-                //         nodo.setValor(hijoMAT.getValor());
-                // }
-
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
 
                 RESULT = nodo;
-:};
+:}; 
 
 termino ::= factor:hijo1 {: //este
 
@@ -1973,43 +1962,6 @@ termino ::= factor:hijo1 {: //este
                   nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo2.getValor()+" tipo: "+nHijo2.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
                   System.out.println(nodo.getMensaje());
                 }
-                // Nodo hijoTER = ((Nodo)hijo1);
-                // Nodo hijoFAC = ((Nodo)hijo2);
-
-                // if(hijoFAC.getEtiqueta().equals("expresion_matematica")){
-                //         if(!(hijoTER.getValor().equals(hijoFAC.getValor())) ){
-                //                 nodo.setError(true);
-                //                 if(hijoTER.getError() || hijoFAC.getError()){
-                //                         nodo.setMensaje(hijoTER.getMensaje());
-                //                         nodo.setValor("Error de Tipos");
-                //                 }
-                //                  else{
-                //                         nodo.setMensaje("Tipos diferentes en expresion matematica. " +
-                //                 "Se esta operando un tipo " + hijoTER.getValor() + " y un tipo " + hijoFAC.getEtiqueta());
-                //                         nodo.setValor("Error de Tipos.");
-                //                 }
-                //         } else{
-                //                 nodo.setValor("NUM");
-                //         }
-
-                // } else{
-                //         if(!(hijoTER.getValor().equals(hijoFAC.getEtiqueta())) ){
-
-                //                 nodo.setError(true);
-                //                 if(hijoTER.getError() || hijoFAC.getError()){
-                //                         nodo.setMensaje(hijoTER.getMensaje());
-                //                         nodo.setValor("Error de Tipos");
-                //                 }
-                //                  else{
-                //                         nodo.setMensaje("Tipos diferentes en expresion matematica. " +
-                //                 "Se esta operando un tipo " + hijoTER.getValor() + " y un tipo " + hijoFAC.getEtiqueta());
-                //                         nodo.setValor("Error de Tipos.");
-                //                 }
-                //         } else{
-                //                 nodo.setValor("NUM");
-                //         }
-
-                // }
 
                 nodo.addHijos((Nodo)hijo1);
                 nodo.addHijos((Nodo)hijo2);
@@ -2114,6 +2066,7 @@ factor ::= IDENTIFICADOR:t1 {:
                 nodo.addHijos(nid2);
 
                 RESULT = nodo;
+
 :} | llamada_procedure_funcion:hijo1 {:
 
                 Nodo nodo = new Nodo();
@@ -2455,7 +2408,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
 
         | tipovar:hijo1 IDENTIFICADOR:t2 PARIZQ:t3 declaracionesVAR_procedure_funcion:hijo2 PARDER:t4
           CURLYIZQ:t5 declaracionesVARAdentroFunctionProcedure:hijo3 listaProposiciones:hijo4
-          RETURN:t6 IDENTIFICADOR:t7 PUNTOCOMA:t8 CURLYDER:t9 {:
+          RETURN:t6 expresion_matematica:hijo5 PUNTOCOMA:t8 CURLYDER:t9 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
@@ -2580,8 +2533,9 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
               nodo.addHijos((Nodo)hijo4);
+              nodo.addHijos((Nodo)hijo5);
               RESULT = nodo;
-:};
+:}; 
 
 //estos son los parametros de la funcion como tal
 declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 {:
@@ -2700,7 +2654,7 @@ declaracionesVAR_procedure_funcion ::= tipovar:hijo1 listaIdentificadores:hijo2 
 
 
 
-llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 PUNTOCOMA:t4 {:
+llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 PARDER:t3 {:
 
               //NODO PADRE
               Nodo nodo = new Nodo();
