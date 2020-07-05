@@ -62,6 +62,9 @@ public class Main {
         codigoFinal();
         System.out.println("AST generado.");
       } else {
+        for (String string : parser.ErroresSintacticos) {
+          System.out.println(string);
+        }
         System.out.println("AST no fue generado ya que se presento un error lexico o sintactico.");
       }
     } catch (Exception e) {

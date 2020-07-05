@@ -1,17 +1,13 @@
-	int x, res;
-int sumaCuadrados(int n);
+int x;
+char letra, letra2;
 void main() {
   printf("Ingrese un numero: ");
-	scanf(x);
-	res = sumaCuadrados(x);
-  printf(res);
+  letra='4';
+  letra2='4';
+  if (x==letra)
+  {
+    printf(letra);
+  }
+
   return 0;
-}
-int sumaCuadrados(int n) {
-	if(n==0) {
-		return 1;
-	}
-	else {
-		return n*n + sumaCuadrados(n - 1);
-	}
 }
