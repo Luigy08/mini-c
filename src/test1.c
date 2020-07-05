@@ -1,14 +1,9 @@
-int i, o;
+int i, o, res;
 void main()
 {
-  o=4+3;
-  for (i = 0; i < 4; i++)
-  {
-    printf("Hola");
-    /* code */
-  }
-
-
-
+  printf("ingrese un numero");
+  scanf(o);
+  i=o+3;
+  printf(i);
   return 0;
 }
