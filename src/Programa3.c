@@ -11,12 +11,11 @@ int main(){
 int miFuncion(int x){ 
     int a,b,c; 
 
-    if(a == 1){
-        return a+b; 
-    }
-    if(b == 2){
-        return b-c; 
-    }
+   if(a == b){
+       return c+a; 
+   }else{
+       return b+5; 
+   }
 
     return b-c;  
 }

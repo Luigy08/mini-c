@@ -1156,7 +1156,43 @@ condicionIF ::= IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaPropo
                 nodo.addHijos((Nodo)hijo3);
                 RESULT = nodo;
 
-:}; 
+:}
+        | IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 listaProposiciones:hijo2 RETURN:t5 expresion_matematica:hijo3 PUNTOCOMA:t6 CURLYDER:t7
+          ELSE:t8 CURLYIZQ:t9 listaProposiciones:hijo4 RETURN:t10 expresion_matematica:hijo5 PUNTOCOMA:t11 CURLYDER:t12 {:
+
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF-ELSE");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3);
+                nodo.addHijos((Nodo)hijo4);
+                nodo.addHijos((Nodo)hijo5);
+                RESULT = nodo;
+
+:}
+        |IF:t1 PARIZQ:t2 expresion:hijo1 PARDER:t3 CURLYIZQ:t4 RETURN:t5 expresion_matematica:hijo2 PUNTOCOMA:t6 CURLYDER:t7
+          ELSE:t8 CURLYIZQ:t9 RETURN:t10 expresion_matematica:hijo3 PUNTOCOMA:t11 CURLYDER:t12 {:
+
+                //NODO PADRE
+                Nodo nodo = new Nodo();
+                nodo.setEtiqueta("condicionIF");
+                nodo.setValor("IF-ELSE");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                //AGREGAR NO TERMINALES
+                nodo.addHijos((Nodo)hijo1);
+                nodo.addHijos((Nodo)hijo2);
+                nodo.addHijos((Nodo)hijo3);
+                RESULT = nodo;
+
+:};
 
 //define el tipo de main
 tipomain ::= INT:t1 {:
