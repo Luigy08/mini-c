@@ -37,6 +37,7 @@ public class Main {
   public static int despPila;
   public static int temporal = 0;
   public static int temporalActual = 0;
+  public static int temporalAnterior = 0;
   public static int argumentolActual = 0;
   public static ArrayList<Integer> idRecorridos = new ArrayList<Integer>();
   // Manejo de Errores de Tipo en Llamadas de Funcion:
@@ -62,6 +63,9 @@ public class Main {
         codigoFinal();
         System.out.println("AST generado.");
       } else {
+        for (String string : parser.ErroresSintacticos) {
+          System.out.println(string);
+        }
         System.out.println("AST no fue generado ya que se presento un error lexico o sintactico.");
       }
     } catch (Exception e) {
@@ -480,6 +484,9 @@ public class Main {
         ArrayList<Nodo> hijos = node.getHijos();
         Nodo hijo = hijos.get(0);
         Nodo hijo2 = hijos.get(1);
+        if (hijo2.getEtiqueta().equals("OPMULT")){
+          checkTipoAmbito(hijos.get(1));
+        }
         if (hijo.getEtiqueta() != "INTEGER" && hijo2.getEtiqueta() != "INTEGER" && hijo.getEtiqueta() != "ID"
             && hijo2.getEtiqueta() != "ID") {
           TablaCuadruplo.gen(node.getValor(), "t" + Integer.toString(contadorTemp - 2),
@@ -3151,6 +3158,7 @@ public class Main {
         int segundoTemporal;
 
         if (!isTemporal(arg1Cuad)) {
+          temporalAnterior = temporalActual;
           primerTemporal = nuevoTeporal();
           if (isNumeric(arg1Cuad)) {
             MIPS.add("  li  $t" + primerTemporal + ",  " + arg1Cuad);
@@ -3163,18 +3171,21 @@ public class Main {
           } else {
             primerTemporal = temporalActual;
           }
-
         }
         if (!isTemporal(arg2Cuad)) {
+          temporalAnterior = temporalActual;
           segundoTemporal = nuevoTeporal();
           if (isNumeric(arg2Cuad)) {
             MIPS.add("  li  $t" + segundoTemporal + ", " + arg2Cuad);
           } else {
             MIPS.add("  lw  $t" + segundoTemporal + ", _" + arg2Cuad);
           }
+        } else if (!isTemporal(arg1Cuad) && isTemporal(arg2Cuad)) {
+          segundoTemporal = temporalAnterior;
         } else {
           segundoTemporal = temporalActual;
         }
+        temporalAnterior = temporalActual;
         int resultadoTemporal = nuevoTeporal();
         String comando = "";
         if (operadorCuad.equals("+")) {
