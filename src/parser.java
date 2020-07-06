@@ -3080,25 +3080,6 @@ class CUP$parser$actions {
 		Object hijo1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 //por ejemplo 2x+a, el termino es 2x y a Y los factores serian "2 y x"
 
-                //NODO PADRE
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion_matematica");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                Nodo hijo = ((Nodo)hijo1);
-
-                nodo.addHijos((Nodo)hijo1);
-                nodo.setValor(hijo.getValor());
-
-               /*
-               if(hijo.getError()){ //subir error y mensaje
-                        nodo.setError(true);
-                        hijo.setValor("Error de tipos.");
-                        nodo.setMensaje(hijo.getMensaje());
-                        CheckNodes.add(nodo);
-                }
-               */
 
                 RESULT = (Nodo)hijo1;
 
@@ -3118,20 +3099,6 @@ class CUP$parser$actions {
 		int hijo1right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object hijo1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 //en que caso se usa esto?
-
-                Nodo nodo = new Nodo();
-                nodo.setEtiqueta("expresion_matematica");
-                nodo.setId(parser.cont);
-                parser.cont++;
-
-                Nodo sum = new Nodo();
-                sum.setEtiqueta("OPSUM");
-                sum.setValor(t1.toString());
-                sum.setId(parser.cont);
-                parser.cont++;
-
-                nodo.addHijos((Nodo)sum);
-                nodo.addHijos((Nodo)hijo1);
 
                 RESULT = (Nodo)hijo1;
 
@@ -3160,9 +3127,11 @@ class CUP$parser$actions {
                 nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
+                System.out.println("////////////////");
+                System.out.println("opsum");
+                System.out.println(hijoTER.getEtiqueta());
                 String tipo1="";
                 String tipo2="";
                 if (hijoMAT.getEtiqueta().equals("ID")) {
@@ -3170,7 +3139,6 @@ class CUP$parser$actions {
                 } else {
                   tipo1= hijoMAT.getEtiqueta();
                 }
-                System.out.println(".........................");
                 if (hijoTER.getEtiqueta().equals("ID")) {
                   tipo2= returnTipo(hijoTER.getValor());
                 } else {
@@ -3178,7 +3146,6 @@ class CUP$parser$actions {
                 }
 
                  if (tipo1.equals("OPMULT") || tipo1.equals("OPSUM")) {
-                  System.out.println(hijoMAT.getMensaje());
                   nodo.setError(hijoMAT.getError());
                   nodo.setMensaje(hijoMAT.getMensaje());
                   if (hijoMAT.getError()) {
@@ -3299,18 +3266,47 @@ class CUP$parser$actions {
                 nodo.setValor(t1.toString());
                 nodo.setId(parser.cont);
                 parser.cont++;
-                Nodo nHijo1 = (Nodo)hijo1;
-                Nodo nHijo2 = (Nodo)hijo2;
-                if(nHijo1.getEtiqueta() != "INTEGER" && nHijo1.getEtiqueta() != "OPMULT" && nHijo1.getEtiqueta() != "OPSUM") {
-                  nodo.setError(true);
-                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo1.getValor()+" tipo: "+nHijo1.getEtiqueta()+"] " +" [line: " + (hijo1left-1) + " columna: " + hijo1right + "]");
+                Nodo hijoMAT = ((Nodo)hijo1);
+                Nodo hijoTER = ((Nodo)hijo2);
+                String tipo1="";
+                String tipo2="";
+                System.out.println("////////////////");
+                System.out.println("opmul");
+                if (hijoMAT.getEtiqueta().equals("ID")) {
+                  tipo1= returnTipo(hijoMAT.getValor());
+                } else {
+                  tipo1= hijoMAT.getEtiqueta();
+                }
+                if (hijoTER.getEtiqueta().equals("ID")) {
+                  tipo2= returnTipo(hijoTER.getValor());
+                } else {
+                  tipo2= hijoTER.getEtiqueta();
+                }
+
+                 if (tipo1.equals("OPMULT") || tipo1.equals("OPSUM")) {
+                  nodo.setError(hijoMAT.getError());
+                  nodo.setMensaje(hijoMAT.getMensaje());
+                  if (hijoMAT.getError()) {
+                    ErroresSintacticos.add(hijoMAT.getMensaje());
+                  }
+                } else if(!tipo1.equals("INTEGER")){
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoMAT.getValor()+", tipo: "+tipo1+"] " +" [linea: " + (t1left-1) + " columna: " + hijo1right + "]");
                   ErroresSintacticos.add(nodo.getMensaje());
                 }
-                if(nHijo2.getEtiqueta() != "INTEGER" && nHijo2.getEtiqueta() != "OPMULT" && nHijo2.getEtiqueta() != "OPSUM") {
-                  nodo.setError(true);
-                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nHijo2.getValor()+" tipo: "+nHijo2.getEtiqueta()+"] " +" [line: " + (hijo2left-1) + " columna: " + hijo2right + "]");
+
+                if (tipo2.equals("OPMULT") || tipo2.equals("OPSUM")) {
+                  nodo.setError(hijoTER.getError());
+                  nodo.setMensaje(hijoTER.getMensaje());
+                  if (hijoTER.getError()) {
+                    ErroresSintacticos.add(hijoTER.getMensaje());
+                  }
+                } else if(!tipo2.equals("INTEGER")){
+                    nodo.setError(true);
+                    nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+hijoTER.getValor()+", tipo: "+tipo2+"] " +" [linea: " + (t1left-1) + " columna: " + hijo2right + "]");
                   ErroresSintacticos.add(nodo.getMensaje());
                 }
+
                 // Nodo hijoTER = ((Nodo)hijo1);
                 // Nodo hijoFAC = ((Nodo)hijo2);
 
