@@ -2580,9 +2580,14 @@ class CUP$parser$actions {
                 parser.cont++;
                 String tipo = returnTipo(nid.getValor());
                 String tipo2 = returnTipo(nodo2.getValor());
+
+                if (tipo.equals("Error") || tipo2.equals("Error")) {
+                  tipo = returnTipoFuncion(nid.getValor());
+                  tipo2 = returnTipoFuncion(nodo2.getValor());
+                }
                 if(!tipo.equals(tipo2)){
                   nodo.setError(true);
-                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+nid.getValor()+" Tipo: "+tipo+", ID: "+nodo2.getValor()+" Valor: "+tipo2+"] " +" [line: " + (t1left + 1) + " columna: " + t1right + "]");
+                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [ID: "+nid.getValor()+" Tipo: "+returnTipo(nid.getValor())+", ID: "+nodo2.getValor()+" Valor: "+returnTipo(nodo2.getValor())+"] " +" [line: " + (t1left + 1) + " columna: " + t1right + "]");
                   ErroresSintacticos.add(nodo.getMensaje());
                 }
                 nodo.addHijos(nid);
@@ -3207,14 +3212,7 @@ class CUP$parser$actions {
                 Nodo hijo = ((Nodo)hijo1);
                 String tipo = returnTipo(t1.toString());
 
-                if(tipo.equals("CHAR") && !hijo.getEtiqueta().equals("CHAR")) {
-                  nodo.setError(true);
-                  nodo.setMensaje("ERROR DE TIPOS "+"TOKEN [valor: "+nid.getValor()+" tipo: "+tipo+"] " +" [line: " + (t1left) + " columna: " + t1right + "]");
-                  ErroresSintacticos.add(nodo.getMensaje());
-                }
-                if(!tipo.equals(hijo.getEtiqueta())){
 
-                }
                 //comprobacion de tipos
                 //revisar que T1 sea el mismo tipo de expresion_matematica
                 // String tipo1 = returnAmbitoFuncion(t1.toString());
@@ -3420,18 +3418,23 @@ class CUP$parser$actions {
                 parser.cont++;
                 Nodo hijoMAT = ((Nodo)hijo1);
                 Nodo hijoTER = ((Nodo)hijo2);
-                System.out.println("////////////////");
-                System.out.println("opsum");
                 System.out.println(hijoTER.getEtiqueta());
                 String tipo1="";
                 String tipo2="";
+
                 if (hijoMAT.getEtiqueta().equals("ID")) {
-                  tipo1= returnTipo(hijoMAT.getValor());
+                    tipo1= returnTipo(hijoMAT.getValor());
+                  if(tipo1.equals("Error")){
+                    tipo1 = returnTipoFuncion(hijoMAT.getValor());
+                  }
                 } else {
                   tipo1= hijoMAT.getEtiqueta();
                 }
                 if (hijoTER.getEtiqueta().equals("ID")) {
                   tipo2= returnTipo(hijoTER.getValor());
+                  if(tipo2.equals("Error")){
+                    tipo2 = returnTipoFuncion(hijoTER.getValor());
+                  }
                 } else {
                   tipo2= hijoTER.getEtiqueta();
                 }
@@ -3532,15 +3535,19 @@ class CUP$parser$actions {
                 Nodo hijoTER = ((Nodo)hijo2);
                 String tipo1="";
                 String tipo2="";
-                System.out.println("////////////////");
-                System.out.println("opmul");
                 if (hijoMAT.getEtiqueta().equals("ID")) {
-                  tipo1= returnTipo(hijoMAT.getValor());
+                    tipo1= returnTipo(hijoMAT.getValor());
+                  if(tipo1.equals("Error")){
+                    tipo1 = returnTipoFuncion(hijoMAT.getValor());
+                  }
                 } else {
                   tipo1= hijoMAT.getEtiqueta();
                 }
                 if (hijoTER.getEtiqueta().equals("ID")) {
                   tipo2= returnTipo(hijoTER.getValor());
+                  if(tipo2.equals("Error")){
+                    tipo2 = returnTipoFuncion(hijoTER.getValor());
+                  }
                 } else {
                   tipo2= hijoTER.getEtiqueta();
                 }
@@ -3760,13 +3767,13 @@ class CUP$parser$actions {
 
                 Nodo nod = ((Nodo)hijo1);
 
-                for(Nodo node : nodo.getHijos()){
+                for(Nodo node : nod.getHijos()){
                         nodo.addHijos(node);
                 }
 
                 // nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("factor",22, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
