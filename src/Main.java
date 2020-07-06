@@ -71,7 +71,6 @@ public class Main {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
   }
 
   public static int contadorDeCondiones(Nodo root, int inicial) {
@@ -351,8 +350,9 @@ public class Main {
 
         } else { // si tiene parametros
 
-          ArrayList<Nodo> parametros = node.getHijos();
-          parametros.remove(0); // eliminar el id de la lista de parametros
+		  ArrayList<Nodo> parametros = node.getHijos();
+
+		  parametros.remove(0); // eliminar el id de la lista de parametros 
 
           ArrayList<ElementoTS> paramNuevos = new ArrayList<ElementoTS>();
 
