@@ -21,7 +21,7 @@ resultado = (edad + 10) * 60;
     printf("Ingrese un numero");
     scanf(nuevo);
     printf("el resultado es: %d",x);
-mifuncion(1,'a');
+    mifuncion(1,'a');
 
 return 0;
 }
