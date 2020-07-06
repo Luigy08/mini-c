@@ -2715,7 +2715,7 @@ class CUP$parser$actions {
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("proposicion",10, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -3759,13 +3759,14 @@ class CUP$parser$actions {
 		int hijo1right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object hijo1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
+                Nodo nod = ((Nodo)hijo1);
 
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("llamada_procedure_funcion");
                 nodo.setId(parser.cont);
+                nodo.setValor(nod.getValor());
                 parser.cont++;
 
-                Nodo nod = ((Nodo)hijo1);
 
                 for(Nodo node : nod.getHijos()){
                         nodo.addHijos(node);
@@ -4677,9 +4678,9 @@ class CUP$parser$actions {
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("llamada_procedure_funcion");
+              nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
-
               //TERMINALES
               Nodo nid = new Nodo();
               nid.setEtiqueta("ID");
