@@ -26,7 +26,9 @@ public class Main {
   public static ArrayList<String> mensajes = new ArrayList<String>(); // AL de mensajes para codigo final
   public static boolean[] temporales = { false, false, false, false, false, false, false, false, false, false };
   public static boolean[] argumentos = { false, false, false, false };
+  public static boolean[] parametros = { false, false, false, false };
   public static ArrayList<String> etiquetas = new ArrayList<String>();
+  public static ArrayList<String> etiquetasFunciones = new ArrayList<String>();
   public static ArrayList<String> temporalesIntermedio = new ArrayList<String>();
   public static int contadorTemp = 0;
   public static int contadorEtiq = 0;
@@ -39,6 +41,8 @@ public class Main {
   public static int temporalActual = 0;
   public static int temporalAnterior = 0;
   public static int argumentolActual = 0;
+  public static int parametroActual = 0;
+  public static String etiquetaFuncionActual = "";
   public static ArrayList<Integer> idRecorridos = new ArrayList<Integer>();
   // Manejo de Errores de Tipo en Llamadas de Funcion:
   public static String tipoFuncion = "";
@@ -549,6 +553,26 @@ public class Main {
         contadorTemp++;
 
         break;
+      }
+      case "declaraciones_principales": {
+        if (node.getHijos().size()>4) {
+          TablaCuadruplo.gen("LABEL", "_" + node.hijos.get(0).getValor(), "_", "_");
+          etiquetasFunciones.add("_"+node.hijos.get(0).getValor());
+          for (int i = 4; i < node.hijos.size(); i++) {
+            checkTipoAmbito(node.hijos.get(i));
+          }
+
+        }
+        break;
+      }
+      case "return": {
+        Nodo hijo = node.hijos.get(0);
+        if (hijo.getEtiqueta().equals("ID") || hijo.getEtiqueta().equals("INTEGER") || hijo.getEtiqueta().equals("CHAR")) {
+          TablaCuadruplo.gen("RET",hijo.getValor(), "_", "_");
+        } else {
+          checkTipoAmbito(hijo);
+          TablaCuadruplo.gen("RET","t"+(contadorTemp -1), "_", "_");
+        }
       }
       case "termino": {
         ArrayList<Nodo> hijos = node.getHijos();
@@ -3038,6 +3062,20 @@ public class Main {
     liberalArgumento(0);
     return 0;
   }
+  private static void liberalParametro(int indice) {
+    parametros[indice] = false;
+  }
+  private static int nuevoParametro() {
+    for (int i = 0; i < parametros.length; i++) {
+      if (!parametros[i]) {
+        argumentolActual = i;
+        parametros[i] = true;
+        return i;
+      }
+    }
+    liberalParametro(0);
+    return 0;
+  }
 
   private static Boolean isTemporal(String value) {
     return temporalesIntermedio.indexOf(value) != -1;
@@ -3053,7 +3091,9 @@ public class Main {
   }
   // ########## FIN FUNCIONES DE APOYO PARA LA GENERACIÓN DE CÓDIGO FINAL
   // ##########
-
+  private static Boolean isLabelFunction(String label){
+    return etiquetasFunciones.indexOf(label) != -1;
+  }
   private static String temporalNuevo() {
     return "%t" + temporal++;
   }
@@ -3175,7 +3215,11 @@ public class Main {
           || operadorCuad.equals("/")) {
         int primerTemporal;
         int segundoTemporal;
+        if (!etiquetaFuncionActual.equals("")) {
 
+        } else {
+
+        }
         if (!isTemporal(arg1Cuad)) {
           temporalAnterior = temporalActual;
           primerTemporal = nuevoTeporal();
@@ -3241,7 +3285,28 @@ public class Main {
         }
 
       } else if (operadorCuad.equals("LABEL")) {
-        MIPS.add(arg1Cuad + ":");
+        if (isLabelFunction(arg1Cuad)) {
+          etiquetaFuncionActual=arg1Cuad;
+          MIPS.add(arg1Cuad + ":");
+          MIPS.add("  sw  $fp,  -4($sp)");
+          MIPS.add("  sw  $ra,  -8($sp)");
+          int sizePila= -8;
+
+          for (int i = argumentolActual; i >=argumentolActual ; i--) {
+            parametroActual=nuevoParametro();
+            MIPS.add("  sw  $s"+parametroActual+",  "+(sizePila-4)+"($sp)");
+            sizePila=sizePila-4;
+          }
+          MIPS.add("  move  $fp,  $sp");
+          MIPS.add("  sub  $sp,  $sp, "+(sizePila*-1));
+          for (int i = 0; i <= argumentolActual; i++) {
+            MIPS.add("  move  $s"+i+",  $a"+i);
+            liberalArgumento(i);
+          }
+
+        } else {
+          MIPS.add(arg1Cuad + ":");
+        }
       } else if (operadorCuad.equals("IF>") || operadorCuad.equals("IF<") || operadorCuad.equals("IF==")
           || operadorCuad.equals("IF>=") || operadorCuad.equals("IF<=") || operadorCuad.equals("IF!=")) {
         int primerValor = nuevoTeporal();
@@ -3286,7 +3351,36 @@ public class Main {
       } else if (operadorCuad.equals("call")) {
         MIPS.add("  jal _"+arg1Cuad);
         MIPS.add("");
+      } else if (operadorCuad.equals("RET")) {
+        if (!isNumeric(arg1Cuad) && !isTemporal(arg1Cuad)) {
+          int temporal = nuevoTeporal();
+          MIPS.add("  lw  $t"+temporal+",  _"+arg1Cuad);
+          MIPS.add("  move  $v0 ,$t"+temporal);
+          liberalTemporal(temporal);
+        } else if (isNumeric(arg1Cuad)) {
+          MIPS.add("  li  $t"+temporal+",  "+arg1Cuad);
+          MIPS.add("  move  $v0 ,$t"+temporal);
+          liberalTemporal(temporal);
+        } else if (isTemporal(arg1Cuad)) {
+          MIPS.add("  move  $v0 ,$t"+temporalActual);
+          liberalTemporal(temporal);
+        }
+        MIPS.add("  b "+etiquetaFuncionActual+"_salida");
+        MIPS.add("");
+        MIPS.add(etiquetaFuncionActual+"_salida:");
 
+        MIPS.add("  move  $sp,  $fp");
+        MIPS.add("  lw  $fp,  -4($sp)");
+        MIPS.add("  lw  $ra,  -8($sp)");
+        int sizePila= -8;
+        for (int i = 0; i <=parametroActual ; i++) {
+          MIPS.add("  lw  $s"+i+",  "+(sizePila-4)+"($sp)");
+          sizePila=sizePila-4;
+          liberalParametro(i);
+        }
+        MIPS.add("  jr  $ra");
+        etiquetaFuncionActual="";
+        MIPS.add("");
       }
     }
     MIPS.add("  li  $v0,  10");

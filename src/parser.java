@@ -4335,6 +4335,14 @@ class CUP$parser$actions {
               nid.setId(parser.cont);
               parser.cont++;
 
+              Nodo nReturn = new Nodo();
+              nReturn.setEtiqueta("return");
+              nReturn.setValor(t2.toString());
+              nReturn.setId(parser.cont);
+              parser.cont++;
+
+              nReturn.addHijos((Nodo)hijo5);
+
               //TERMINALES
 
               //recorrer hijos de hijo1 y bloques
@@ -4446,7 +4454,7 @@ class CUP$parser$actions {
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
               nodo.addHijos((Nodo)hijo4);
-              nodo.addHijos((Nodo)hijo5);
+              nodo.addHijos(nReturn);
               RESULT = nodo;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("inicioFunction",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-11)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);

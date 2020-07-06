@@ -2575,6 +2575,14 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nid.setId(parser.cont);
               parser.cont++;
 
+              Nodo nReturn = new Nodo();
+              nReturn.setEtiqueta("return");
+              nReturn.setValor(t2.toString());
+              nReturn.setId(parser.cont);
+              parser.cont++;
+
+              nReturn.addHijos((Nodo)hijo5);
+
               //TERMINALES
 
               //recorrer hijos de hijo1 y bloques
@@ -2686,7 +2694,7 @@ inicioFunction ::= FUNCTION:t1 IDENTIFICADOR:t2 OPDECLARACION:t3 tipovar:hijo1 P
               nodo.addHijos((Nodo)hijo2);
               nodo.addHijos((Nodo)hijo3);
               nodo.addHijos((Nodo)hijo4);
-              nodo.addHijos((Nodo)hijo5);
+              nodo.addHijos(nReturn);
               RESULT = nodo;
 :};
 
