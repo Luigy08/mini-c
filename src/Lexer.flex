@@ -48,7 +48,6 @@ DECISION = ":"
 QUESTIONMARK = "?"
 INCREMENTADOR = "++"
 DECREMENTADOR = "--"
-ASTERISCO = ("*"){Identificador}
 
 COMA = ","
 COMILLASIMPLE = "'"
@@ -144,7 +143,6 @@ CHARESPECIALES = (".."|"^")
     {QUESTIONMARK}      {return new Symbol(sym.QUESTIONMARK, yycolumn, yyline, yytext());}
     {INCREMENTADOR}     {return new Symbol(sym.INCREMENTADOR, yycolumn, yyline, yytext());}
     {DECREMENTADOR}     {return new Symbol(sym.DECREMENTADOR, yycolumn, yyline, yytext());}
-    {ASTERISCO}         {return new Symbol(sym.ASTERISCO, yycolumn, yyline, yytext());}
 
     {OPSUM}             {return new Symbol(sym.OPSUM, yycolumn, yyline, yytext());}
     {OPMULT}            {return new Symbol(sym.OPMULT, yycolumn, yyline, yytext());}

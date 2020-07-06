@@ -1,21 +1,22 @@
 int miFuncion(int a, int b);
 
-int otraFuncion(int c, char t); 
+int otraFuncion(int c, char t);
 
 int main(){
-    int i,x,b; 
-    x = 0; 
-    return 0; 
+    int i,x,b;
+    x = 0;
+    b=miFuncion(x);
+    return 0;
 }
 
-int miFuncion(int x){ 
-    int a,b,c; 
+int miFuncion(int x){
+    int a,b,c;
 
    if(a == b){
-       return c+a; 
+       return c*a;
    }else{
-       return b+5; 
+       return b*5;
    }
 
-    return b-c;  
+    return b-c;
 }
