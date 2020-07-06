@@ -1572,7 +1572,7 @@ proposicion ::= condicionIF:hijo1 {:
                 //AGREGAR NO TERMINALES
                 nodo.addHijos((Nodo)hijo1);
 
-                RESULT = nodo;
+                RESULT = (Nodo)hijo1;
 :}
          | printf:hijo1 PUNTOCOMA:t1 {:
 
@@ -2220,13 +2220,14 @@ factor ::= IDENTIFICADOR:t1 {:
                 RESULT = nodo;
 
 :} | llamada_procedure_funcion:hijo1 {:
+                Nodo nod = ((Nodo)hijo1);
 
                 Nodo nodo = new Nodo();
                 nodo.setEtiqueta("llamada_procedure_funcion");
                 nodo.setId(parser.cont);
+                nodo.setValor(nod.getValor());
                 parser.cont++;
 
-                Nodo nod = ((Nodo)hijo1);
 
                 for(Nodo node : nod.getHijos()){
                         nodo.addHijos(node);
@@ -2811,9 +2812,9 @@ llamada_procedure_funcion ::= IDENTIFICADOR:t1 PARIZQ:t2 lista_parametros:hijo1 
               //NODO PADRE
               Nodo nodo = new Nodo();
               nodo.setEtiqueta("llamada_procedure_funcion");
+              nodo.setValor(t1.toString());
               nodo.setId(parser.cont);
               parser.cont++;
-
               //TERMINALES
               Nodo nid = new Nodo();
               nid.setEtiqueta("ID");

@@ -152,7 +152,6 @@ public class Main {
     Nodo hijo = hijos.get(0);
     Nodo hijo2 = hijos.get(1);
     checkTipoAmbito(hijo2);
-    System.out.println(hijo.getValor() + "||" + hijo2.getValor());
     if (!hijo2.getEtiqueta().equals("INTEGER") && !hijo2.getEtiqueta().equals("CHAR")
         && !hijo2.getEtiqueta().equals("ID")) {
       TablaCuadruplo.gen(root.getValor(), "t" + Integer.toString((contadorTemp - 1) < 0 ? 0 : (contadorTemp - 1)), "_",
@@ -160,6 +159,22 @@ public class Main {
     } else {
       TablaCuadruplo.gen(root.getValor(), hijo2.getValor(), "_", hijo.getValor());
     }
+  }
+  public static void generarAsignacionFuncion(Nodo root) {
+    ArrayList<Nodo> hijos = root.getHijos();
+    Nodo hijo = hijos.get(0);
+    Nodo hijo2 = hijos.get(1);
+    for (int i = 1; i < hijo2.hijos.size(); i++) {
+    TablaCuadruplo.gen("param", hijo2.hijos.get(i).getValor(), "_", "_");
+
+    }
+
+    TablaCuadruplo.gen("call", hijo2.getValor(), "_", "_");
+    TablaCuadruplo.gen("=", "RET", "_", "t"+contadorTemp);
+    TablaCuadruplo.gen("=", "t"+contadorTemp, "_", hijo.getValor());
+    temporalesIntermedio.add("t" + contadorTemp);
+    contadorTemp++;
+
     TablaCuadruplo.imprimirTablaCuadruplo();
   }
 
@@ -352,7 +367,7 @@ public class Main {
 
 		  ArrayList<Nodo> parametros = node.getHijos();
 
-		  parametros.remove(0); // eliminar el id de la lista de parametros 
+		  parametros.remove(0); // eliminar el id de la lista de parametros
 
           ArrayList<ElementoTS> paramNuevos = new ArrayList<ElementoTS>();
 
@@ -447,7 +462,7 @@ public class Main {
 
             if (!search) { // si esta todo bien
               node.setValor(tipoFuncion);
-              TablaCuadruplo.gen("GOTO", "_", "etiq:" + Integer.toString(contadorEtiq), "_nombreFuncion");
+              //TablaCuadruplo.gen("GOTO", "_", "etiq:" + Integer.toString(contadorEtiq), "_nombreFuncion");
               // TablaCuadruplo.imprimirTablaCuadruplo();
             } else {
               // si encontro un error en el metodo. (revisar metodo)
@@ -1179,7 +1194,11 @@ public class Main {
       case "proposicion": {
         String valorProp = node.getValor();
         if (valorProp.equals("=")) {
-          generarAsignacion(node);
+          if (node.hijos.get(1).getEtiqueta().equals("llamada_procedure_funcion")) {
+            generarAsignacionFuncion(node);
+          } else {
+            generarAsignacion(node);
+          }
         } else if (node.getValor().equals("IF")) {
           int etiquetaFalsa = contadorEtiq + 1;
           if (node.hijos.get(0).hijos.get(0).getValor().equals("||")) {
@@ -3202,20 +3221,25 @@ public class Main {
         liberalTemporal(segundoTemporal);
         MIPS.add("");
       } else if (operadorCuad.equals("=")) {
-        if (isTemporal(arg1Cuad)) {
-          MIPS.add("  sw  $t" + temporalActual + ",  _" + respuesta);
-          liberalTemporal(temporalActual);
+        if (arg1Cuad.equals("RET")) {
+          MIPS.add("  move  $t" + nuevoTeporal() + ",  $v0");
         } else {
-          int primerTemporal = nuevoTeporal();
-          if (isNumeric(arg1Cuad)) {
-            MIPS.add("  li  $t" + primerTemporal + ",  " + arg1Cuad);
-          } else if (!isTemporal(arg1Cuad)) {
-            MIPS.add("  lw  $t" + primerTemporal + ",  _" + arg1Cuad);
+          if (isTemporal(arg1Cuad)) {
+            MIPS.add("  sw  $t" + temporalActual + ",  _" + respuesta);
+            liberalTemporal(temporalActual);
+          } else {
+            int primerTemporal = nuevoTeporal();
+            if (isNumeric(arg1Cuad)) {
+              MIPS.add("  li  $t" + primerTemporal + ",  " + arg1Cuad);
+            } else if (!isTemporal(arg1Cuad)) {
+              MIPS.add("  lw  $t" + primerTemporal + ",  _" + arg1Cuad);
+            }
+            MIPS.add("  sw  $t" + primerTemporal + ",  _" + respuesta);
+            liberalTemporal(primerTemporal);
           }
-          MIPS.add("  sw  $t" + primerTemporal + ",  _" + respuesta);
-          liberalTemporal(primerTemporal);
+          MIPS.add("");
         }
-        MIPS.add("");
+
       } else if (operadorCuad.equals("LABEL")) {
         MIPS.add(arg1Cuad + ":");
       } else if (operadorCuad.equals("IF>") || operadorCuad.equals("IF<") || operadorCuad.equals("IF==")
@@ -3253,6 +3277,16 @@ public class Main {
       } else if (operadorCuad.equals("GOTO")) {
         MIPS.add("  b " + respuesta);
         MIPS.add("");
+      } else if (operadorCuad.equals("param")) {
+        if (isNumeric(arg1Cuad)) {
+          MIPS.add("  li  $a"+nuevoArgumento()+",  "+arg1Cuad);
+        } else {
+          MIPS.add("  lw  $a"+nuevoArgumento()+",  _"+arg1Cuad);
+        }
+      } else if (operadorCuad.equals("call")) {
+        MIPS.add("  jal _"+arg1Cuad);
+        MIPS.add("");
+
       }
     }
     MIPS.add("  li  $v0,  10");
